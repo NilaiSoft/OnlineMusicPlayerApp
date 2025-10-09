@@ -17,8 +17,8 @@ namespace OnlineMusicPlayerApp.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            Forms.SetFlags("MediaElement_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            Forms.SetFlags("MediaElement_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }

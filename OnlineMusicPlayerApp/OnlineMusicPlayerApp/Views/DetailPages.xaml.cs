@@ -1,4 +1,5 @@
 ﻿using OnlineMusicPlayerApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -38,7 +39,8 @@ namespace OnlineMusicPlayerApp.Views
                     {
                         // اگر زیرمجموعه نداره، رفتن به href یا نمایش پیام
                         // await DisplayAlert("مسیریابی", $"رفتن به: {item.Href}", "باشه");
-                        Player.Source = item.Href;
+                        string decodedUrl = Uri.UnescapeDataString(item.Href);
+                        Player.Source = decodedUrl;
                         Player.Play();
                         // یا اگر از Shell استفاده می‌کنی:
                         // await Shell.Current.GoToAsync(item.Href);
@@ -49,6 +51,16 @@ namespace OnlineMusicPlayerApp.Views
             }
 
             Content = new ScrollView { Content = stack };
+        }
+
+        private void OnPlayClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnPauseClicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
