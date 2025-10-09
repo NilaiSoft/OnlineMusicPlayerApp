@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.frmWinner"
+             BackgroundColor="#0D1B2A"
+             NavigationPage.HasNavigationBar="False">
+
+    <AbsoluteLayout>
+
+        <!-- ✨ افکت نور -->
+        <BoxView x:Name="MysteryGlow"
+                 Color="#00BCD4"
+                 Opacity="0"
+                 WidthRequest="300"
+                 HeightRequest="300"
+                 CornerRadius="150"
+                 AbsoluteLayout.LayoutBounds="0.5,0.5,300,300"
+                 AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- 🧙‍♂️ نام برنده -->
+        <Label x:Name="lblWinner"
+               Text=""
+               FontSize="36"
+               FontAttributes="Bold"
+               TextColor="White"
+               Opacity="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- 🔙 دکمه بازگشت -->
+        <Button Text="بازگشت"
+                Clicked="OnBackClicked"
+                BackgroundColor="#263238"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="12"
+                AbsoluteLayout.LayoutBounds="0.5,0.9,150,50"
+                AbsoluteLayout.LayoutFlags="PositionProportional"/>
+    </AbsoluteLayout>
+</ContentPage>

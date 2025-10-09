@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.MenuPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#0D1B2A"
+             Title="Menu">
+
+    <StackLayout VerticalOptions="FillAndExpand" Spacing="10">
+        <!-- 🖼️ Header Image -->
+        <Frame HasShadow="False" Padding="0" CornerRadius="0">
+            <Image Source="Taas.jpeg" Aspect="AspectFill" HeightRequest="200"/>
+        </Frame>
+
+        <!-- 📋 Menu List -->
+        <ListView x:Name="ListViewMenu"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  BackgroundColor="Transparent"
+                  Margin="0"
+                  ItemTapped="ListViewMenu_ItemTapped"
+                  SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame BackgroundColor="#1B263B"
+                   CornerRadius="12"
+                   Padding="15"
+                   Margin="5"
+                   HasShadow="True">
+                            <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="CenterAndExpand"
+                             FlowDirection="LeftToRight">
+
+                                <!-- آیکون منو سمت چپ -->
+                                <Label Text="{Binding Icon}"
+                           HeightRequest="24"
+                           WidthRequest="24"
+                           Margin="0,0,10,0"
+                           VerticalOptions="Center"/>
+
+                                <!-- اسم منو سمت راست -->
+                                <Label Text="{Binding Title}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="EndAndExpand"
+                           VerticalOptions="Center"/>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <StackLayout VerticalOptions="End" Padding="10" HorizontalOptions="Center">
+            <Label FontSize="12"
+                   x:Name="lblVersion"
+                   TextColor="#B0BEC5"
+                   HorizontalTextAlignment="Center"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="LotteryApp.Views.ItemsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem Text="Add" Clicked="AddItem_Clicked" />-->
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <Grid x:Name="pnlGroupName" RowSpacing="0" ColumnSpacing="0" IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Entry x:Name="txtGroupName"
+               VerticalOptions="Center"
+               MaxLength="20"
+               Margin="20,80,20,20"
+               FontAttributes="Bold"                 
+               Keyboard="Text" 
+               Placeholder="نام گروه"                 
+               HorizontalOptions="FillAndExpand"
+               TextColor="Green"
+               Grid.Row="0"/>
+            <Button Text="شروع"
+               Margin="80,10,80,20"
+               BackgroundColor="GreenYellow"
+               x:Name="btnSubmit"
+               Clicked="btnSubmit_Clicked" Grid.Row="1"/>
+        </Grid>
+        <Grid x:Name="pnlLottery" RowSpacing="0" ColumnSpacing="0" IsVisible="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Text="Start" 
+                    x:Name="btnStart"
+                    Grid.Row="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="150"
+                    WidthRequest="150"
+                    Margin="80,450,80,0"
+                    Clicked="btnStart_Clicked"/>
+        </Grid>
+    </StackLayout>
+    
+</ContentPage>

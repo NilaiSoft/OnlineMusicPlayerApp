@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="OnlineMusicPlayerApp.Views.ContactList">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid x:Name="Panel1" RowSpacing="10" ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" HasShadow="True" CornerRadius="40" BackgroundColor="White">
+                    <CollectionView HorizontalScrollBarVisibility="Never" 
+                    SelectionMode="Multiple"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalScrollBarVisibility="Never"
+                                x:Name="collectionList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" Padding="20">
+                                    <!--<Frame Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" BorderColor="Transparent" HorizontalOptions="Start" VerticalOptions="Start" HasShadow="False" CornerRadius="17" Padding="0" IsClippedToBounds="True" Margin="0,0,20,0">
+                                    <Image Source="{Binding Picture}" Aspect="AspectFill" WidthRequest="60" HeightRequest="60"/>
+                                </Frame>-->
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding DisplayName}" FontAttributes="Bold"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding PhoneNumber}" FontAttributes="Bold" TextColor="#b4b4b4"/>
+                                    <!--<Ellipse Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" IsVisible="{Binding IsOnline}" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,-10,30,0" Fill="#1ad32e" HeightRequest="10" WidthRequest="10" StrokeThickness="0"/>-->
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+
+                <Frame Grid.Row="1" VerticalOptions="FillAndExpand" HasShadow="True" CornerRadius="40" BackgroundColor="White">
+                    <Button BackgroundColor="Red"
+                            x:Name="btnAddContacts"
+                            Text="ADD"/>
+                </Frame>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

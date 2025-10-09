@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.ActivityMain"    
+             BackgroundColor="##BFB4B2"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            VerticalOptions="FillAndExpand"
+            BackgroundColor="AliceBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Source="tass.jpg" Aspect="AspectFill" HeightRequest="300" VerticalOptions="StartAndExpand"/>
+            <StackLayout HeightRequest="300" VerticalOptions="StartAndExpand"/>
+            <StackLayout Orientation="Horizontal" Spacing="20"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Start" Margin="20,50">
+                <ImageButton Source="menu.png"
+                             x:Name="btnMenu"
+                             Clicked="btnMenu_Clicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="40" HeightRequest="40"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"/>
+                <!--<Label Text="LONDON , GB" FontSize="16" Margin="0,6,0,10" TextColor="White"/>-->
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Margin="0,20"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"/>
+            <StackLayout Orientation="Horizontal" 
+                         HorizontalOptions="Center">
+                <!--<Image Source="cloude.png" WidthRequest="50"
+                       HeightRequest="50" VerticalOptions="Center"/>-->
+                <!--<Label Text="12" TextColor="White" FontSize="70"
+                       FontAttributes="Bold" VerticalOptions="Center"/>
+                -->
+                <!--ALT+0176-->
+                <!--
+                <Label Text="°C" TextColor="White" FontSize="34"
+                       VerticalOptions="Center"/>-->
+                <!--<Label Text="Lottery" TextColor="White" FontSize="70"
+                       FontAttributes="Bold" VerticalOptions="Center"/>
+                -->
+                <!--ALT+0176-->
+                <!--
+                <Label Text="C" TextColor="White" FontSize="34"
+                       VerticalOptions="Center"/>-->
+            </StackLayout>
+            <Frame Grid.Row="1" BackgroundColor="Transparent"
+                   HasShadow="True" CornerRadius="10"
+                   Margin="20,-40,20,0" Padding="0"
+                   HeightRequest="120"
+                   VerticalOptions="Start">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btnInstaPost"
+                            IsVisible="false"
+                            BackgroundColor="White"
+                            Grid.Row="0" Text="اینستاگرام"/>
+                    <Button x:Name="btnInstaFollowers" 
+                            BackgroundColor="White"
+                            FontSize="15"
+                            Clicked="btnPeoples_Clicked" Grid.Row="1" Grid.RowSpan="2" Text="میز قرعه کشی"/>
+
+                    <!--<Button x:Name="btnInstaPost"
+                            BackgroundColor="White"
+                            Clicked="btnInstagramNew_Clicked" IsVisible="false" Grid.Row="0" Text="اینستاگرام"/>
+                    <Button x:Name="btnInstaFollowers" 
+                            BackgroundColor="White"
+                            Clicked="btnPeoples_Clicked" Grid.Row="1" Grid.RowSpan="2" Text="لیست افراد"/>-->
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

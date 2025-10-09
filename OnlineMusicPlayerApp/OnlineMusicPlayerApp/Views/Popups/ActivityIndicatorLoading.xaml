@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.Popups.ActivityIndicatorLoading">
+  <ContentView.Content>
+      <StackLayout>
+            <!--<AbsoluteLayout>-->
+                <ActivityIndicator x:Name="activity"  
+                       IsRunning="True"  
+                       IsEnabled="True"  
+                       IsVisible="True"  
+                       Color="Blue"  
+                       BackgroundColor="Transparent"/>
+            <!--</AbsoluteLayout>-->
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

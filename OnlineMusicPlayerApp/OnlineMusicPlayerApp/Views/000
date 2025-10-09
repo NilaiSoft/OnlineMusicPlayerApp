@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="{Binding Title}"
+             x:Class="LotteryApp.Views.LotteryInstagramFollowers">
+    <Grid VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Horizontal" Spacing="20"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Start" Margin="20,50"
+                     BackgroundColor="Red">
+            <Button x:Name="imgLoadin"
+                    WidthRequest="100"
+                    HeightRequest="100"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                        ClassId="btnLoadPost"
+                        Clicked="btnLoadPost_Clicked"
+                        Text="بارگذاری"/>
+            <Entry x:Name="txtUrlPost"
+                   HorizontalOptions="StartAndExpand"
+                   FontSize="16"
+                   TextColor="White"
+                   VerticalOptions="StartAndExpand"
+                   Placeholder="آدرس پست"/>
+        </StackLayout>
+        
+        <StackLayout Grid.Row="1" Orientation="Vertical" Margin="0,20" 
+                     HorizontalOptions="Center" VerticalOptions="Center">
+            <Image BackgroundColor="Orange" x:Name="imgPost" 
+                   Aspect="Fill" 
+                   HeightRequest="400" 
+                   WidthRequest="400"
+                   VerticalOptions="StartAndExpand"
+                   HorizontalOptions="StartAndExpand"/>
+        </StackLayout>
+        
+        <StackLayout Grid.Row="4" Orientation="Vertical" 
+                     Margin="0,20"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     HeightRequest="80"
+                     WidthRequest="400">
+            <Button x:Name="btnStart"
+                    HeightRequest="80"
+                    WidthRequest="200"
+                    Clicked="btnStart_Clicked"
+                    Text="شروع"></Button>
+        </StackLayout>
+    </Grid>
+</ContentPage>

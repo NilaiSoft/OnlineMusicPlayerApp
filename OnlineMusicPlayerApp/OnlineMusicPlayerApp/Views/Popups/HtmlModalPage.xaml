@@ -1,0 +1,25 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.Popups.HtmlModalPage"
+             BackgroundColor="#80000000">
+
+    <Grid Padding="20" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <WebView x:Name="HtmlWebView"
+                 Grid.Row="0"
+                 HeightRequest="400" />
+
+        <StackLayout Grid.Row="1"
+                     Orientation="Horizontal"
+                     HorizontalOptions="Center"
+                     Spacing="20"
+                     Margin="0,20,0,0">
+            <Button Text="تأیید" Clicked="btnConfirm_Clicked" x:Name="btnConfirm" BackgroundColor="#4CAF50" TextColor="White" />
+            <Button Text="بستن" Clicked="btnClose_Clicked" x:Name="btnClose" BackgroundColor="#F44336" TextColor="White" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

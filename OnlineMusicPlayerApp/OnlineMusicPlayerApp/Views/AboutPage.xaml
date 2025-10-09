@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:OnlineMusicPlayerApp.ViewModels"
+             x:Class="OnlineMusicPlayerApp.Views.AboutPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#0D1B2A"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Accent">#1B263B</Color>
+            <Color x:Key="LightTextColor">#AAAAAA</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🔷 Header Section -->
+        <StackLayout Grid.Row="0"
+                     BackgroundColor="{StaticResource Accent}"
+                     Padding="0,30,0,30"
+                     HorizontalOptions="FillAndExpand">
+            <Label Text="درباره اپلیکیشن"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+        </StackLayout>
+
+        <!-- 📜 Content Section -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="20" Spacing="20">
+                <!-- 🏷️ App Info -->
+
+                <Frame BackgroundColor="#1B263B" CornerRadius="10" Padding="15">
+                    <Label FontSize="20" TextColor="White">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="توسعه دهنده : " FontAttributes="Bold"/>
+                                <Span Text="احسان نوذری"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+                <Frame BackgroundColor="#1B263B" CornerRadius="10" Padding="15">
+                    <Label FontSize="20" TextColor="White">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="نام لاتین : " FontAttributes="Bold"/>
+                                <Span Text="Lottery App" ForegroundColor="{StaticResource LightTextColor}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+                <Frame BackgroundColor="#1B263B" CornerRadius="10" Padding="15">
+                    <Label FontSize="20" TextColor="White">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="نام فارسی : " FontAttributes="Bold"/>
+                                <Span Text="قرعه‌کشی" ForegroundColor="{StaticResource LightTextColor}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+                <Frame BackgroundColor="#1B263B" CornerRadius="10" Padding="15">
+                    <Label FontSize="20" TextColor="White">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="شماره ساخت : " FontAttributes="Bold"/>
+                                <Span x:Name="lblVersion" ForegroundColor="{StaticResource LightTextColor}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLabelTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+
+                <!-- 💬 Feedback -->
+                <Frame BackgroundColor="#1B263B" CornerRadius="10" Padding="15">
+                    <Label Text="برای بهبود اپلیکیشن نظراتتونو با من درمیان بذارید."
+                           FontSize="18"
+                           TextColor="{StaticResource LightTextColor}"/>
+                </Frame>
+
+                <!-- 🌐 Developer Links -->
+                <Button Text="من در کافه بازار"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        x:Name="btnCafeBazar"
+                        Clicked="btnCafeBazar_Clicked"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"/>
+
+                <!-- 🌐 Developer Links -->
+                <Button Text="تماس با توسعه‌دهنده"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Command="{Binding Phone}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"/>
+
+                <Button Text="پیج اینستاگرام توسعه‌دهنده"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Command="{Binding Instagram}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"/>
+
+                <Button Text="تلگرام توسعه دهنده"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Command="{Binding Telegram}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"/>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
