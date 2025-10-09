@@ -15,10 +15,16 @@
                    HorizontalOptions="Center" />
             <!-- عکس کاور آهنگ -->
             <Image x:Name="CoverImage"
-                    Grid.Row="0"
-                    Aspect="AspectFill"
-                    HorizontalOptions="Center"
-                    HeightRequest="200" />
+                   Grid.Row="0"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"
+                   HeightRequest="200"
+                   WidthRequest="200">
+                <Image.Clip>
+                    <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
+                </Image.Clip>
+            </Image>
+
 
             <toolkit:MediaElement x:Name="Player"
                       HeightRequest="1"
