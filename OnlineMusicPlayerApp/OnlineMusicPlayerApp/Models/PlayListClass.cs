@@ -17,6 +17,7 @@ namespace OnlineMusicPlayerApp.Models
         public int Id { get; set; }
         public string Href { get; set; }
         public bool IsVisible { get; set; }
+        public string TagImageSrc { get; set; }
         public List<Detail> Children { get; set; } = new List<Detail>();
     }
 

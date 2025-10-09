@@ -50,6 +50,8 @@ namespace OnlineMusicPlayerApp.Views
                         }
 
                         string decodedUrl = Uri.UnescapeDataString(item.Href);
+                        CoverImage.Source = item.TagImageSrc;
+                        lblTitle.Text = item.Title;
                         Player.Source = decodedUrl;
                         Player.Play();
 

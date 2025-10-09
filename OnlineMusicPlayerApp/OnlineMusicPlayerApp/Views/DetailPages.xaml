@@ -9,18 +9,28 @@
     <ContentPage.Content>
         <StackLayout x:Name="stack" Padding="30" Spacing="25">
 
-            <Label Text="در حال پخش: نغمه‌ای از دل"
-                   FontSize="18"
+            <Label FontSize="18"
+                   x:Name="lblTitle"
                    TextColor="#3E3E3E"
                    HorizontalOptions="Center" />
+            <!-- عکس کاور آهنگ -->
+            <Image x:Name="CoverImage"
+                    Grid.Row="0"
+                    Aspect="AspectFill"
+                    HorizontalOptions="Center"
+                    HeightRequest="200" />
 
             <toolkit:MediaElement x:Name="Player"
-                                  HeightRequest="200"
-                                  WidthRequest="300"
-                                  AutoPlay="False"
-                                  ShowsPlaybackControls="True"
-                                  BackgroundColor="#EAEAEA"
-                                  HorizontalOptions="Center" />
+                      HeightRequest="1"
+                      WidthRequest="1"
+                      AutoPlay="True"
+                      ShowsPlaybackControls="False"
+                      IsEnabled="False"
+                      Opacity="0"
+                      BackgroundColor="Transparent"
+                      HorizontalOptions="Start"
+                      VerticalOptions="Start" />
+
 
             <Slider x:Name="ProgressSlider"
                     Minimum="0"
