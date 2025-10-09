@@ -48,7 +48,7 @@
                     MaximumTrackColor="#CCC" />
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
-                <Button Text="▶ پخش" Clicked="OnPlayClicked" BackgroundColor="#DDE" />
+                <Button Text="▶" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
                 <Button Text="⏸ توقف" Clicked="OnPauseClicked" BackgroundColor="#DDE" />
             </StackLayout>
 
