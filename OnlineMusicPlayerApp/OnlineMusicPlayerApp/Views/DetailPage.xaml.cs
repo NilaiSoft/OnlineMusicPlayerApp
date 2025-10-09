@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 
-public partial class DetailPage2 : ContentPage
+public partial class DetailPages : ContentPage
 {
-    public DetailPage2(List<Detail> details)
+    public DetailPages(List<Detail> details)
     {
         Title = "سبک‌های موسیقی";
 
@@ -26,7 +26,7 @@ public partial class DetailPage2 : ContentPage
                 if (item.Children != null && item.Children.Any())
                 {
                     // رفتن به صفحه‌ی جدید با زیرمجموعه‌ها
-                    await Navigation.PushAsync(new DetailPage2(item.Children));
+                    await Navigation.PushAsync(new DetailPages(item.Children));
                 }
                 else
                 {
