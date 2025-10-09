@@ -31,6 +31,7 @@ namespace OnlineMusicPlayerApp
                 DependencyService.Register<AzureDataStore>();
             MainPage = new MainPage();
             _notifyService = DependencyService.Get<INotifyService>();
+            Device.SetFlags(new[] { "MediaElement_Experimental" });
         }
 
         protected async override void OnStart()

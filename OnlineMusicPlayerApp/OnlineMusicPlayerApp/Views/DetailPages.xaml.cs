@@ -11,6 +11,8 @@ namespace OnlineMusicPlayerApp.Views
     {
         public DetailPages(List<Detail> details)
         {
+            InitializeComponent();
+
             Title = "سبک‌های موسیقی";
 
             var stack = new StackLayout { Padding = 20, Spacing = 15 };

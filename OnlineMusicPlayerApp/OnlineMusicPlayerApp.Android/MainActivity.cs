@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Android.Views;
+using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Droid
 {
@@ -16,6 +17,7 @@ namespace OnlineMusicPlayerApp.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            Forms.SetFlags("MediaElement_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
