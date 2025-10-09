@@ -37,6 +37,7 @@ namespace OnlineMusicPlayerApp.Views
                         // اگر زیرمجموعه نداره، رفتن به href یا نمایش پیام
                         // await DisplayAlert("مسیریابی", $"رفتن به: {item.Href}", "باشه");
                         Player.Source = item.Href;
+                        Player.Play();
                         // یا اگر از Shell استفاده می‌کنی:
                         // await Shell.Current.GoToAsync(item.Href);
                     }
