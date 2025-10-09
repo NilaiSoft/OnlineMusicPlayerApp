@@ -1,63 +1,46 @@
-﻿using InstaSharper.API;
-using InstaSharper.API.Builder;
-using InstaSharper.Classes;
-using InstaSharper.Logger;
-using OnlineMusicPlayerApp.BLL;
-using OnlineMusicPlayerApp.Model;
-using OnlineMusicPlayerApp.Models;
-using System;
+﻿using OnlineMusicPlayerApp.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+using System.Linq;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-namespace OnlineMusicPlayerApp.Views
+public partial class DetailPage2 : ContentPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DetailPage : ContentPage
+    public DetailPage2(List<Detail> details)
     {
-        public DetailPage(List<Detail> details)
-        {
-            Title = "سبک‌های موسیقی";
+        Title = "سبک‌های موسیقی";
 
-            var stack = new StackLayout
+        var stack = new StackLayout { Padding = 20, Spacing = 15 };
+
+        foreach (var item in details)
+        {
+            var button = new Button
             {
-                Padding = new Thickness(20),
-                Spacing = 15
+                Text = item.Title,
+                BackgroundColor = Color.FromHex("#eeeeee"),
+                TextColor = Color.Black,
+                CornerRadius = 8
             };
 
-            foreach (var item in details)
+            button.Clicked += async (s, e) =>
             {
-                var button = new Button
+                if (item.Children != null && item.Children.Any())
                 {
-                    Text = item.Title,
-                    BackgroundColor = Color.FromHex("#eeeeee"),
-                    TextColor = Color.Black,
-                    CornerRadius = 8
-                };
-
-                button.Clicked += async (s, e) =>
+                    // رفتن به صفحه‌ی جدید با زیرمجموعه‌ها
+                    await Navigation.PushAsync(new DetailPage2(item.Children));
+                }
+                else
                 {
-                    // رفتن به مسیر مربوطه
+                    // اگر زیرمجموعه نداره، رفتن به href یا نمایش پیام
                     await DisplayAlert("مسیریابی", $"رفتن به: {item.Href}", "باشه");
 
-                    // اگر از Shell استفاده می‌کنی:
+                    // یا اگر از Shell استفاده می‌کنی:
                     // await Shell.Current.GoToAsync(item.Href);
+                }
+            };
 
-                    // یا اگر صفحه خاصی داری:
-                    // await Navigation.PushAsync(new GenrePage(item.Id));
-                };
-
-                stack.Children.Add(button);
-            }
-
-            Content = new ScrollView { Content = stack };
+            stack.Children.Add(button);
         }
-        protected override bool OnBackButtonPressed()
-        {
-            NavigationPage.SetHasNavigationBar(this, false);
-            return false;
-        }
+
+        Content = new ScrollView { Content = stack };
     }
 }

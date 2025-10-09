@@ -44,7 +44,7 @@ namespace OnlineMusicPlayerApp.Views
                 button.Clicked += async (s, e) =>
                 {
                     // نمایش لیست جزئیات یا رفتن به صفحه مربوطه
-                    await Navigation.PushAsync(new DetailPage(category.Details));
+                    await Navigation.PushAsync(new DetailPage2(category.Details));
                 };
 
                 stack.Children.Add(button);

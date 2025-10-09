@@ -14,9 +14,11 @@ namespace OnlineMusicPlayerApp.Models
     public class Detail
     {
         public string Title { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Href { get; set; }
+        public List<Detail> Children { get; set; } = new List<Detail>();
     }
+
 
     public class CategoryWrapper
     {
