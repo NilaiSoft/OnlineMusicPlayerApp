@@ -15,10 +15,10 @@ namespace OnlineMusicPlayerApp.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Forms.SetFlags("MediaElement_Experimental");
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            Forms.SetFlags("MediaElement_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }

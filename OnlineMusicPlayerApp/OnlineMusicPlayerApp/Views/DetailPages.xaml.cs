@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Views
@@ -42,6 +43,19 @@ namespace OnlineMusicPlayerApp.Views
                         string decodedUrl = Uri.UnescapeDataString(item.Href);
                         Player.Source = decodedUrl;
                         Player.Play();
+
+                        Player.Source = decodedUrl;
+                        Player.MediaEnded += (s, e) => DisplayAlert("پایان", "آهنگ به پایان رسید", "باشه");
+
+                        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                        {
+                            if (Player.CurrentState == MediaElementState.Playing && Player.Duration.HasValue)
+                            {
+                                ProgressSlider.Maximum = Player.Duration.Value.TotalSeconds;
+                                ProgressSlider.Value = Player.Position.TotalSeconds;
+                            }
+                            return true;
+                        });
                         // یا اگر از Shell استفاده می‌کنی:
                         // await Shell.Current.GoToAsync(item.Href);
                     }
@@ -55,12 +69,12 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlayClicked(object sender, EventArgs e)
         {
-
+            Player.Play();
         }
 
         private void OnPauseClicked(object sender, EventArgs e)
         {
-
+            Player.Pause();
         }
     }
 }
