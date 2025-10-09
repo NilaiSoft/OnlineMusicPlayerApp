@@ -60,6 +60,30 @@ public class GoogleDriveServices : IGoogleDriveServices
         }
     }
 
+    public async Task<string> GetMusicPlayList()
+    {
+        string fileUrl = $"https://drive.google.com/uc?export=download&id=19mhIWQI8IQ1d-lP3Xyj30XUvO_qW6mny";
+
+        if (!await NetworkExtensions.IsConnectedAsync())
+        {
+            return string.Empty;
+        }
+
+        using (var client = new HttpClient())
+        {
+            try
+            {
+                string content = await client.GetStringAsync(fileUrl);
+                return content;
+            }
+            catch (Exception ex)
+            {
+                //return $"خطا در دریافت فایل: {ex.Message}";
+                return string.Empty;
+            }
+        }
+    }
+
     public async Task<T> LoadJsonFromDriveAsync<T>(string fileUrl)
     {
         using (var client = new HttpClient())

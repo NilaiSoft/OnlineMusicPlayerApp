@@ -8,4 +8,5 @@ public interface IGoogleDriveServices
     Task<string> GetTextFromFileAsync();
     Task<string> DownloadGoogleDriveFileAsync(string url, string fileName);
     Task<T> LoadJsonFromDriveAsync<T>(string fileUrl);
+    Task<string> GetMusicPlayList();
 }
