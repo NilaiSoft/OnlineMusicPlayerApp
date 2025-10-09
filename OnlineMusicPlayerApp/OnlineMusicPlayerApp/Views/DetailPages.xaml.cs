@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
@@ -40,6 +41,14 @@ namespace OnlineMusicPlayerApp.Views
                     {
                         // اگر زیرمجموعه نداره، رفتن به href یا نمایش پیام
                         // await DisplayAlert("مسیریابی", $"رفتن به: {item.Href}", "باشه");
+
+                        string extension = Path.GetExtension(item.Href);
+
+                        if (!new[] { ".mp3", ".mp4" }.Any(ext => extension.Contains(ext)))
+                        {
+                            return;
+                        }
+
                         string decodedUrl = Uri.UnescapeDataString(item.Href);
                         Player.Source = decodedUrl;
                         Player.Play();

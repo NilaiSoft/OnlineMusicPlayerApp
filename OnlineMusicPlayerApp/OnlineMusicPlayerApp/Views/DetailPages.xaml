@@ -15,7 +15,7 @@
                    HorizontalOptions="Center" />
 
             <toolkit:MediaElement x:Name="Player"
-                                  HeightRequest="60"
+                                  HeightRequest="200"
                                   WidthRequest="300"
                                   AutoPlay="False"
                                   ShowsPlaybackControls="True"
