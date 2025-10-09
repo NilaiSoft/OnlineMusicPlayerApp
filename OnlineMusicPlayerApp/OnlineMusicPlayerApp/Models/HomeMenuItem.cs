@@ -9,7 +9,7 @@ namespace OnlineMusicPlayerApp.Models
         ActivityMain = 1,
         About=2,
         People=3,
-        PeopleList=4,
+        PleyList=4,
         frmSettings=5,
         LottoryGroupList = 6,
         LotteryGroups = 7,

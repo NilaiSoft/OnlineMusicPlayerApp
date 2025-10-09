@@ -52,6 +52,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\DetailPage.xaml.cs">
+      <DependentUpon>DetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PlayList.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>PlayList.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\frmWinner.xaml.cs">
       <DependentUpon>frmWinner.xaml</DependentUpon>
     </Compile>
@@ -61,6 +68,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\PlayList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ActivityMain.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
