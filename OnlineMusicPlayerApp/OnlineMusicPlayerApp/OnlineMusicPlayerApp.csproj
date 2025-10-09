@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="3.1.1" />
     <PackageReference Include="InstaSharper-latest" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.28" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
@@ -52,8 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\DetailPage.xaml.cs">
-      <DependentUpon>DetailPage.xaml</DependentUpon>
+    <Compile Update="Views\DetailPages.xaml.cs">
+      <DependentUpon>DetailPages.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\PlayList.xaml.cs">
       <SubType>Code</SubType>
