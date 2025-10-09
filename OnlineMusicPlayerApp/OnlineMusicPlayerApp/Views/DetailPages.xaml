@@ -7,7 +7,7 @@
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <StackLayout Padding="30" Spacing="25">
+        <StackLayout x:Name="stack" Padding="30" Spacing="25">
 
             <Label Text="در حال پخش: نغمه‌ای از دل"
                    FontSize="18"

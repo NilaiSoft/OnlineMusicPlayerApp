@@ -17,7 +17,7 @@ namespace OnlineMusicPlayerApp.Views
 
             Title = "سبک‌های موسیقی";
 
-            var stack = new StackLayout { Padding = 20, Spacing = 15 };
+            //var stack = new StackLayout { Padding = 20, Spacing = 15 };
 
             foreach (var item in details)
             {
@@ -44,7 +44,6 @@ namespace OnlineMusicPlayerApp.Views
                         Player.Source = decodedUrl;
                         Player.Play();
 
-                        Player.Source = decodedUrl;
                         Player.MediaEnded += (s, e) => DisplayAlert("پایان", "آهنگ به پایان رسید", "باشه");
 
                         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
