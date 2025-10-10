@@ -5,4 +5,7 @@
     void Resume();
     void Stop();
     bool IsPlaying();
+    double GetDurationSeconds();
+    double GetCurrentPositionSeconds();
+    void SeekTo(long positionMs);
 }

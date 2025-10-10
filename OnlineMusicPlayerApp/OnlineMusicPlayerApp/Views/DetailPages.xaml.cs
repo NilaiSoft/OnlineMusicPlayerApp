@@ -79,6 +79,18 @@ namespace OnlineMusicPlayerApp.Views
 
                         DependencyService.Get<IAudioService>().Play(decodedUrl);
 
+                        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                        {
+                            var duration = DependencyService.Get<IAudioService>().GetDurationSeconds();
+                            var position = DependencyService.Get<IAudioService>().GetCurrentPositionSeconds();
+
+                            ProgressSlider.Maximum = duration;
+                            ProgressSlider.Value = position;
+
+                            return true; // ادامه بده
+                        });
+
+
 
                         //Player.MediaEnded += (s, e) => DisplayAlert("پایان", "آهنگ به پایان رسید", "باشه");
 
@@ -101,6 +113,16 @@ namespace OnlineMusicPlayerApp.Views
 
             Content = new ScrollView { Content = stack };
         }
+
+        private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (Math.Abs(e.NewValue - DependencyService.Get<IAudioService>().GetCurrentPositionSeconds()) > 1)
+            {
+                long newPositionMs = (long)(e.NewValue * 1000);
+                DependencyService.Get<IAudioService>().SeekTo(newPositionMs);
+            }
+        }
+
 
         private void OnPlayClicked(object sender, EventArgs e)
         {

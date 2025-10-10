@@ -42,6 +42,7 @@
                     Minimum="0"
                     Maximum="1"
                     Value="0"
+                    ValueChanged="ProgressSlider_ValueChanged"
                     HorizontalOptions="FillAndExpand"
                     ThumbColor="#888"
                     MinimumTrackColor="#555"

@@ -32,4 +32,20 @@ public class AudioService : IAudioService
     {
         MusicService.player.Play();
     }
+
+    public double GetDurationSeconds()
+    {
+        return MusicService.player?.Duration / 1000.0 ?? 0;
+    }
+
+    public double GetCurrentPositionSeconds()
+    {
+        return MusicService.player?.CurrentPosition / 1000.0 ?? 0;
+    }
+    public void SeekTo(long positionMs)
+    {
+        MusicService.player?.SeekTo(positionMs);
+    }
+
+
 }
