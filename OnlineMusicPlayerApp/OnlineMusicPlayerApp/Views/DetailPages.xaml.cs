@@ -74,20 +74,23 @@ namespace OnlineMusicPlayerApp.Views
                                 }
                         };
 
-                        Player.Source = decodedUrl;
-                        Player.Play();
+                        //Player.Source = decodedUrl;
+                        //Player.Play();
 
-                        Player.MediaEnded += (s, e) => DisplayAlert("پایان", "آهنگ به پایان رسید", "باشه");
+                        DependencyService.Get<IAudioService>().Play(decodedUrl);
 
-                        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-                        {
-                            if (Player.CurrentState == MediaElementState.Playing && Player.Duration.HasValue)
-                            {
-                                ProgressSlider.Maximum = Player.Duration.Value.TotalSeconds;
-                                ProgressSlider.Value = Player.Position.TotalSeconds;
-                            }
-                            return true;
-                        });
+
+                        //Player.MediaEnded += (s, e) => DisplayAlert("پایان", "آهنگ به پایان رسید", "باشه");
+
+                        //Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                        //{
+                        //    if (Player.CurrentState == MediaElementState.Playing && Player.Duration.HasValue)
+                        //    {
+                        //        ProgressSlider.Maximum = Player.Duration.Value.TotalSeconds;
+                        //        ProgressSlider.Value = Player.Position.TotalSeconds;
+                        //    }
+                        //    return true;
+                        //});
                         // یا اگر از Shell استفاده می‌کنی:
                         // await Shell.Current.GoToAsync(item.Href);
                     }

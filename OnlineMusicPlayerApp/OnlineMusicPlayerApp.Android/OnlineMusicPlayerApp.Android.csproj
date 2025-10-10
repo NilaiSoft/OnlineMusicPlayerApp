@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer">
+      <Version>2.16.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +66,8 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AudioService.cs" />
+    <Compile Include="Services\MusicService.cs" />
     <Compile Include="Services\PhoneService.cs" />
     <Compile Include="Services\SecureScreenService.cs" />
     <Compile Include="Services\ToastService.cs" />
