@@ -13,9 +13,9 @@
                    x:Name="lblTitle"
                    TextColor="#3E3E3E"
                    HorizontalOptions="Center" />
+
             <!-- عکس کاور آهنگ -->
             <Image x:Name="CoverImage"
-                   Grid.Row="0"
                    Aspect="AspectFill"
                    HorizontalOptions="Center"
                    HeightRequest="200"
@@ -25,43 +25,55 @@
                 </Image.Clip>
             </Image>
 
-
+            <!-- پلیر مخفی -->
             <toolkit:MediaElement x:Name="Player"
-                      HeightRequest="1"
-                      WidthRequest="1"
-                      AutoPlay="True"
-                      ShowsPlaybackControls="False"
-                      IsEnabled="False"
-                      Opacity="0"
-                      BackgroundColor="Transparent"
-                      HorizontalOptions="Start"
-                      VerticalOptions="Start" />
-            
-            <Label x:Name="CurrentTimeLabel"
-                   Text="0:00"
-                   FontSize="14"
-                   TextColor="#555"
-                   VerticalOptions="Center" />
+                                  HeightRequest="1"
+                                  WidthRequest="1"
+                                  AutoPlay="True"
+                                  ShowsPlaybackControls="False"
+                                  IsEnabled="False"
+                                  Opacity="0"
+                                  BackgroundColor="Transparent"
+                                  HorizontalOptions="Start"
+                                  VerticalOptions="Start" />
 
+            <!-- زمان فعلی و کل در دو طرف Slider -->
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
+                <Label x:Name="CurrentTimeLabel"
+                       Grid.Column="0"
+                       Text="0:00"
+                       FontSize="14"
+                       TextColor="#555"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
 
-            <Slider x:Name="ProgressSlider"
-                    Minimum="0"
-                    Maximum="1"
-                    Value="0"
-                    ValueChanged="ProgressSlider_ValueChanged"
-                    HorizontalOptions="FillAndExpand"
-                    ThumbColor="#888"
-                    MinimumTrackColor="#555"
-                    MaximumTrackColor="#CCC" />
+                <Slider x:Name="ProgressSlider"
+                        Grid.Column="1"
+                        Minimum="0"
+                        Maximum="1"
+                        Value="0"
+                        ValueChanged="ProgressSlider_ValueChanged"
+                        HorizontalOptions="FillAndExpand"
+                        ThumbColor="#888"
+                        MinimumTrackColor="#555"
+                        MaximumTrackColor="#CCC" />
 
+                <Label x:Name="TotalTimeLabel"
+                       Grid.Column="2"
+                       Text="0:00"
+                       FontSize="14"
+                       TextColor="#555"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" />
+            </Grid>
 
-            <Label x:Name="TotalTimeLabel"
-                    Text="0:00"
-                    FontSize="14"
-                    TextColor="#555"
-                    VerticalOptions="Center" />
-
+            <!-- دکمه پخش -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
                 <Button x:Name="btnPlay" ImageSource="icon_play3" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
             </StackLayout>
