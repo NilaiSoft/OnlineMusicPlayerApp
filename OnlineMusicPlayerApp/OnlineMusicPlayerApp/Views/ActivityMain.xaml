@@ -14,7 +14,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image Source="tass.jpg" Aspect="AspectFill" HeightRequest="300" VerticalOptions="StartAndExpand"/>
+            <Image Source="images.png" Aspect="AspectFill" HeightRequest="300" VerticalOptions="StartAndExpand"/>
             <StackLayout HeightRequest="300" VerticalOptions="StartAndExpand"/>
             <StackLayout Orientation="Horizontal" Spacing="20"
                          HorizontalOptions="Start"

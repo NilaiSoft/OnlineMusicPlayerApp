@@ -9,7 +9,7 @@
     <StackLayout VerticalOptions="FillAndExpand" Spacing="10">
         <!-- 🖼️ Header Image -->
         <Frame HasShadow="False" Padding="0" CornerRadius="0">
-            <Image Source="Taas.jpeg" Aspect="AspectFill" HeightRequest="200"/>
+            <Image Source="tascopilot.png" Aspect="AspectFill" HeightRequest="200"/>
         </Frame>
 
         <!-- 📋 Menu List -->
