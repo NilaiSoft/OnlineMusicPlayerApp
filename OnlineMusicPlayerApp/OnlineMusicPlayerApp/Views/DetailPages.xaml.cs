@@ -52,6 +52,28 @@ namespace OnlineMusicPlayerApp.Views
                         string decodedUrl = Uri.UnescapeDataString(item.Href);
                         CoverImage.Source = item.TagImageSrc;
                         lblTitle.Text = item.Title;
+
+                        Color[] warmPalette = {
+                            Color.FromRgb(255, 87, 34),
+                            Color.FromRgb(244, 67, 54),
+                            Color.FromRgb(255, 193, 7)
+                        };
+
+                        Random rand = new Random();
+                        Color color1 = warmPalette[rand.Next(warmPalette.Length)];
+                        Color color2 = warmPalette[rand.Next(warmPalette.Length)];
+
+                        this.Background = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 1),
+                            GradientStops = new GradientStopCollection
+                                {
+                                    new GradientStop { Color = color1, Offset = 0.0F },
+                                    new GradientStop { Color = color2, Offset = 1.5F }
+                                }
+                        };
+
                         Player.Source = decodedUrl;
                         Player.Play();
 
@@ -79,12 +101,15 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlayClicked(object sender, EventArgs e)
         {
-            Player.Play();
-        }
+            if (Player.CurrentState == MediaElementState.Playing)
+            {
+                btnPlay.ImageSource = "icon_play3";
+                Player.Pause();
+                return;
+            }
 
-        private void OnPauseClicked(object sender, EventArgs e)
-        {
-            Player.Pause();
+            btnPlay.ImageSource = "icon_pause";
+            Player.Play();
         }
     }
 }

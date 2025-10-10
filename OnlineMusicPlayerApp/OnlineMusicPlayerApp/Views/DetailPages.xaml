@@ -48,8 +48,7 @@
                     MaximumTrackColor="#CCC" />
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
-                <Button Text="▶" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
-                <Button Text="⏸ توقف" Clicked="OnPauseClicked" BackgroundColor="#DDE" />
+                <Button x:Name="btnPlay" ImageSource="icon_play3" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
             </StackLayout>
 
         </StackLayout>
