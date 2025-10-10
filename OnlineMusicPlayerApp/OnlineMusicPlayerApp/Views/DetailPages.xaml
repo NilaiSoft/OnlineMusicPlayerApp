@@ -9,17 +9,20 @@
     <ContentPage.Content>
         <StackLayout x:Name="stack" Padding="30" Spacing="25">
 
+            <!-- عنوان ترک -->
             <Label FontSize="18"
                    x:Name="lblTitle"
                    TextColor="#3E3E3E"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
 
             <!-- عکس کاور آهنگ -->
             <Image x:Name="CoverImage"
                    Aspect="AspectFill"
                    HorizontalOptions="Center"
                    HeightRequest="200"
-                   WidthRequest="200">
+                   WidthRequest="200"
+                   IsVisible="False">
                 <Image.Clip>
                     <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
                 </Image.Clip>
@@ -73,10 +76,27 @@
                        HorizontalOptions="End" />
             </Grid>
 
-            <!-- دکمه پخش -->
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
-                <Button x:Name="btnPlay" ImageSource="icon_play3" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
+            <!-- دکمه‌های کنترل پخش -->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="30">
+                <!-- دکمه قبلی -->
+                <Button x:Name="btnPrevious"
+            ImageSource="icon_back"
+            BackgroundColor="Transparent"
+            Clicked="OnPreviousClicked" />
+
+                <!-- دکمه پخش/توقف -->
+                <Button x:Name="btnPlay"
+            ImageSource="icon_play1"
+            BackgroundColor="Transparent"
+            Clicked="OnPlayClicked" />
+
+                <!-- دکمه بعدی -->
+                <Button x:Name="btnNext"
+            ImageSource="icon_next"
+            BackgroundColor="Transparent"
+            Clicked="OnNextClicked" />
             </StackLayout>
+
 
         </StackLayout>
     </ContentPage.Content>
