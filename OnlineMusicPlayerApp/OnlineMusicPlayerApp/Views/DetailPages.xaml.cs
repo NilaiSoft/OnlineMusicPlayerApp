@@ -87,6 +87,9 @@ namespace OnlineMusicPlayerApp.Views
                             ProgressSlider.Maximum = duration;
                             ProgressSlider.Value = position;
 
+                            CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
+                            TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
+
                             return true; // ادامه بده
                         });
 

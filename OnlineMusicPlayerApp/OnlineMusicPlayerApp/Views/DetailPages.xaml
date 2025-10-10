@@ -36,6 +36,13 @@
                       BackgroundColor="Transparent"
                       HorizontalOptions="Start"
                       VerticalOptions="Start" />
+            
+            <Label x:Name="CurrentTimeLabel"
+                   Text="0:00"
+                   FontSize="14"
+                   TextColor="#555"
+                   VerticalOptions="Center" />
+
 
 
             <Slider x:Name="ProgressSlider"
@@ -47,6 +54,13 @@
                     ThumbColor="#888"
                     MinimumTrackColor="#555"
                     MaximumTrackColor="#CCC" />
+
+
+            <Label x:Name="TotalTimeLabel"
+                    Text="0:00"
+                    FontSize="14"
+                    TextColor="#555"
+                    VerticalOptions="Center" />
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
                 <Button x:Name="btnPlay" ImageSource="icon_play3" BackgroundColor="Transparent" Clicked="OnPlayClicked" />
