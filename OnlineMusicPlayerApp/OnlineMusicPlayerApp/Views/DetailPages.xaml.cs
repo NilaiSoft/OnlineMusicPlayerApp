@@ -104,15 +104,18 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlayClicked(object sender, EventArgs e)
         {
-            if (Player.CurrentState == MediaElementState.Playing)
+            //if (Player.CurrentState == MediaElementState.Playing)
+            if (DependencyService.Get<IAudioService>().IsPlaying())
             {
                 btnPlay.ImageSource = "icon_play3";
-                Player.Pause();
+                DependencyService.Get<IAudioService>().Pause();
+                //Player.Pause();
                 return;
             }
 
             btnPlay.ImageSource = "icon_pause";
-            Player.Play();
+            DependencyService.Get<IAudioService>().Resume();
+            //Player.Play();
         }
     }
 }

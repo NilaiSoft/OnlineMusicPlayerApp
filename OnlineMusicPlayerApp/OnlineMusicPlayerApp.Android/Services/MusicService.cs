@@ -7,8 +7,8 @@ using Com.Google.Android.Exoplayer2;
 [Service]
 public class MusicService : Service
 {
-    private SimpleExoPlayer player;
-
+    //private SimpleExoPlayer player;
+    public static SimpleExoPlayer player;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -49,6 +49,12 @@ public class MusicService : Service
 
         return StartCommandResult.Sticky;
     }
+
+    public bool IsPlaying()
+    {
+        return player?.IsPlaying ?? false;
+    }
+
 
     public override void OnDestroy()
     {
