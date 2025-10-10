@@ -8,4 +8,5 @@
     double GetDurationSeconds();
     double GetCurrentPositionSeconds();
     void SeekTo(long positionMs);
+    void Close();
 }

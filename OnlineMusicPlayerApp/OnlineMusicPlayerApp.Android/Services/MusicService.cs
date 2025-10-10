@@ -39,6 +39,7 @@ public class MusicService : Service
             var notificationManager = (NotificationManager)GetSystemService(NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
+
         Notification notification = new Notification.Builder(this, "music_channel")
             .SetContentTitle("در حال پخش موزیک")
             .SetContentText("نغمه‌ای که حتی در سکوت ادامه دارد")

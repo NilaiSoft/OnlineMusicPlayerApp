@@ -24,7 +24,8 @@ namespace OnlineMusicPlayerApp.Views
                 new HomeMenuItem {Id = MenuItemType.ActivityMain , Title="خانه",Icon="🏡" },
                 new HomeMenuItem {Id = MenuItemType.PleyList , Title="PlayList",Icon="🏡" },
                 new HomeMenuItem {Id = MenuItemType.frmSettings, Title="تنظیمات" ,Icon="⚙️"},
-                new HomeMenuItem {Id = MenuItemType.About, Title="درباره ی من",Icon="✍️" }
+                new HomeMenuItem {Id = MenuItemType.About, Title="درباره ی من",Icon="✍️" },
+                new HomeMenuItem {Id = MenuItemType.CloseMediaPlayer, Title="خروج",Icon="✍️" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

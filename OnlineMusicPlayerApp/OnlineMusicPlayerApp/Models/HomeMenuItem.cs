@@ -7,14 +7,14 @@ namespace OnlineMusicPlayerApp.Models
     public enum MenuItemType
     {
         ActivityMain = 1,
-        About=2,
-        People=3,
-        PleyList=4,
-        frmSettings=5,
+        About = 2,
+        CloseMediaPlayer = 3,
+        PleyList = 4,
+        frmSettings = 5,
         LottoryGroupList = 6,
         LotteryGroups = 7,
         LogouFromInstagram = 8,
-        LogInToInstagram = 9
+        LogInToInstagram = 9,
     }
     public class HomeMenuItem
     {

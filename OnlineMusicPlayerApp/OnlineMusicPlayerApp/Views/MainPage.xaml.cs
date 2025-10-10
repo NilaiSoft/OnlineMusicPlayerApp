@@ -62,6 +62,9 @@ namespace OnlineMusicPlayerApp.Views
                     case (int)MenuItemType.PleyList:
                         MenuPages.Add(id, new NavigationPage(new PlayList()));
                         break;
+                    case (int)MenuItemType.CloseMediaPlayer:
+                        DependencyService.Get<IAudioService>().Close();
+                        break;
                     case (int)MenuItemType.LogouFromInstagram:
                         if (await DisplayAlert("پرسش", "برای خروج از حساب اینستاگرام اطمینان دارید؟", "بله", "خیر"))
                         {

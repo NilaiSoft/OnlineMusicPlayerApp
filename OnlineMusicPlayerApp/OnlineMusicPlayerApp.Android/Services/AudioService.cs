@@ -42,10 +42,16 @@ public class AudioService : IAudioService
     {
         return MusicService.player?.CurrentPosition / 1000.0 ?? 0;
     }
+
     public void SeekTo(long positionMs)
     {
         MusicService.player?.SeekTo(positionMs);
     }
 
-
+    public void Close()
+    {
+        var intent = new Intent(Android.App.Application.Context, typeof(MusicService));
+        Android.App.Application.Context.StopService(intent);
+        Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+    }
 }
