@@ -1,103 +1,81 @@
-﻿using OnlineMusicPlayerApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.Xaml;
+using OnlineMusicPlayerApp.Models;
 
 namespace OnlineMusicPlayerApp.Views
 {
-    [DesignTimeVisible(false)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DetailPages : ContentPage
     {
         private List<Detail> playableItems;
-        private int currentIndex = 0;
+        private int currentIndex = -1;
 
         public DetailPages(List<Detail> details)
         {
             InitializeComponent();
-            Title = "سبک‌های موسیقی";
 
-            playableItems = details
-                .Where(d => d.Children == null || !d.Children.Any())
-                .Where(d => new[] { ".mp3", ".mp4" }.Any(ext => Path.GetExtension(d.Href).Contains(ext)))
-                .ToList();
+            playableItems = Flatten(details);
+            DetailsListView.ItemsSource = details;
+        }
 
-            playerPanel.IsVisible = playableItems.Any();
+        private async void DetailsListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is Detail item)
+            {
+                if (item.Children != null && item.Children.Any())
+                {
+                    await Navigation.PushAsync(new DetailPages(item.Children));
+                }
+                else
+                {
+                    string extension = Path.GetExtension(item.Href);
+                    if (!new[] { ".mp3", ".mp4" }.Any(ext => extension.Contains(ext)))
+                        return;
 
+                    currentIndex = playableItems.FindIndex(d => d.Href == item.Href);
+                    PlayNext();
+                }
+            }
+
+            // Unselect item after tap
+            ((ListView)sender).SelectedItem = null;
+        }
+
+        private List<Detail> Flatten(List<Detail> details)
+        {
+            var flat = new List<Detail>();
             foreach (var item in details)
             {
-                var button = new Button
-                {
-                    Text = item.Title,
-                    BackgroundColor = Color.FromHex("#eeeeee"),
-                    TextColor = Color.Black,
-                    CornerRadius = 8
-                };
-
-                button.Clicked += async (s, e) =>
-                {
-                    if (item.Children != null && item.Children.Any())
-                    {
-                        await Navigation.PushAsync(new DetailPages(item.Children));
-                    }
-                    else
-                    {
-                        string extension = Path.GetExtension(item.Href);
-                        if (!new[] { ".mp3", ".mp4" }.Any(ext => extension.Contains(ext)))
-                            return;
-
-                        currentIndex = playableItems.FindIndex(d => d.Href == item.Href);
-                        PlayNext();
-                    }
-                };
-
-                stack.Children.Add(button);
+                if (item.Children != null && item.Children.Any())
+                    flat.AddRange(item.Children);
+                else
+                    flat.Add(item);
             }
+            return flat;
         }
 
         private void PlayNext()
         {
-            if (currentIndex >= playableItems.Count)
+            if (currentIndex < 0 || currentIndex >= playableItems.Count)
                 return;
 
             var item = playableItems[currentIndex];
-            string decodedUrl = Uri.UnescapeDataString(item.Href);
-
-            CoverImage.Source = item.TagImageSrc;
-            CoverImage.IsVisible = !string.IsNullOrEmpty(item.TagImageSrc);
             lblTitle.Text = item.Title;
+            CoverImage.Source = item.TagImageSrc;
+            CoverImage.IsVisible = true;
 
-            Color[] warmPalette = {
-                Color.FromRgb(255, 87, 34),
-                Color.FromRgb(244, 67, 54),
-                Color.FromRgb(255, 193, 7)
-            };
+            var audioService = DependencyService.Get<IAudioService>();
+            audioService.Play(item.Href);
 
-            Random rand = new Random();
-            Color color1 = warmPalette[rand.Next(warmPalette.Length)];
-            Color color2 = warmPalette[rand.Next(warmPalette.Length)];
-
-            this.Background = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 1),
-                GradientStops = new GradientStopCollection
-                {
-                    new GradientStop { Color = color1, Offset = 0.0F },
-                    new GradientStop { Color = color2, Offset = 1.5F }
-                }
-            };
-
-            DependencyService.Get<IAudioService>().Play(decodedUrl);
-
+            // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
-                var duration = DependencyService.Get<IAudioService>().GetDurationSeconds();
-                var position = DependencyService.Get<IAudioService>().GetCurrentPositionSeconds();
+                var duration = audioService.GetDurationSeconds();
+                var position = audioService.GetCurrentPositionSeconds();
 
                 if (!double.IsNaN(duration) && duration > 0)
                 {
@@ -115,10 +93,10 @@ namespace OnlineMusicPlayerApp.Views
                 {
                     currentIndex++;
                     PlayNext();
-                    return false;
+                    return false; // توقف تایمر
                 }
 
-                return true;
+                return true; // ادامه تایمر
             });
         }
 
@@ -128,6 +106,24 @@ namespace OnlineMusicPlayerApp.Views
             {
                 long newPositionMs = (long)(e.NewValue * 1000);
                 DependencyService.Get<IAudioService>().SeekTo(newPositionMs);
+            }
+        }
+
+        private void OnPreviousClicked(object sender, EventArgs e)
+        {
+            if (currentIndex > 0)
+            {
+                currentIndex--;
+                PlayNext();
+            }
+        }
+
+        private void OnNextClicked(object sender, EventArgs e)
+        {
+            if (currentIndex < playableItems.Count - 1)
+            {
+                currentIndex++;
+                PlayNext();
             }
         }
 
@@ -143,34 +139,5 @@ namespace OnlineMusicPlayerApp.Views
             btnPlay.ImageSource = "icon_pause1";
             DependencyService.Get<IAudioService>().Resume();
         }
-
-        private void OnNextClicked(object sender, EventArgs e)
-        {
-            if (currentIndex < playableItems.Count - 1)
-            {
-                currentIndex++;
-            }
-            else
-            {
-                currentIndex = 0; // بازگشت به ابتدای لیست
-            }
-
-            PlayNext();
-        }
-
-        private void OnPreviousClicked(object sender, EventArgs e)
-        {
-            if (currentIndex > 0)
-            {
-                currentIndex--;
-            }
-            else
-            {
-                currentIndex = playableItems.Count - 1; // رفتن به آخر لیست
-            }
-
-            PlayNext();
-        }
-
     }
 }
