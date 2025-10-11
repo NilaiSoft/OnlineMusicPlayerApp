@@ -37,6 +37,7 @@ namespace OnlineMusicPlayerApp.Views
                         return;
 
                     currentIndex = playableItems.FindIndex(d => d.Href == item.Href);
+                    playerPanel.IsVisible = true;
                     PlayNext();
                 }
             }

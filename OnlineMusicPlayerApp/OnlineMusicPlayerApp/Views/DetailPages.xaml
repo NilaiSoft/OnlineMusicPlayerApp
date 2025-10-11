@@ -15,7 +15,7 @@
                    CornerRadius="12"
                    BackgroundColor="#FFFFFF"
                    HasShadow="True"
-                   IsVisible="True"
+                   IsVisible="false"
                    VerticalOptions="StartAndExpand">
 
                 <StackLayout Spacing="10">
