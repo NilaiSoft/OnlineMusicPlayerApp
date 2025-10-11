@@ -2,37 +2,65 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="OnlineMusicPlayerApp.Views.ActivityMain"    
-             BackgroundColor="##BFB4B2"
+             BackgroundColor="#BFB4B2"
              NavigationPage.HasNavigationBar="False">
+
     <ContentPage.Content>
-        <Grid
-            VerticalOptions="FillAndExpand"
-            BackgroundColor="AliceBlue">
+        <Grid VerticalOptions="FillAndExpand" BackgroundColor="AliceBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <!-- دکمه منو -->
+                <RowDefinition Height="Auto"/>
+                <!-- تصویر -->
+                <RowDefinition Height="Auto"/>
+                <!-- دکمه Playlist -->
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <!-- سایر محتوا -->
             </Grid.RowDefinitions>
-            <Image Source="images.png" Aspect="AspectFill" HeightRequest="300" VerticalOptions="StartAndExpand"/>
-            <StackLayout HeightRequest="300" VerticalOptions="StartAndExpand"/>
-            <StackLayout Orientation="Horizontal" Spacing="20"
+
+            <!-- 🎛️ دکمه منو بالا سمت چپ -->
+            <StackLayout Grid.Row="0"
+                         Orientation="Horizontal"
                          HorizontalOptions="Start"
-                         VerticalOptions="Start" Margin="20,50">
+                         VerticalOptions="Start"
+                         Margin="20,20,0,0">
                 <ImageButton Source="menu.png"
                              x:Name="btnMenu"
                              Clicked="btnMenu_Clicked"
                              BackgroundColor="Transparent"
-                             WidthRequest="40" HeightRequest="40"
+                             WidthRequest="40"
+                             HeightRequest="40"
                              HorizontalOptions="Start"
                              VerticalOptions="Center"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Margin="0,20"
+
+            <!-- 🖼️ تصویر اصلی -->
+            <Image Grid.Row="1"
+                   Source="images.png"
+                   Aspect="AspectFill"
+                   HeightRequest="300"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="StartAndExpand"/>
+
+            <!-- 🎵 دکمه Playlist زیر تصویر -->
+            <Button Grid.Row="2"
+                    Text="🎵 Playlist"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    BackgroundColor="#415A77"
+                    CornerRadius="16"
+                    Margin="30,10"
+                    Padding="12"
+                    HorizontalOptions="Center"
+                    Clicked="OnPlaylistClicked" />
+
+            <!-- 🧩 سایر محتواها -->
+            <StackLayout Grid.Row="3"
+                         Orientation="Vertical"
                          HorizontalOptions="Center"
-                         VerticalOptions="Center"/>
-            <StackLayout Orientation="Horizontal" 
-                         HorizontalOptions="Center">
+                         VerticalOptions="Center">
+                <!-- می‌تونی اینجا چیزهای دیگه اضافه کنی -->
             </StackLayout>
         </Grid>
     </ContentPage.Content>

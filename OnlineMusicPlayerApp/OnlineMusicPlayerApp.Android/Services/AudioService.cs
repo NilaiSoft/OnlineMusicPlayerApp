@@ -20,16 +20,25 @@ public class AudioService : IAudioService
 
     public bool IsPlaying()
     {
+        if (MusicService.player == null)
+            return false;
+
         return MusicService.player.IsPlaying;
     }
 
     public void Pause()
     {
+        if (MusicService.player == null)
+            return;
+
         MusicService.player.Pause();
     }
 
     public void Resume()
     {
+        if (MusicService.player == null)
+            return;
+
         MusicService.player.Play();
     }
 

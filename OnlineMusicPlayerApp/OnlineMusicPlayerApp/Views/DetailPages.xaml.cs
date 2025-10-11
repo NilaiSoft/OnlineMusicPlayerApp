@@ -26,6 +26,8 @@ namespace OnlineMusicPlayerApp.Views
                 .Where(d => new[] { ".mp3", ".mp4" }.Any(ext => Path.GetExtension(d.Href).Contains(ext)))
                 .ToList();
 
+            playerPanel.IsVisible = playableItems.Any();
+
             foreach (var item in details)
             {
                 var button = new Button
@@ -147,26 +149,28 @@ namespace OnlineMusicPlayerApp.Views
             if (currentIndex < playableItems.Count - 1)
             {
                 currentIndex++;
-                PlayNext();
             }
             else
             {
-                DisplayAlert("پایان لیست", "به آخرین نغمه رسیدیم 🎵", "باشه");
+                currentIndex = 0; // بازگشت به ابتدای لیست
             }
-        }
 
+            PlayNext();
+        }
 
         private void OnPreviousClicked(object sender, EventArgs e)
         {
-            if (currentIndex < playableItems.Count - 1)
+            if (currentIndex > 0)
             {
                 currentIndex--;
-                PlayNext();
             }
             else
             {
-                DisplayAlert("پایان لیست", "به آخرین نغمه رسیدیم 🎵", "باشه");
+                currentIndex = playableItems.Count - 1; // رفتن به آخر لیست
             }
+
+            PlayNext();
         }
+
     }
 }

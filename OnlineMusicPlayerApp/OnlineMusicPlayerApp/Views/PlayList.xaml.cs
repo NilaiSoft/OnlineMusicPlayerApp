@@ -70,5 +70,11 @@ namespace OnlineMusicPlayerApp.Views
 
             Content = stack;
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Navigation.PushAsync(new MainPage(), false);
+            return true;
+        }
     }
 }

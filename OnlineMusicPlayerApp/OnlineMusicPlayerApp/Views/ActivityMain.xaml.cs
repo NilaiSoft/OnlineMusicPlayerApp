@@ -105,5 +105,10 @@ namespace OnlineMusicPlayerApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
             return false;
         }
+
+        private void OnPlaylistClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new PlayList());
+        }
     }
 }

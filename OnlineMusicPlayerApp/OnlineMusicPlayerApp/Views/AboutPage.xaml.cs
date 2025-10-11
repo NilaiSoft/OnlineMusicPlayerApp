@@ -1,19 +1,9 @@
 ﻿using OnlineMusicPlayerApp.Extensions;
 using OnlineMusicPlayerApp.Services;
-using OnlineMusicPlayerApp.ViewModels;
 using OnlineMusicPlayerApp.Views.Popups;
-using Plugin.Toast;
-using Plugin.Toast.Abstractions;
 using System;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace OnlineMusicPlayerApp.Views
 {
