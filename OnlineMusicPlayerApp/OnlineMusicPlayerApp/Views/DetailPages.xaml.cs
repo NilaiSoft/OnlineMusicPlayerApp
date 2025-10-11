@@ -68,6 +68,7 @@ namespace OnlineMusicPlayerApp.Views
             CoverImage.Source = item.TagImageSrc;
             CoverImage.IsVisible = true;
 
+            btnPlay.ImageSource = "icon_pause1";
             var audioService = DependencyService.Get<IAudioService>();
             audioService.Play(item.Href);
 
