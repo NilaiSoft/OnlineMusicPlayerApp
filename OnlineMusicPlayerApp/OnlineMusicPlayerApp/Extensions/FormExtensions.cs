@@ -23,5 +23,19 @@ namespace OnlineMusicPlayerApp.Extensions
             string result = await modal.Result;
             await resultHandler.Invoke(result);
         }
+
+        public static async Task ShowBuildInfoModalAsync(INavigation navigation, Func<Task> resultHandler)
+        {
+            await navigation.PushModalAsync(new LoadingBoxPage());
+
+            try
+            {
+                await resultHandler.Invoke();
+            }
+            finally
+            {
+                await navigation.PopModalAsync(); // فقط یک بار بسته می‌شه
+            }
+        }
     }
 }

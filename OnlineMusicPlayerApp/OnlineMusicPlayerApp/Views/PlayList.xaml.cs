@@ -1,4 +1,5 @@
-﻿using OnlineMusicPlayerApp.Extensions;
+﻿using InstaSharper.Classes.Models;
+using OnlineMusicPlayerApp.Extensions;
 using OnlineMusicPlayerApp.Models;
 using OnlineMusicPlayerApp.Services;
 using OnlineMusicPlayerApp.Services.PlayListServices;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -20,40 +22,44 @@ namespace OnlineMusicPlayerApp.Views
             InitializeComponent();
         }
 
+        bool hasLoaded = false;
+
         protected override async void OnAppearing()
         {
-            var tets = await DependencyService.Get<IGoogleDriveServices>().GetMusicPlayList();
+            if (hasLoaded) return;
+            hasLoaded = true;
 
-            var stack = new StackLayout
+            await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
             {
-                Padding = new Thickness(20),
-                Spacing = 15
-            };
+                var tets = await DependencyService.Get<IGoogleDriveServices>().GetMusicPlayList();
 
-            var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
-            foreach (var category in categories)
-            {
-                var button = new Button
+                var stack = new StackLayout
                 {
-                    Text = category.Master,
-                    BackgroundColor = Color.FromHex("#eeeeee"),
-                    TextColor = Color.Black,
-                    CornerRadius = 8
+                    Padding = new Thickness(20),
+                    Spacing = 15
                 };
 
-                button.Clicked += async (s, e) =>
+                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+                foreach (var category in categories)
                 {
-                    // نمایش لیست جزئیات یا رفتن به صفحه مربوطه
-                    await Navigation.PushAsync(new DetailPages(category.Details));
-                };
+                    var button = new Button
+                    {
+                        Text = category.Master,
+                        BackgroundColor = Color.FromHex("#eeeeee"),
+                        TextColor = Color.Black,
+                        CornerRadius = 8
+                    };
 
-                stack.Children.Add(button);
-            }
+                    button.Clicked += async (s, e) =>
+                    {
+                        await Navigation.PushAsync(new DetailPages(category.Details));
+                    };
 
-            Content = stack;
+                    stack.Children.Add(button);
+                }
 
-
-            base.OnAppearing();
+                Content = stack;
+            });
         }
 
         public void DetailPage(List<Detail> details)
