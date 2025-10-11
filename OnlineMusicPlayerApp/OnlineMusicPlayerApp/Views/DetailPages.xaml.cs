@@ -69,6 +69,9 @@ namespace OnlineMusicPlayerApp.Views
             CoverImage.Source = item.TagImageSrc;
             CoverImage.IsVisible = true;
 
+            // 🎯 نمایش شماره ترک به‌صورت 1/2
+            lblTrackNumber.Text = $"{currentIndex + 1}/{playableItems.Count}";
+
             btnPlay.ImageSource = "icon_pause1";
             var audioService = DependencyService.Get<IAudioService>();
             audioService.Play(item.Href);
