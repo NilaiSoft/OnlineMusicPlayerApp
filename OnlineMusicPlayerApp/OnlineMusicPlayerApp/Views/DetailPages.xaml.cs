@@ -68,9 +68,10 @@ namespace OnlineMusicPlayerApp.Views
             var item = playableItems[currentIndex];
 
             //DependencyService.Get<IAudioService>().IsPlaying() &&
-            if ( PlaybackCapsule.LoadHref() == item.Href)
+            if (PlaybackCapsule.LoadHref() == item.Href)
             {
-                ProgressSlider.Value = PlaybackCapsule.LoadSeconds(); // 🎯 مقداردهی اولیه
+                var ttt = PlaybackCapsule.LoadSeconds();
+                ProgressSlider.Value = double.Parse(PlaybackCapsule.LoadSeconds())/1000.0; // 🎯 مقداردهی اولیه
                 CoverImage.Source = PlaybackCapsule.LoadCurrentTagImage();
                 playerPanel.IsVisible = true;
                 CoverImage.IsVisible = true;
@@ -105,7 +106,7 @@ namespace OnlineMusicPlayerApp.Views
                 if (!double.IsNaN(position) && position >= 0 && position <= duration)
                 {
                     ProgressSlider.Value = position;
-                    Preferences.Set("last_playback_position", ProgressSlider.Value);
+                    PlaybackCapsule.SaveSliderPosition(position);
                     CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
                 }
 

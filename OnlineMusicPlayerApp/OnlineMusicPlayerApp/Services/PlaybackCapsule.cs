@@ -2,9 +2,9 @@
 
 public static class PlaybackCapsule
 {
-    public static void SaveSliderPosition(long positionMs)
+    public static void SaveSliderPosition(double positionMs)
     {
-        Preferences.Set("last_playback_position", positionMs);
+        Preferences.Set("last_playback_position4", positionMs);
     }
 
     public static void SaveCurrentUrl(string href)
@@ -17,9 +17,9 @@ public static class PlaybackCapsule
         Preferences.Set("last_playback_TagImage", tag);
     }
 
-    public static long LoadCurrentSeconds()
+    public static string LoadCurrentSeconds()
     {
-        return Preferences.Get("last_playback_position", 0);
+        return Preferences.Get("last_playback_position4", "");
     }
 
     public static string LoadCurrentHref()
@@ -32,7 +32,7 @@ public static class PlaybackCapsule
         return Preferences.Get("last_playback_TagImage", "");
     }
 
-    public static double LoadSeconds() => LoadCurrentSeconds() / 1000.0;
+    public static string LoadSeconds() => LoadCurrentSeconds();
     public static string LoadHref() => LoadCurrentHref();
     public static string LoadCurrentImageTag() => LoadCurrentTagImage();
 }
