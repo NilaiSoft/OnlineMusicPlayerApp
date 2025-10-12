@@ -5,6 +5,7 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using OnlineMusicPlayerApp.Models;
+using Xamarin.Essentials;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -65,8 +66,22 @@ namespace OnlineMusicPlayerApp.Views
                 return;
 
             var item = playableItems[currentIndex];
+
+            //DependencyService.Get<IAudioService>().IsPlaying() &&
+            if (PlaybackCapsule.LoadHref() == item.Href)
+            {
+                ProgressSlider.Value = PlaybackCapsule.LoadSeconds(); // 🎯 مقداردهی اولیه
+                CoverImage.Source = PlaybackCapsule.LoadCurrentTagImage();
+                ProgressSlider.Value = PlaybackCapsule.LoadSeconds();
+                playerPanel.IsVisible = true;
+                CoverImage.IsVisible = true;
+                return;
+            }
+
             lblTitle.Text = item.Title;
             CoverImage.Source = item.TagImageSrc;
+            PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
+            PlaybackCapsule.SaveCurrentUrl(item.Href);
             CoverImage.IsVisible = true;
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2
@@ -91,8 +106,10 @@ namespace OnlineMusicPlayerApp.Views
                 if (!double.IsNaN(position) && position >= 0 && position <= duration)
                 {
                     ProgressSlider.Value = position;
+                    Preferences.Set("last_playback_position", ProgressSlider.Value);
                     CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
                 }
+
 
                 if (position >= duration - 1 && duration > 0)
                 {
