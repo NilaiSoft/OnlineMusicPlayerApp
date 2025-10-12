@@ -68,11 +68,10 @@ namespace OnlineMusicPlayerApp.Views
             var item = playableItems[currentIndex];
 
             //DependencyService.Get<IAudioService>().IsPlaying() &&
-            if (PlaybackCapsule.LoadHref() == item.Href)
+            if ( PlaybackCapsule.LoadHref() == item.Href)
             {
                 ProgressSlider.Value = PlaybackCapsule.LoadSeconds(); // 🎯 مقداردهی اولیه
                 CoverImage.Source = PlaybackCapsule.LoadCurrentTagImage();
-                ProgressSlider.Value = PlaybackCapsule.LoadSeconds();
                 playerPanel.IsVisible = true;
                 CoverImage.IsVisible = true;
                 return;
