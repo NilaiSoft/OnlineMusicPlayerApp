@@ -7,7 +7,7 @@
 
 
     <Frame Padding="6"
-           CornerRadius="20"
+           CornerRadius="0"
            BackgroundColor="#FFFFFF"
            HasShadow="True"
            VerticalOptions="End"

@@ -8,10 +8,11 @@
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <StackLayout x:Name="stack" Padding="30" Spacing="25">
+        <StackLayout Padding="0" Spacing="25">
+            <StackLayout x:Name="stack" Padding="30" Spacing="25">
 
-            <!-- پنل پخش موسیقی -->
-            <Frame x:Name="playerPanel"
+                <!-- پنل پخش موسیقی -->
+                <Frame x:Name="playerPanel"
                    Padding="20"
                    CornerRadius="12"
                    BackgroundColor="#FFFFFF"
@@ -19,41 +20,41 @@
                    IsVisible="false"
                    VerticalOptions="StartAndExpand">
 
-                <StackLayout Spacing="10">
+                    <StackLayout Spacing="10">
 
-                    <!-- عنوان ترک -->
-                    <Label FontSize="18"
+                        <!-- عنوان ترک -->
+                        <Label FontSize="18"
                            x:Name="lblTitle"
                            TextColor="#3E3E3E"
                            HorizontalOptions="Center"
                            HorizontalTextAlignment="Center" />
 
-                    <!-- عکس کاور آهنگ -->
-                    <Image x:Name="CoverImage"
+                        <!-- عکس کاور آهنگ -->
+                        <Image x:Name="CoverImage"
                            Aspect="AspectFill"
                            HorizontalOptions="Center"
                            HeightRequest="200"
                            WidthRequest="200"
                            Margin="0,0,0,10"
                            IsVisible="False">
-                        <Image.Clip>
-                            <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
-                        </Image.Clip>
-                    </Image>
+                            <Image.Clip>
+                                <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
+                            </Image.Clip>
+                        </Image>
 
-                    <!-- 🎯 زمان فعلی و کل در دو طرف Slider -->
-                    <Grid ColumnSpacing="10" RowSpacing="10" Margin="0,10,0,10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                        <!-- 🎯 زمان فعلی و کل در دو طرف Slider -->
+                        <Grid ColumnSpacing="10" RowSpacing="10" Margin="0,10,0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <Label x:Name="CurrentTimeLabel"
+                            <Label x:Name="CurrentTimeLabel"
                                Grid.Column="0"
                                Text="0:00"
                                FontSize="14"
@@ -61,7 +62,7 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start" />
 
-                        <Slider x:Name="ProgressSlider"
+                            <Slider x:Name="ProgressSlider"
                                 Grid.Column="1"
                                 Minimum="0"
                                 Maximum="1"
@@ -73,24 +74,24 @@
                                 MinimumTrackColor="#555"
                                 MaximumTrackColor="#CCC" />
 
-                        <Label x:Name="TotalTimeLabel"
+                            <Label x:Name="TotalTimeLabel"
                                Grid.Column="2"
                                Text="0:00"
                                FontSize="14"
                                TextColor="#555"
                                VerticalOptions="Center"
                                HorizontalOptions="End" />
-                    </Grid>
+                        </Grid>
 
-                    <!-- 🎶 شماره آهنگ فعلی -->
-                    <Label x:Name="lblTrackNumber"
+                        <!-- 🎶 شماره آهنگ فعلی -->
+                        <Label x:Name="lblTrackNumber"
                            FontSize="14"
                            TextColor="#666"
                            HorizontalOptions="Center"
                            Margin="0,0,0,10" />
 
-                    <!-- پلیر مخفی -->
-                    <toolkit:MediaElement x:Name="Player"
+                        <!-- پلیر مخفی -->
+                        <toolkit:MediaElement x:Name="Player"
                                           HeightRequest="1"
                                           WidthRequest="1"
                                           AutoPlay="True"
@@ -101,62 +102,63 @@
                                           HorizontalOptions="Start"
                                           VerticalOptions="Start" />
 
-                    <!-- دکمه‌های کنترل پخش وسط‌چین -->
-                    <StackLayout Orientation="Horizontal"
+                        <!-- دکمه‌های کنترل پخش وسط‌چین -->
+                        <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
                                  Spacing="30">
 
-                        <Button x:Name="btnPrevious"
+                            <Button x:Name="btnPrevious"
                                 ImageSource="icon_back"
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
                                 Clicked="OnPreviousClicked" />
 
-                        <Button x:Name="btnPlay"
+                            <Button x:Name="btnPlay"
                                 ImageSource="icon_play1"
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
                                 Clicked="OnPlayClicked" />
 
-                        <Button x:Name="btnNext"
+                            <Button x:Name="btnNext"
                                 ImageSource="icon_next"
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
                                 Clicked="OnNextClicked" />
+                        </StackLayout>
+
                     </StackLayout>
+                </Frame>
 
-                </StackLayout>
-            </Frame>
-
-            <!-- لیست آیتم‌ها -->
-            <ListView x:Name="DetailsListView"
+                <!-- لیست آیتم‌ها -->
+                <ListView x:Name="DetailsListView"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       BackgroundColor="Transparent"
                       ItemTapped="DetailsListView_ItemTapped">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Frame BackgroundColor="#eeeeee"
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame BackgroundColor="#eeeeee"
                                    CornerRadius="8"
                                    Padding="12"
                                    Margin="5">
-                                <Label Text="{Binding Title}"
+                                    <Label Text="{Binding Title}"
                                        TextColor="Black"
                                        FontSize="16"
                                        VerticalOptions="Center"
                                        HorizontalOptions="Center" />
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-            <views:MiniPlayerView Grid.Row="1"
+            </StackLayout>
+                <views:MiniPlayerView Grid.Row="1"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="200" />
         </StackLayout>
