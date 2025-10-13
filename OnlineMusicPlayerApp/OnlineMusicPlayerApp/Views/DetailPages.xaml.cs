@@ -23,6 +23,78 @@ namespace OnlineMusicPlayerApp.Views
             DetailsListView.ItemsSource = details;
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            string lastHref = PlaybackCapsule.LoadHref();
+            if (!string.IsNullOrEmpty(lastHref))
+            {
+                int index = playableItems.FindIndex(d => d.Href == lastHref);
+                if (index >= 0)
+                {
+                    currentIndex = index;
+                    playerPanel.IsVisible = true;
+
+                    // بازیابی تصویر کاور
+                    CoverImage.Source = PlaybackCapsule.LoadCurrentImageTag();
+
+                    // بازیابی موقعیت پخش
+                    double resumePosition = 0;
+                    double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+
+                    // پخش از موقعیت قبلی
+                    var audioService = DependencyService.Get<IAudioService>();
+                    audioService.Play(lastHref, resumePosition);
+
+                    // تنظیم اسلایدر و برچسب‌ها
+                    ProgressSlider.Value = resumePosition/1000;
+                    CurrentTimeLabel.Text = TimeSpan.FromSeconds(resumePosition).ToString(@"m\:ss");
+
+                    lblTitle.Text = playableItems[currentIndex].Title;
+                    lblTrackNumber.Text = $"{currentIndex + 1}/{playableItems.Count}";
+                    btnPlay.ImageSource = "icon_pause1";
+
+                    // شروع تایمر برای آپدیت
+                    StartPlaybackTimer();
+                }
+            }
+        }
+
+        private void StartPlaybackTimer()
+        {
+            var audioService = DependencyService.Get<IAudioService>();
+
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            {
+                var duration = audioService.GetDurationSeconds();
+                var position = audioService.GetCurrentPositionSeconds();
+
+                if (!double.IsNaN(duration) && duration > 0)
+                {
+                    ProgressSlider.Maximum = duration;
+                    TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
+                }
+
+                if (!double.IsNaN(position) && position >= 0 && position <= duration)
+                {
+                    ProgressSlider.Value = position;
+                    PlaybackCapsule.SaveSliderPosition(position);
+                    CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
+                }
+
+                if (position >= duration - 1 && duration > 0)
+                {
+                    currentIndex++;
+                    PlayNext();
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+
         private async void DetailsListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item is Detail item)
@@ -66,17 +138,6 @@ namespace OnlineMusicPlayerApp.Views
                 return;
 
             var item = playableItems[currentIndex];
-
-            //DependencyService.Get<IAudioService>().IsPlaying() &&
-            if (PlaybackCapsule.LoadHref() == item.Href)
-            {
-                var ttt = PlaybackCapsule.LoadSeconds();
-                ProgressSlider.Value = double.Parse(PlaybackCapsule.LoadSeconds())/1000.0; // 🎯 مقداردهی اولیه
-                CoverImage.Source = PlaybackCapsule.LoadCurrentTagImage();
-                playerPanel.IsVisible = true;
-                CoverImage.IsVisible = true;
-                return;
-            }
 
             lblTitle.Text = item.Title;
             CoverImage.Source = item.TagImageSrc;

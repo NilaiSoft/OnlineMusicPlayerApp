@@ -63,4 +63,13 @@ public class AudioService : IAudioService
         Android.App.Application.Context.StopService(intent);
         Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
     }
+
+    public void Play(string url, double startSeconds)
+    {
+        var intent = new Intent(Android.App.Application.Context, typeof(MusicService));
+        intent.PutExtra("url", url);
+        intent.PutExtra("position", startSeconds.ToString()); // ذخیره به‌صورت string
+        Android.App.Application.Context.StartService(intent);
+    }
+
 }
