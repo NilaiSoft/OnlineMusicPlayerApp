@@ -156,9 +156,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <views:MiniPlayerView Grid.Row="1"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="200" />
         </StackLayout>
     </ContentPage.Content>
-    <views:MiniPlayerView Grid.Row="1"
-                              HorizontalOptions="FillAndExpand"
-                              HeightRequest="50" />
 </ContentPage>
