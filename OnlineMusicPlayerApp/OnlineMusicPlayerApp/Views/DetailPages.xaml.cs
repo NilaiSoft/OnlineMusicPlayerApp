@@ -223,5 +223,10 @@ namespace OnlineMusicPlayerApp.Views
             btnPlay.ImageSource = "icon_pause1";
             DependencyService.Get<IAudioService>().Resume();
         }
+
+        private void OnMinimizeClicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

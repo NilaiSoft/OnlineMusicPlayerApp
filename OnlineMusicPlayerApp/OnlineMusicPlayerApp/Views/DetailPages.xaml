@@ -80,6 +80,7 @@
                                VerticalOptions="Center"
                                HorizontalOptions="End" />
                     </Grid>
+
                     <!-- 🎶 شماره آهنگ فعلی -->
                     <Label x:Name="lblTrackNumber"
                            FontSize="14"
@@ -87,18 +88,17 @@
                            HorizontalOptions="Center"
                            Margin="0,0,0,10" />
 
-
                     <!-- پلیر مخفی -->
                     <toolkit:MediaElement x:Name="Player"
-                              HeightRequest="1"
-                              WidthRequest="1"
-                              AutoPlay="True"
-                              ShowsPlaybackControls="False"
-                              IsEnabled="False"
-                              Opacity="0"
-                              BackgroundColor="Transparent"
-                              HorizontalOptions="Start"
-                              VerticalOptions="Start" />
+                                          HeightRequest="1"
+                                          WidthRequest="1"
+                                          AutoPlay="True"
+                                          ShowsPlaybackControls="False"
+                                          IsEnabled="False"
+                                          Opacity="0"
+                                          BackgroundColor="Transparent"
+                                          HorizontalOptions="Start"
+                                          VerticalOptions="Start" />
 
                     <!-- دکمه‌های کنترل پخش وسط‌چین -->
                     <StackLayout Orientation="Horizontal"
@@ -111,7 +111,6 @@
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
-                                HorizontalOptions="Center"
                                 Clicked="OnPreviousClicked" />
 
                         <Button x:Name="btnPlay"
@@ -119,7 +118,6 @@
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
-                                HorizontalOptions="Center"
                                 Clicked="OnPlayClicked" />
 
                         <Button x:Name="btnNext"
@@ -127,13 +125,10 @@
                                 BackgroundColor="Transparent"
                                 WidthRequest="50"
                                 HeightRequest="50"
-                                HorizontalOptions="Center"
                                 Clicked="OnNextClicked" />
-                        
                     </StackLayout>
 
                 </StackLayout>
-
             </Frame>
 
             <!-- لیست آیتم‌ها -->
