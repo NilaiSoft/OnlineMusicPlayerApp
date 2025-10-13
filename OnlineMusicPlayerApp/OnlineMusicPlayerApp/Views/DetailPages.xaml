@@ -8,8 +8,8 @@
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <StackLayout Padding="0" Spacing="25">
-            <StackLayout x:Name="stack" Padding="30" Spacing="25">
+        <StackLayout>
+            <StackLayout x:Name="stack" Padding="30" Spacing="1">
 
                 <!-- پنل پخش موسیقی -->
                 <Frame x:Name="playerPanel"
