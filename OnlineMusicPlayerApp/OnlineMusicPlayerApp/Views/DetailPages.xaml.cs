@@ -38,7 +38,7 @@ namespace OnlineMusicPlayerApp.Views
 
                     // بازیابی تصویر کاور
                     CoverImage.Source = PlaybackCapsule.LoadCurrentImageTag();
-
+                    CoverImage.IsVisible = true;
                     // بازیابی موقعیت پخش
                     double resumePosition = 0;
                     double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
