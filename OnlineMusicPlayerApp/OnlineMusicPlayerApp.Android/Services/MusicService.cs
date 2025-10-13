@@ -21,6 +21,16 @@ public class MusicService : Service
         var mediaItem = MediaItem.FromUri(url);
         player.SetMediaItem(mediaItem);
         player.Prepare();
+
+        // 🎯 اینجا موقعیت قبلی رو بخون و Seek کن
+        string posStr = intent.GetStringExtra("position");
+        if (!string.IsNullOrEmpty(posStr) && double.TryParse(posStr, out var startSeconds))
+        {
+            long startMs = (long)(startSeconds * 1000);
+            player.SeekTo(startMs);
+        }
+
+
         player.Play();
 
         //var notification = new Notification.Builder(this)
