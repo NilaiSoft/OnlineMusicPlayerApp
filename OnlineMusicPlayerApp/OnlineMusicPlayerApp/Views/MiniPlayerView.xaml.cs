@@ -84,6 +84,21 @@ namespace OnlineMusicPlayerApp.Views
 
         }
 
+        private void OnPreviousClicked(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void OnPlayClicked(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void OnNextClicked(object sender, System.EventArgs e)
+        {
+
+        }
+
         //protected override void BackButtonBehavior()
         //{
         //    Navigation.PushAsync(new MainPage(), false);
