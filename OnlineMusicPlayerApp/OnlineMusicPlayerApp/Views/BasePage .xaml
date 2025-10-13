@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.BasePage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#0D1B2A"
+             Title="{Binding Title}">
+
+    <!-- MiniPlayerView.xaml -->
+    <ContentView x:Class="OnlineMusicPlayerApp.Views.MiniPlayerView">
+        <Frame Padding="10"
+           CornerRadius="16"
+           BackgroundColor="#FFFFFF"
+           HasShadow="True"
+           HeightRequest="80"
+           VerticalOptions="End">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">
+                <Label x:Name="lblMiniTitle"
+                   Text="در حال پخش..."
+                   FontSize="14"
+                   TextColor="#3E3E3E"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand" />
+                <Image x:Name="imgMiniPlayPause"
+                   Source="icon_pause1"
+                   HeightRequest="30"
+                   WidthRequest="30"
+                   VerticalOptions="Center" />
+                <Button Text="🔼"
+                    Clicked="OnExpandClicked"
+                    BackgroundColor="Transparent"
+                    WidthRequest="40"
+                    HorizontalOptions="End" />
+            </StackLayout>
+        </Frame>
+    </ContentView>
+</ContentPage>

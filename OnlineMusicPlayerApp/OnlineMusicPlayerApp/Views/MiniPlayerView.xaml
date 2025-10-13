@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView HeightRequest="50" HorizontalOptions="FillAndExpand"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnlineMusicPlayerApp.Views.MiniPlayerView"
+             BackgroundColor="Transparent">
+
+
+    <Frame Padding="6"
+           CornerRadius="20"
+           BackgroundColor="#FFFFFF"
+           HasShadow="True"
+           VerticalOptions="End"
+           HeightRequest="50"
+           Margin="10"
+           BorderColor="#DDD">
+
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center"
+                     Spacing="8">
+
+            <!-- 🎶 عنوان آهنگ -->
+            <Label x:Name="lblMiniTitle"
+                   Text="در حال پخش..."
+                   FontSize="12"
+                   TextColor="#3E3E3E"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"
+                   LineBreakMode="TailTruncation" />
+
+            <!-- ▶️ دکمه Play/Pause -->
+            <Image x:Name="imgMiniPlayPause"
+                   Source="icon_pause1"
+                   HeightRequest="24"
+                   WidthRequest="24"
+                   VerticalOptions="Center" />
+
+            <!-- 🔼 دکمه بازگشت -->
+            <Button Text="⤴"
+                    Clicked="OnExpandClicked"
+                    BackgroundColor="Transparent"
+                    FontSize="12"
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End" />
+
+        </StackLayout>
+
+    </Frame>
+</ContentView>

@@ -4,6 +4,7 @@
              xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
              x:Class="OnlineMusicPlayerApp.Views.DetailPages"
              BackgroundColor="#F5F0EB"
+             xmlns:views="clr-namespace:OnlineMusicPlayerApp.Views"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
@@ -157,4 +158,7 @@
 
         </StackLayout>
     </ContentPage.Content>
+    <views:MiniPlayerView Grid.Row="1"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="50" />
 </ContentPage>
