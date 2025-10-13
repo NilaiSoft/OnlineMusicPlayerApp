@@ -21,14 +21,17 @@ public class MusicService : Service
         var mediaItem = MediaItem.FromUri(url);
         player.SetMediaItem(mediaItem);
         player.Prepare();
-
-        // 🎯 اینجا موقعیت قبلی رو بخون و Seek کن
+        player.Play();
         string posStr = intent.GetStringExtra("position");
         if (!string.IsNullOrEmpty(posStr) && double.TryParse(posStr, out var startSeconds))
         {
             long startMs = (long)(startSeconds * 1000);
-            player.SeekTo(startMs);
+            new Handler().PostDelayed(() =>
+            {
+                player.SeekTo(startMs);
+            }, 100); // 🎯 تأخیر 100ms برای جلوگیری از وقفه
         }
+
 
 
         player.Play();

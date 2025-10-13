@@ -48,7 +48,7 @@ namespace OnlineMusicPlayerApp.Views
                     audioService.Play(lastHref, resumePosition);
 
                     // تنظیم اسلایدر و برچسب‌ها
-                    //ProgressSlider.Value = resumePosition/1000;
+                    //ProgressSlider.Value = resumePosition;
                     CurrentTimeLabel.Text = TimeSpan.FromSeconds(resumePosition).ToString(@"m\:ss");
 
                     lblTitle.Text = playableItems[currentIndex].Title;
@@ -60,6 +60,7 @@ namespace OnlineMusicPlayerApp.Views
                 }
             }
         }
+
 
         private void StartPlaybackTimer()
         {
