@@ -27,6 +27,14 @@
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
                    LineBreakMode="TailTruncation" />
+            
+            <!-- ⏮️ دکمه قبلی -->
+            <ImageButton x:Name="btnMiniPrev"
+                         Source="icon_back"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnMiniPrevClicked" />
 
             <Button x:Name="btnMiniPlay"
                     ImageSource="icon_play1"
@@ -36,6 +44,14 @@
                     Clicked="OnMiniPlayClicked"
                     VerticalOptions="Center"
                     HorizontalOptions="End" />
+
+            <!-- ⏭️ دکمه بعدی -->
+            <ImageButton x:Name="btnMiniNext"
+                         Source="icon_next"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnMiniNextClicked" />
 
         </StackLayout>
     </Frame>

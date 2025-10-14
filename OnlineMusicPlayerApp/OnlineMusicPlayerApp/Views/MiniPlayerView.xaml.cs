@@ -42,5 +42,15 @@ namespace OnlineMusicPlayerApp.Views
             btnMiniPlay.ImageSource = "icon_pause1";
             audioService.Play(lastHref, resumePosition);
         }
+
+        private void OnMiniNextClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnMiniPrevClicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
