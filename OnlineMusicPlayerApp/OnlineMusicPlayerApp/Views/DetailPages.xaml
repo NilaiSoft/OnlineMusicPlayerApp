@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:views="clr-namespace:OnlineMusicPlayerApp.Views"
              x:Class="OnlineMusicPlayerApp.Views.DetailPages"
              BackgroundColor="#F5F0EB"
-             xmlns:views="clr-namespace:OnlineMusicPlayerApp.Views"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
@@ -89,18 +88,6 @@
                            TextColor="#666"
                            HorizontalOptions="Center"
                            Margin="0,0,0,10" />
-
-                        <!-- پلیر مخفی -->
-                        <toolkit:MediaElement x:Name="Player"
-                                          HeightRequest="1"
-                                          WidthRequest="1"
-                                          AutoPlay="True"
-                                          ShowsPlaybackControls="False"
-                                          IsEnabled="False"
-                                          Opacity="0"
-                                          BackgroundColor="Transparent"
-                                          HorizontalOptions="Start"
-                                          VerticalOptions="Start" />
 
                         <!-- دکمه‌های کنترل پخش وسط‌چین -->
                         <StackLayout Orientation="Horizontal"

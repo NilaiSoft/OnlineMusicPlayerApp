@@ -1,108 +1,46 @@
-﻿using OnlineMusicPlayerApp.Extensions;
-using OnlineMusicPlayerApp.Models;
-using OnlineMusicPlayerApp.Services.PlayListServices;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using Xamarin.Forms;
+using OnlineMusicPlayerApp.Extensions;
+using OnlineMusicPlayerApp.Services;
 
 namespace OnlineMusicPlayerApp.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
-    [DesignTimeVisible(false)]
     public partial class MiniPlayerView : ContentView
     {
         public MiniPlayerView()
         {
             InitializeComponent();
+            LoadLastPlaybackInfo();
         }
 
-        bool hasLoaded = false;
-
-        //protected override void OnAppearing()
-        //{
-        //    base.OnAppearing();
-        //    miniPlayer.LoadCategories();
-        //}
-
-        public void LoadCategories()
+        private void LoadLastPlaybackInfo()
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                await FormExtensions.ShowBuildInfoModalAsync(Application.Current.MainPage.Navigation, async () =>
-                {
-                    var tets = await DependencyService.Get<IGoogleDriveServices>().GetMusicPlayList();
+            lblMiniTitle.Text = "Ehsan";//PlaybackCapsule.LoadCurrentTitle();
 
-                    var stack = new StackLayout
-                    {
-                        Padding = new Thickness(20),
-                        Spacing = 15
-                    };
-
-                    var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
-                    foreach (var category in categories)
-                    {
-                        var button = new Button
-                        {
-                            Text = category.Master,
-                            BackgroundColor = Color.FromHex("#eeeeee"),
-                            TextColor = Color.Black,
-                            CornerRadius = 8
-                        };
-
-                        button.Clicked += async (s, e) =>
-                        {
-                            await Application.Current.MainPage.Navigation.PushAsync(new DetailPages(category.Details));
-                        };
-
-                        stack.Children.Add(button);
-                    }
-
-                    Content = stack;
-                });
-            });
+            var audioService = DependencyService.Get<IAudioService>();
+            btnMiniPlay.ImageSource = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
         }
 
-
-        public void DetailPage(List<Detail> details)
+        private void OnMiniPlayClicked(object sender, EventArgs e)
         {
-           var Title = "جزئیات";
+            var audioService = DependencyService.Get<IAudioService>();
 
-            var stack = new StackLayout { Padding = 20 };
-
-            foreach (var item in details)
+            if (audioService.IsPlaying())
             {
-                var label = new Label { Text = item.Title };
-                stack.Children.Add(label);
+                btnMiniPlay.ImageSource = "icon_play1";
+                audioService.Pause();
+                return;
             }
 
-            Content = stack;
+            string lastHref = PlaybackCapsule.LoadHref();
+            if (string.IsNullOrEmpty(lastHref))
+                return;
+
+            double resumePosition = 0;
+            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+
+            btnMiniPlay.ImageSource = "icon_pause1";
+            audioService.Play(lastHref, resumePosition);
         }
-
-        private void OnExpandClicked(object sender, System.EventArgs e)
-        {
-
-        }
-
-        private void OnPreviousClicked(object sender, System.EventArgs e)
-        {
-
-        }
-
-        private void OnPlayClicked(object sender, System.EventArgs e)
-        {
-
-        }
-
-        private void OnNextClicked(object sender, System.EventArgs e)
-        {
-
-        }
-
-        //protected override void BackButtonBehavior()
-        //{
-        //    Navigation.PushAsync(new MainPage(), false);
-        //    return true;
-        //}
     }
 }

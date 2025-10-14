@@ -108,5 +108,11 @@ namespace OnlineMusicPlayerApp
         {
             // Handle when your app resumes
         }
+
+        public static class PlayerManager
+        {
+            public static MiniPlayerView MiniPlayerInstance { get; } = new MiniPlayerView();
+        }
+
     }
 }

@@ -25,6 +25,7 @@ namespace OnlineMusicPlayerApp.Views
 
         protected override void OnAppearing()
         {
+            return;
             base.OnAppearing();
 
             string lastHref = PlaybackCapsule.LoadHref();

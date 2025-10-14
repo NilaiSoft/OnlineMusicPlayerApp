@@ -10,6 +10,7 @@
     <ContentPage.BindingContext>
         <vm:AboutViewModel />
     </ContentPage.BindingContext>
+    <ContentView x:Name="miniPlayerContainer" Grid.Row="1" />
 
     <ContentPage.Resources>
         <ResourceDictionary>
