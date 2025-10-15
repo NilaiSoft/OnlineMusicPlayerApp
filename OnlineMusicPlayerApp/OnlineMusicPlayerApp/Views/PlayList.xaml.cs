@@ -20,7 +20,7 @@ namespace OnlineMusicPlayerApp.Views
         public PlayList()
         {
             InitializeComponent();
-            miniPlayerContainer.Content = PlayerManager.MiniPlayerInstance;
+            //miniPlayerContainer.Content = PlayerManager.MiniPlayerInstance;
         }
 
         bool hasLoaded = false;
