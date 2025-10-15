@@ -15,19 +15,21 @@ namespace OnlineMusicPlayerApp.Views
 
         private void LoadLastPlaybackInfo()
         {
-            lblMiniTitle.Text = "Ehsan";//PlaybackCapsule.LoadCurrentTitle();
+            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitle();
+            imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
 
             var audioService = DependencyService.Get<IAudioService>();
-            btnMiniPlay.ImageSource = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
+            btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
         }
 
         private void OnMiniPlayClicked(object sender, EventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
 
+            btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
+
             if (audioService.IsPlaying())
             {
-                btnMiniPlay.ImageSource = "icon_play1";
                 audioService.Pause();
                 return;
             }
@@ -39,8 +41,9 @@ namespace OnlineMusicPlayerApp.Views
             double resumePosition = 0;
             double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
 
-            btnMiniPlay.ImageSource = "icon_pause1";
+            btnMiniPlay.Source = "icon_pause1";
             audioService.Play(lastHref, resumePosition);
+
         }
 
         private void OnMiniNextClicked(object sender, EventArgs e)

@@ -144,6 +144,7 @@ namespace OnlineMusicPlayerApp.Views
             lblTitle.Text = item.Title;
             CoverImage.Source = item.TagImageSrc;
             PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
+            PlaybackCapsule.SaveTitle(item.Title);
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             CoverImage.IsVisible = true;
 

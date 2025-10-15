@@ -18,8 +18,20 @@
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="Center"
-                     Spacing="8">
+                     Spacing="8"
+                     Padding="6,0">
 
+            <!-- 🖼️ تصویر کاور آهنگ -->
+            <Image x:Name="imgMiniCover"
+                   Source="default_cover.png"
+                   WidthRequest="40"
+                   HeightRequest="40"
+                   Aspect="AspectFill"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Margin="0,0,4,0" />
+
+            <!-- 🎵 عنوان آهنگ -->
             <Label x:Name="lblMiniTitle"
                    Text="در حال پخش..."
                    FontSize="12"
@@ -27,7 +39,7 @@
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
                    LineBreakMode="TailTruncation" />
-            
+
             <!-- ⏮️ دکمه قبلی -->
             <ImageButton x:Name="btnMiniPrev"
                          Source="icon_back"
@@ -36,14 +48,13 @@
                          HeightRequest="30"
                          Clicked="OnMiniPrevClicked" />
 
-            <Button x:Name="btnMiniPlay"
-                    ImageSource="icon_play1"
-                    BackgroundColor="Transparent"
-                    WidthRequest="40"
-                    HeightRequest="40"
-                    Clicked="OnMiniPlayClicked"
-                    VerticalOptions="Center"
-                    HorizontalOptions="End" />
+            <!-- ▶️ دکمه پخش/توقف -->
+            <ImageButton x:Name="btnMiniPlay"
+                         Source="icon_play1"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnMiniPlayClicked" />
 
             <!-- ⏭️ دکمه بعدی -->
             <ImageButton x:Name="btnMiniNext"
