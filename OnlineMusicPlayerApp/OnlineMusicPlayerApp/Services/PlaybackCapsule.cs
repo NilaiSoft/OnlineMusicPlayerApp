@@ -48,14 +48,14 @@ public static class PlaybackCapsule
         return Preferences.Get("last_playback_title", "");
     }
 
-    public static string LoadCurrentAudioParentId()
+    public static int LoadCurrentAudioParentId()
     {
-        return Preferences.Get("last_playback_Audio_ParentId", "");
+        return Preferences.Get("last_playback_Audio_ParentId", 0);
     }
 
     public static string LoadSeconds() => LoadCurrentSeconds();
     public static string LoadHref() => LoadCurrentHref();
     public static string LoadCurrentImageTag() => LoadCurrentTagImage();
     public static string LoadCurrentTitleMusic() => LoadCurrentTitle();
-    public static string LoadCurrentAudioParentIds() => LoadCurrentAudioParentId();
+    public static int LoadCurrentAudioParentIds() => LoadCurrentAudioParentId();
 }
