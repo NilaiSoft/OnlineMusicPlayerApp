@@ -63,12 +63,12 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnMiniNextClicked(object sender, EventArgs e)
         {
-
+            OnNextClicked(sender, e);
         }
 
         private void OnMiniPrevClicked(object sender, EventArgs e)
         {
-
+            OnPreviousClicked(sender, e);
         }
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
