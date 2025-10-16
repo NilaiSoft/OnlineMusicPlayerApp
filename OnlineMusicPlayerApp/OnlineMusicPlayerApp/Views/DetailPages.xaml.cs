@@ -111,9 +111,18 @@ namespace OnlineMusicPlayerApp.Views
                     if (!new[] { ".mp3", ".mp4" }.Any(ext => extension.Contains(ext)))
                         return;
 
-                    currentIndex = playableItems.FindIndex(d => d.Href == item.Href);
-                    playerPanel.IsVisible = true;
-                    PlayNext();
+                    var miniPlayer = new MiniPlayerView(true
+                        , playableItems.FindIndex(x => x.Id == item.Id), playableItems);
+
+                    var page = new ContentPage
+                    {
+                        Content = miniPlayer
+                    };
+
+                    await Navigation.PushAsync(page);
+
+                    //playerPanel.IsVisible = true;
+                    //PlayNext();
                 }
             }
 
