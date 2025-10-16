@@ -5,6 +5,8 @@ using OnlineMusicPlayerApp.Services;
 using OnlineMusicPlayerApp.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using OnlineMusicPlayerApp.Services.PlayListServices;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -16,6 +18,19 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             LoadLastPlaybackInfo();
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                _playableItems = new List<Detail>();
+                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+
+                _playableItems = categories
+                    .SelectMany(c => c.Details)
+                    .Where(d => d.Children != null)
+                    .SelectMany(d => d.Children)
+                    .Where(child => child.ParentId == 1)
+                    .ToList();
+            });
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -28,11 +43,16 @@ namespace OnlineMusicPlayerApp.Views
             PlayNext();
         }
 
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+        }
+
         private void LoadLastPlaybackInfo()
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitle();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
-
+            //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
             btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
         }
@@ -73,7 +93,8 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            var miniPlayer = new MiniPlayerView(true, 0, null);
+            //var index = _playableItems.FindIndex(x => x.Id == 0);
+            var miniPlayer = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage
             {
                 Content = miniPlayer
@@ -140,7 +161,11 @@ namespace OnlineMusicPlayerApp.Views
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-
+            if (Math.Abs(e.NewValue - DependencyService.Get<IAudioService>().GetCurrentPositionSeconds()) > 1)
+            {
+                long newPositionMs = (long)(e.NewValue * 1000);
+                DependencyService.Get<IAudioService>().SeekTo(newPositionMs);
+            }
         }
 
         private void OnPreviousClicked(object sender, EventArgs e)
