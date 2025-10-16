@@ -155,6 +155,7 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
             PlaybackCapsule.SaveTitle(item.Title);
             PlaybackCapsule.SaveCurrentUrl(item.Href);
+            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
             CoverImage.IsVisible = true;
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2

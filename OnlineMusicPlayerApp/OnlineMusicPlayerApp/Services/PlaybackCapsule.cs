@@ -23,6 +23,11 @@ public static class PlaybackCapsule
         Preferences.Set("last_playback_TagImage", tag);
     }
 
+    public static void SaveCurrentAudioParentId(int parentId)
+    {
+        Preferences.Set("last_playback_Audio_ParentId", parentId);
+    }
+
     public static string LoadCurrentSeconds()
     {
         return Preferences.Get("last_playback_position4", "");
@@ -43,8 +48,14 @@ public static class PlaybackCapsule
         return Preferences.Get("last_playback_title", "");
     }
 
+    public static string LoadCurrentAudioParentId()
+    {
+        return Preferences.Get("last_playback_Audio_ParentId", "");
+    }
+
     public static string LoadSeconds() => LoadCurrentSeconds();
     public static string LoadHref() => LoadCurrentHref();
     public static string LoadCurrentImageTag() => LoadCurrentTagImage();
     public static string LoadCurrentTitleMusic() => LoadCurrentTitle();
+    public static string LoadCurrentAudioParentIds() => LoadCurrentAudioParentId();
 }
