@@ -144,7 +144,11 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPreviousClicked(object sender, EventArgs e)
         {
-
+            if (_currentIndex > 0)
+            {
+                _currentIndex--;
+                PlayNext();
+            }
         }
 
         private void OnPlayClicked(object sender, EventArgs e)
