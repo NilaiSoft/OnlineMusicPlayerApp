@@ -16,6 +16,8 @@ namespace OnlineMusicPlayerApp.Views
             InitializeComponent();
             LoadLastPlaybackInfo();
 
+            MiniPlayerFrame.IsVisible = (PlaybackCapsule.LoadCurrentAudioParentIds() != 0);
+
             Device.BeginInvokeOnMainThread(async () =>
             {
                 _playableItems = new List<Detail>();
