@@ -11,7 +11,6 @@ namespace OnlineMusicPlayerApp.Views
         public ActivityMain()
         {
             InitializeComponent();
-            miniPlayerContainer.Content = PlayerManager.MiniPlayerInstance;
         }
 
         private void btnMenu_Clicked(object sender, EventArgs e)

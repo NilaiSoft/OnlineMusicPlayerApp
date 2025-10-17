@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="OnlineMusicPlayerApp.Views.ActivityMain"
+             xmlns:views="clr-namespace:OnlineMusicPlayerApp.Views"
              BackgroundColor="#BFB4B2"
              NavigationPage.HasNavigationBar="False">
 
@@ -53,12 +54,9 @@
                          VerticalOptions="Center">
                 <!-- محتواهای دیگر -->
             </StackLayout>
-
-            <!-- MiniPlayerView -->
-            <ContentView x:Name="miniPlayerContainer"
-                         Grid.Row="4"
-                         HeightRequest="60"
-                         HorizontalOptions="FillAndExpand" />
+            <views:MiniPlayerView Grid.Row="1"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="200" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
