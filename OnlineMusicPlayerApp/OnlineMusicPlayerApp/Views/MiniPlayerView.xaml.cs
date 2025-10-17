@@ -128,6 +128,8 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             CoverImage.Source = item.TagImageSrc;
             imgMiniCover.Source = item.TagImageSrc;
+            lblMiniTitle.Text = item.Title;
+            lblTitle.Text = item.Title;
             audioService.Play(item.Href);
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
