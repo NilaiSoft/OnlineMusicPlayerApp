@@ -126,6 +126,8 @@ namespace OnlineMusicPlayerApp.Views
 
             btnPlay.ImageSource = "icon_pause1";
             var audioService = DependencyService.Get<IAudioService>();
+            CoverImage.Source = item.TagImageSrc;
+            imgMiniCover.Source = item.TagImageSrc;
             audioService.Play(item.Href);
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
