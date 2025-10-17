@@ -15,7 +15,9 @@ namespace OnlineMusicPlayerApp.Views
 
         private void btnMenu_Clicked(object sender, EventArgs e)
         {
-            // منطق باز کردن منو
+            App app = Application.Current as App; // Get the current App instance
+            var mdPage = app.MainPage as MainPage; // MainPage should be the type of your MasterDetailPage subclass
+            mdPage.IsPresented = true; // present the master page
         }
 
         private void OnPlaylistClicked(object sender, EventArgs e)

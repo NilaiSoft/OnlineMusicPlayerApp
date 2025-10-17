@@ -4,7 +4,8 @@
              x:Class="OnlineMusicPlayerApp.Views.MiniPlayerView"
              HeightRequest="60"
              HorizontalOptions="FillAndExpand"
-             BackgroundColor="Transparent">
+             BackgroundColor="Transparent"
+             NavigationPage.HasNavigationBar="False">
 
     <Grid RowSpacing="0">
         <!-- حالت کامل -->
