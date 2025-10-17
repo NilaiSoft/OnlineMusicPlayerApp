@@ -52,6 +52,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitle();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
+            _currentIndex = PlaybackCapsule.LoadLastIndexs();
             //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
             btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
@@ -119,6 +120,7 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveTitle(item.Title);
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
+            PlaybackCapsule.SaveLastIndex(_currentIndex);
             CoverImage.IsVisible = true;
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2
