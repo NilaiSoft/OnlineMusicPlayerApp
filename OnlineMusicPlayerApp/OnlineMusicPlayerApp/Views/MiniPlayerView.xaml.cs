@@ -39,6 +39,7 @@ namespace OnlineMusicPlayerApp.Views
             MiniPlayerFrame.IsVisible = false;
             _playableItems = details;
             _currentIndex = currentIndex;
+            LoadLastPlaybackInfo();
             PlayNext();
         }
 
@@ -87,7 +88,15 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            //var index = _playableItems.FindIndex(x => x.Id == 0);
+            var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+
+            _playableItems = _playableItems.Any() ? _playableItems : categories
+                .SelectMany(c => c.Details)
+                .Where(d => d.Children != null)
+                .SelectMany(d => d.Children)
+                .Where(child => child.ParentId == PlaybackCapsule.LoadCurrentAudioParentIds())
+                .ToList();
+
             var miniPlayer = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage
             {
@@ -107,20 +116,17 @@ namespace OnlineMusicPlayerApp.Views
             if (item == null)
                 return;
 
-            lblTitle.Text = item.Title;
-            CoverImage.Source = item.TagImageSrc;
             PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
             PlaybackCapsule.SaveTitle(item.Title);
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
             PlaybackCapsule.SaveLastIndex(_currentIndex);
-            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
-            CoverImage.IsVisible = true;
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
 
             var audioService = DependencyService.Get<IAudioService>();
+            lblTitle.Text = item.Title;
             CoverImage.Source = item.TagImageSrc;
             imgMiniCover.Source = item.TagImageSrc;
             lblMiniTitle.Text = item.Title;
