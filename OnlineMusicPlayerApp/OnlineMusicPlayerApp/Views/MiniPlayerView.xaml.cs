@@ -54,17 +54,18 @@ namespace OnlineMusicPlayerApp.Views
             //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
             btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
+            btnPlay.ImageSource = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
         }
 
         private void OnMiniPlayClicked(object sender, EventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
 
-            btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
-
             if (audioService.IsPlaying())
             {
                 audioService.Pause();
+                btnMiniPlay.Source = "icon_play1";
+                btnPlay.ImageSource = "icon_play1";
                 return;
             }
 
@@ -75,18 +76,10 @@ namespace OnlineMusicPlayerApp.Views
             double resumePosition = 0;
             double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
 
-            btnMiniPlay.Source = "icon_pause1";
             audioService.Play(lastHref, resumePosition);
-        }
 
-        private void OnMiniNextClicked(object sender, EventArgs e)
-        {
-            OnNextClicked(sender, e);
-        }
-
-        private void OnMiniPrevClicked(object sender, EventArgs e)
-        {
-            OnPreviousClicked(sender, e);
+            btnMiniPlay.Source = "icon_pause1";
+            btnPlay.ImageSource = "icon_pause1";
         }
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
@@ -186,7 +179,15 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlayClicked(object sender, EventArgs e)
         {
+            if (DependencyService.Get<IAudioService>().IsPlaying())
+            {
+                btnPlay.ImageSource = "icon_play1";
+                DependencyService.Get<IAudioService>().Pause();
+                return;
+            }
 
+            btnPlay.ImageSource = "icon_pause1";
+            DependencyService.Get<IAudioService>().Resume();
         }
 
         private void OnNextClicked(object sender, EventArgs e)

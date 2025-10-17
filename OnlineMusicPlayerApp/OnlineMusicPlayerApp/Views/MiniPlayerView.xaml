@@ -89,7 +89,7 @@
                                     BackgroundColor="Transparent"
                                     WidthRequest="50"
                                     HeightRequest="50"
-                                    Clicked="OnPlayClicked" />
+                                    Clicked="OnMiniPlayClicked" />
 
                         <Button x:Name="btnNext"
                                     ImageSource="icon_next"
@@ -144,7 +144,7 @@
                              BackgroundColor="Transparent"
                              WidthRequest="30"
                              HeightRequest="30"
-                             Clicked="OnMiniPrevClicked" />
+                             Clicked="OnPreviousClicked" />
 
                 <ImageButton x:Name="btnMiniPlay"
                              Source="icon_play1"
@@ -158,7 +158,7 @@
                              BackgroundColor="Transparent"
                              WidthRequest="30"
                              HeightRequest="30"
-                             Clicked="OnMiniNextClicked" />
+                             Clicked="OnNextClicked" />
             </StackLayout>
         </Frame>
     </Grid>
