@@ -1,12 +1,9 @@
-﻿using System;
-using Xamarin.Forms;
-using OnlineMusicPlayerApp.Extensions;
-using OnlineMusicPlayerApp.Services;
-using OnlineMusicPlayerApp.Models;
+﻿using OnlineMusicPlayerApp.Models;
+using OnlineMusicPlayerApp.Services.PlayListServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using OnlineMusicPlayerApp.Services.PlayListServices;
+using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -53,6 +50,7 @@ namespace OnlineMusicPlayerApp.Views
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
             _currentIndex = PlaybackCapsule.LoadLastIndexs();
+
             //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
             btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
@@ -79,7 +77,6 @@ namespace OnlineMusicPlayerApp.Views
 
             btnMiniPlay.Source = "icon_pause1";
             audioService.Play(lastHref, resumePosition);
-
         }
 
         private void OnMiniNextClicked(object sender, EventArgs e)
@@ -133,7 +130,10 @@ namespace OnlineMusicPlayerApp.Views
             imgMiniCover.Source = item.TagImageSrc;
             lblMiniTitle.Text = item.Title;
             lblTitle.Text = item.Title;
-            audioService.Play(item.Href);
+
+            double resumePosition = 0;
+            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+            audioService.Play(item.Href, resumePosition);
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
