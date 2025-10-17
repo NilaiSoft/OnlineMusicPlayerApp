@@ -28,7 +28,7 @@ namespace OnlineMusicPlayerApp.Views
                     .SelectMany(c => c.Details)
                     .Where(d => d.Children != null)
                     .SelectMany(d => d.Children)
-                    .Where(child => child.ParentId == 1)
+                    .Where(child => child.ParentId == PlaybackCapsule.LoadCurrentAudioParentIds())
                     .ToList();
             });
         }
@@ -50,7 +50,7 @@ namespace OnlineMusicPlayerApp.Views
 
         private void LoadLastPlaybackInfo()
         {
-            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitle();
+            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
             _currentIndex = PlaybackCapsule.LoadLastIndexs();
             //_playableItems= _playableItems.Any()? _playableItems:
@@ -121,6 +121,7 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
             PlaybackCapsule.SaveLastIndex(_currentIndex);
+            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
             CoverImage.IsVisible = true;
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2

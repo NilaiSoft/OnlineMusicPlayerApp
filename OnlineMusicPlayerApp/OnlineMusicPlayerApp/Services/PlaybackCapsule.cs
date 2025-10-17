@@ -33,32 +33,32 @@ public static class PlaybackCapsule
         Preferences.Set("last_playback_Audio_ParentId", parentId);
     }
 
-    public static string LoadCurrentSeconds()
+    private static string LoadCurrentSeconds()
     {
         return Preferences.Get("last_playback_position4", "");
     }
 
-    public static string LoadCurrentHref()
+    private static string LoadCurrentHref()
     {
         return Preferences.Get("last_playback_href", "");
     }
 
-    public static string LoadCurrentTagImage()
+    private static string LoadCurrentTagImage()
     {
         return Preferences.Get("last_playback_TagImage", "");
     }
 
-    public static string LoadCurrentTitle()
+    private static string LoadCurrentTitle()
     {
         return Preferences.Get("last_playback_title", "");
     }
 
-    public static int LoadCurrentAudioParentId()
+    private static int LoadCurrentAudioParentId()
     {
         return Preferences.Get("last_playback_Audio_ParentId", 0);
     }
 
-    public static int LoadLastIndex()
+    private static int LoadLastIndex()
     {
         return Preferences.Get("last_playback_lastindex", 0);
     }
