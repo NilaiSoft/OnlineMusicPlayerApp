@@ -12,12 +12,13 @@
         <StackLayout Padding="30" Spacing="1">
             <!-- پنل پخش موسیقی -->
             <Frame x:Name="MaximizedPanel"
-                       Padding="20"
-                       CornerRadius="12"
-                       BackgroundColor="#FFFFFF"
-                       HasShadow="True"
-                       IsVisible="false"
-                       VerticalOptions="StartAndExpand">
+               Padding="20"
+               CornerRadius="12"
+               BackgroundColor="#FFFFFF"
+               HasShadow="True"
+               IsVisible="false"
+               VerticalOptions="FillAndExpand"
+               HorizontalOptions="FillAndExpand">
 
                 <StackLayout Spacing="10">
 
