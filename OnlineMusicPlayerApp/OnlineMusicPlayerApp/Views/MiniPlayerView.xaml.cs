@@ -51,6 +51,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
+            CoverImage.Source = PlaybackCapsule.LoadCurrentImageTag();
             _currentIndex = PlaybackCapsule.LoadLastIndexs();
 
             //_playableItems= _playableItems.Any()? _playableItems:
@@ -119,7 +120,6 @@ namespace OnlineMusicPlayerApp.Views
             // 🎯 نمایش شماره ترک به‌صورت 1/2
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
 
-            btnPlay.ImageSource = "icon_pause1";
             var audioService = DependencyService.Get<IAudioService>();
             CoverImage.Source = item.TagImageSrc;
             imgMiniCover.Source = item.TagImageSrc;
@@ -128,7 +128,12 @@ namespace OnlineMusicPlayerApp.Views
 
             double resumePosition = 0;
             double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
-            audioService.Play(item.Href, resumePosition);
+
+            if (audioService.IsPlaying())
+            {
+                btnPlay.ImageSource = "icon_pause1";
+                audioService.Play(item.Href, resumePosition);
+            }
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
