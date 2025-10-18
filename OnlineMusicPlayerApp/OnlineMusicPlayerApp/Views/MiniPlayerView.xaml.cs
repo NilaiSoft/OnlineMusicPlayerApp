@@ -121,6 +121,13 @@ namespace OnlineMusicPlayerApp.Views
 
             var audioService = DependencyService.Get<IAudioService>();
             lblTitle.Text = item.Title;
+
+            var imageTagPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.TagImageSrc));
+            if (File.Exists(imageTagPath))
+                item.TagImageSrc = imageTagPath;
+            else
+                item.TagImageSrc = imageTagPath;
+
             CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? PlaybackCapsule.LoadCurrentImageTag() : item.TagImageSrc;
             imgMiniCover.Source = CoverImage.Source;
             lblMiniTitle.Text = item.Title;
@@ -137,10 +144,10 @@ namespace OnlineMusicPlayerApp.Views
 
             btnPlay.ImageSource = "icon_pause1";
 
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.Href));
+            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.Href));
 
-            if (File.Exists(filePath))
-                item.Href = filePath;
+            if (File.Exists(audioPath))
+                item.Href = audioPath;
             else
                 item.Href = await DependencyService.Get<IGoogleDriveServices>()
                 .DownloadGoogleDriveFileAsync(item.Href, Path.GetExtension(item.Href));
