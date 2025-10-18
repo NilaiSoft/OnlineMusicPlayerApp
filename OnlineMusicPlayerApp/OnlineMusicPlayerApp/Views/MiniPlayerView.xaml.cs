@@ -2,6 +2,7 @@
 using OnlineMusicPlayerApp.Services.PlayListServices;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -99,7 +100,7 @@ namespace OnlineMusicPlayerApp.Views
             await Navigation.PushAsync(page);
         }
 
-        private void PlayNext()
+        private async void PlayNext()
         {
             if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
@@ -135,6 +136,15 @@ namespace OnlineMusicPlayerApp.Views
             //}
 
             btnPlay.ImageSource = "icon_pause1";
+
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.Href));
+
+            if (File.Exists(filePath))
+                item.Href = filePath;
+            else
+                item.Href = await DependencyService.Get<IGoogleDriveServices>()
+                .DownloadGoogleDriveFileAsync(item.Href, Path.GetExtension(item.Href));
+
             audioService.Play(item.Href, resumePosition);
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
