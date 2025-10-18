@@ -135,11 +135,14 @@ namespace OnlineMusicPlayerApp.Views
             double resumePosition = 0;
             //double.TryParse(//PlaybackCapsule.LoadSeconds(), out resumePosition);
 
-            if (!audioService.IsPlaying())
-            {
-                btnPlay.ImageSource = "icon_pause1";
-                audioService.Play(item.Href, resumePosition);
-            }
+            //if (!audioService.IsPlaying())
+            //{
+            //    btnPlay.ImageSource = "icon_pause1";
+            //    audioService.Play(item.Href, resumePosition);
+            //}
+
+            btnPlay.ImageSource = "icon_pause1";
+            audioService.Play(item.Href, resumePosition);
 
             // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
@@ -208,6 +211,12 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex < _playableItems.Count - 1)
             {
                 _currentIndex++;
+                PlayNext();
+            }
+            else
+
+            {
+                _currentIndex = 0;
                 PlayNext();
             }
         }
