@@ -16,20 +16,20 @@ namespace OnlineMusicPlayerApp.Views
             InitializeComponent();
             LoadLastPlaybackInfo();
 
-            MiniPlayerFrame.IsVisible = (PlaybackCapsule.LoadCurrentAudioParentIds() != 0);
+            //MiniPlayerFrame.IsVisible = (//PlaybackCapsule.LoadCurrentAudioParentIds() != 0);
 
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                _playableItems = new List<Detail>();
-                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+            //Device.BeginInvokeOnMainThread(async () =>
+            //{
+            //    _playableItems = new List<Detail>();
+            //    var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
 
-                _playableItems = categories
-                    .SelectMany(c => c.Details)
-                    .Where(d => d.Children != null)
-                    .SelectMany(d => d.Children)
-                    .Where(child => child.ParentId == PlaybackCapsule.LoadCurrentAudioParentIds())
-                    .ToList();
-            });
+            //    _playableItems = categories
+            //        .SelectMany(c => c.Details)
+            //        .Where(d => d.Children != null)
+            //        .SelectMany(d => d.Children)
+            //        .Where(child => child.ParentId == //PlaybackCapsule.LoadCurrentAudioParentIds())
+            //        .ToList();
+            //});
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -50,10 +50,10 @@ namespace OnlineMusicPlayerApp.Views
 
         private void LoadLastPlaybackInfo()
         {
-            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
-            imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
-            CoverImage.Source = PlaybackCapsule.LoadCurrentImageTag();
-            _currentIndex = PlaybackCapsule.LoadLastIndexs();
+            //lblMiniTitle.Text = //PlaybackCapsule.LoadCurrentTitleMusic();
+            //imgMiniCover.Source = //PlaybackCapsule.LoadCurrentImageTag();
+            //CoverImage.Source = //PlaybackCapsule.LoadCurrentImageTag();
+            //_currentIndex = //PlaybackCapsule.LoadLastIndexs();
 
             //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
@@ -73,12 +73,12 @@ namespace OnlineMusicPlayerApp.Views
                 return;
             }
 
-            string lastHref = PlaybackCapsule.LoadHref();
+            string lastHref = "";//PlaybackCapsule.LoadHref();
             if (string.IsNullOrEmpty(lastHref))
                 return;
 
             double resumePosition = 0;
-            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+            //double.TryParse(//PlaybackCapsule.LoadSeconds(), out resumePosition);
 
             audioService.Play(lastHref, resumePosition);
 
@@ -94,7 +94,7 @@ namespace OnlineMusicPlayerApp.Views
                 .SelectMany(c => c.Details)
                 .Where(d => d.Children != null)
                 .SelectMany(d => d.Children)
-                .Where(child => child.ParentId == PlaybackCapsule.LoadCurrentAudioParentIds())
+                .Where(child => child.ParentId == 1)//PlaybackCapsule.LoadCurrentAudioParentIds())
                 .ToList();
 
             var miniPlayer = new MiniPlayerView(true, _currentIndex, _playableItems);
@@ -116,11 +116,11 @@ namespace OnlineMusicPlayerApp.Views
             if (item == null)
                 return;
 
-            PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
-            PlaybackCapsule.SaveTitle(item.Title);
-            PlaybackCapsule.SaveCurrentUrl(item.Href);
-            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
-            PlaybackCapsule.SaveLastIndex(_currentIndex);
+            //PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
+            //PlaybackCapsule.SaveTitle(item.Title);
+            //PlaybackCapsule.SaveCurrentUrl(item.Href);
+            //PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
+            //PlaybackCapsule.SaveLastIndex(_currentIndex);
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
@@ -133,9 +133,9 @@ namespace OnlineMusicPlayerApp.Views
             lblTitle.Text = item.Title;
 
             double resumePosition = 0;
-            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+            //double.TryParse(//PlaybackCapsule.LoadSeconds(), out resumePosition);
 
-            if (audioService.IsPlaying())
+            if (!audioService.IsPlaying())
             {
                 btnPlay.ImageSource = "icon_pause1";
                 audioService.Play(item.Href, resumePosition);
@@ -156,7 +156,7 @@ namespace OnlineMusicPlayerApp.Views
                 if (!double.IsNaN(position) && position >= 0 && position <= duration)
                 {
                     ProgressSlider.Value = position;
-                    PlaybackCapsule.SaveSliderPosition(position);
+                    //PlaybackCapsule.SaveSliderPosition(position);
                     CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
                 }
 
