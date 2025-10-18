@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Views
@@ -41,7 +42,10 @@ namespace OnlineMusicPlayerApp.Views
             _playableItems = details;
             _currentIndex = currentIndex;
             LoadLastPlaybackInfo();
-            PlayNext();
+            Task.Run(async () =>
+            {
+                await PlayNextAsync();
+            });
         }
 
         protected override void OnBindingContextChanged()
@@ -100,7 +104,7 @@ namespace OnlineMusicPlayerApp.Views
             await Navigation.PushAsync(page);
         }
 
-        private async void PlayNext()
+        private async Task PlayNextAsync()
         {
             if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
@@ -178,7 +182,7 @@ namespace OnlineMusicPlayerApp.Views
                 if (position >= duration - 1 && duration > 0)
                 {
                     _currentIndex++;
-                    PlayNext();
+                    _ = PlayNextAsync();
                     return false; // توقف تایمر
                 }
 
@@ -197,12 +201,12 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
-        private void OnPreviousClicked(object sender, EventArgs e)
+        private async void OnPreviousClicked(object sender, EventArgs e)
         {
             if (_currentIndex > 0)
             {
                 _currentIndex--;
-                PlayNext();
+                await PlayNextAsync();
             }
         }
 
@@ -219,18 +223,18 @@ namespace OnlineMusicPlayerApp.Views
             DependencyService.Get<IAudioService>().Resume();
         }
 
-        private void OnNextClicked(object sender, EventArgs e)
+        private async void OnNextClicked(object sender, EventArgs e)
         {
             if (_currentIndex < _playableItems.Count - 1)
             {
                 _currentIndex++;
-                PlayNext();
+                await PlayNextAsync();
             }
             else
 
             {
                 _currentIndex = 0;
-                PlayNext();
+                await PlayNextAsync();
             }
         }
     }
