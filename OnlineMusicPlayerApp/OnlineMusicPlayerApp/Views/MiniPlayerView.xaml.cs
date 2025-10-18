@@ -70,7 +70,8 @@ namespace OnlineMusicPlayerApp.Views
                 audioService.Pause();
                 btnMiniPlay.Source = "icon_play1";
                 btnPlay.ImageSource = "icon_play1";
-            }else
+            }
+            else
             {
                 btnMiniPlay.Source = "icon_pause1";
                 btnPlay.ImageSource = "icon_pause1";
@@ -119,8 +120,8 @@ namespace OnlineMusicPlayerApp.Views
 
             var audioService = DependencyService.Get<IAudioService>();
             lblTitle.Text = item.Title;
-            CoverImage.Source = item.TagImageSrc;
-            imgMiniCover.Source = item.TagImageSrc;
+            CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? PlaybackCapsule.LoadCurrentImageTag() : item.TagImageSrc;
+            imgMiniCover.Source = CoverImage.Source;
             lblMiniTitle.Text = item.Title;
             lblTitle.Text = item.Title;
 
