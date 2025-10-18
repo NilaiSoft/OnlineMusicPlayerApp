@@ -50,8 +50,8 @@ namespace OnlineMusicPlayerApp.Views
 
         private void LoadLastPlaybackInfo()
         {
-            //lblMiniTitle.Text = //PlaybackCapsule.LoadCurrentTitleMusic();
-            //imgMiniCover.Source = //PlaybackCapsule.LoadCurrentImageTag();
+            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
+            imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
             //CoverImage.Source = //PlaybackCapsule.LoadCurrentImageTag();
             //_currentIndex = //PlaybackCapsule.LoadLastIndexs();
 
@@ -109,8 +109,8 @@ namespace OnlineMusicPlayerApp.Views
             if (item == null)
                 return;
 
-            //PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
-            //PlaybackCapsule.SaveTitle(item.Title);
+            PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
+            PlaybackCapsule.SaveTitle(item.Title);
             //PlaybackCapsule.SaveCurrentUrl(item.Href);
             //PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
             //PlaybackCapsule.SaveLastIndex(_currentIndex);
