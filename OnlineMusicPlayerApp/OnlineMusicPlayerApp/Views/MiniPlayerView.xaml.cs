@@ -70,20 +70,12 @@ namespace OnlineMusicPlayerApp.Views
                 audioService.Pause();
                 btnMiniPlay.Source = "icon_play1";
                 btnPlay.ImageSource = "icon_play1";
-                return;
+            }else
+            {
+                btnMiniPlay.Source = "icon_pause1";
+                btnPlay.ImageSource = "icon_pause1";
+                audioService.Resume();
             }
-
-            string lastHref = "";//PlaybackCapsule.LoadHref();
-            if (string.IsNullOrEmpty(lastHref))
-                return;
-
-            double resumePosition = 0;
-            //double.TryParse(//PlaybackCapsule.LoadSeconds(), out resumePosition);
-
-            audioService.Play(lastHref, resumePosition);
-
-            btnMiniPlay.Source = "icon_pause1";
-            btnPlay.ImageSource = "icon_pause1";
         }
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
