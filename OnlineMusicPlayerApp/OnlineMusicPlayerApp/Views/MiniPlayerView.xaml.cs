@@ -122,11 +122,12 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             lblTitle.Text = item.Title;
 
-            var imageTagPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.TagImageSrc));
+            var imageTagPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
             if (File.Exists(imageTagPath))
                 item.TagImageSrc = imageTagPath;
             else
-                item.TagImageSrc = imageTagPath;
+                item.TagImageSrc = await DependencyService.Get<IGoogleDriveServices>()
+                .DownloadGoogleDriveFileAsync(item.TagImageSrc, $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
 
             CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? PlaybackCapsule.LoadCurrentImageTag() : item.TagImageSrc;
             imgMiniCover.Source = CoverImage.Source;
@@ -144,13 +145,13 @@ namespace OnlineMusicPlayerApp.Views
 
             btnPlay.ImageSource = "icon_pause1";
 
-            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.GetExtension(item.Href));
+            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
 
             if (File.Exists(audioPath))
                 item.Href = audioPath;
             else
                 item.Href = await DependencyService.Get<IGoogleDriveServices>()
-                .DownloadGoogleDriveFileAsync(item.Href, Path.GetExtension(item.Href));
+                .DownloadGoogleDriveFileAsync(item.Href, $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
 
             audioService.Play(item.Href, resumePosition);
 
@@ -183,6 +184,8 @@ namespace OnlineMusicPlayerApp.Views
 
                 return true; // ادامه تایمر
             });
+
+            item = new Detail();
         }
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
