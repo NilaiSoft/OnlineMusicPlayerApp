@@ -13,9 +13,13 @@ namespace OnlineMusicPlayerApp.Views
     {
         private List<Detail> _playableItems;
         private int _currentIndex = -1;
+        private bool _isTimerRunning = false;
+
         public MiniPlayerView()
         {
             InitializeComponent();
+            _playableItems = PlaybackCapsule.CurrentPlaylist;
+            _currentIndex = PlaybackCapsule.CurrentIndex;
             LoadLastPlaybackInfo();
         }
 
@@ -24,35 +28,34 @@ namespace OnlineMusicPlayerApp.Views
             InitializeComponent();
             MaximizedPanel.IsVisible = true;
             MiniPlayerFrame.IsVisible = false;
+
             _playableItems = details;
             _currentIndex = currentIndex;
-            LoadLastPlaybackInfo();
-            Task.Run(async () =>
-            {
-                await PlayNextAsync();
-            });
-        }
 
-        protected override void OnBindingContextChanged()
-        {
-            base.OnBindingContextChanged();
+            PlaybackCapsule.CurrentPlaylist = details;
+            PlaybackCapsule.CurrentIndex = currentIndex;
+
+            LoadLastPlaybackInfo();
+            Task.Run(async () => await PlayNextAsync());
         }
 
         private void LoadLastPlaybackInfo()
         {
-            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
-            imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
+            lblMiniTitle.Text = PlaybackCapsule.CurrentTitle;
+            imgMiniCover.Source = PlaybackCapsule.CurrentImageTag;
 
             var audioService = DependencyService.Get<IAudioService>();
-            btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
-            btnPlay.ImageSource = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
+            bool isPlaying = audioService.IsPlaying();
+            btnMiniPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
+            btnPlay.ImageSource = isPlaying ? "icon_pause1" : "icon_play1";
         }
 
         private void OnMiniPlayClicked(object sender, EventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
+            bool isPlaying = audioService.IsPlaying();
 
-            if (audioService.IsPlaying())
+            if (isPlaying)
             {
                 audioService.Pause();
                 btnMiniPlay.Source = "icon_play1";
@@ -60,20 +63,16 @@ namespace OnlineMusicPlayerApp.Views
             }
             else
             {
+                audioService.Resume();
                 btnMiniPlay.Source = "icon_pause1";
                 btnPlay.ImageSource = "icon_pause1";
-                audioService.Resume();
             }
         }
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            var miniPlayer = new MiniPlayerView(true, _currentIndex, _playableItems);
-            var page = new ContentPage
-            {
-                Content = miniPlayer
-            };
-
+            var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
+            var page = new ContentPage { Content = maximizedView };
             await Navigation.PushAsync(page);
         }
 
@@ -83,83 +82,85 @@ namespace OnlineMusicPlayerApp.Views
                 return;
 
             var item = _playableItems[_currentIndex];
+            if (item == null) return;
 
-            if (item == null)
-                return;
+            PlaybackCapsule.CurrentIndex = _currentIndex;
+            PlaybackCapsule.CurrentTitle = item.Title;
+            PlaybackCapsule.CurrentImageTag = item.TagImageSrc;
 
-            PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
-            PlaybackCapsule.SaveTitle(item.Title);
-
-            // 🎯 نمایش شماره ترک به‌صورت 1/2
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
-
-            var audioService = DependencyService.Get<IAudioService>();
             lblTitle.Text = item.Title;
-
-            var imageTagPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
-            if (File.Exists(imageTagPath))
-                item.TagImageSrc = imageTagPath;
-            else
-                item.TagImageSrc = await DependencyService.Get<IGoogleDriveServices>()
-                .DownloadGoogleDriveFileAsync(item.TagImageSrc, $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
-
-            CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? PlaybackCapsule.LoadCurrentImageTag() : item.TagImageSrc;
-            imgMiniCover.Source = CoverImage.Source;
             lblMiniTitle.Text = item.Title;
-            lblTitle.Text = item.Title;
 
-            double resumePosition = 0;
+            var imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
+            if (!File.Exists(imagePath))
+            {
+                item.TagImageSrc = await DependencyService.Get<IGoogleDriveServices>()
+                    .DownloadGoogleDriveFileAsync(item.TagImageSrc, Path.GetFileName(imagePath));
+            }
+            else
+            {
+                item.TagImageSrc = imagePath;
+            }
 
-            btnPlay.ImageSource = "icon_pause1";
+            CoverImage.Source = item.TagImageSrc;
+            imgMiniCover.Source = item.TagImageSrc;
 
             var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
-
-            if (File.Exists(audioPath))
-                item.Href = audioPath;
-            else
-                item.Href = await DependencyService.Get<IGoogleDriveServices>()
-                .DownloadGoogleDriveFileAsync(item.Href, $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
-
-            audioService.Play(item.Href, resumePosition);
-
-            // 🎯 شروع تایمر برای آپدیت زمان و اسلایدر
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            if (!File.Exists(audioPath))
             {
-                var duration = audioService.GetDurationSeconds();
-                var position = audioService.GetCurrentPositionSeconds();
+                item.Href = await DependencyService.Get<IGoogleDriveServices>()
+                    .DownloadGoogleDriveFileAsync(item.Href, Path.GetFileName(audioPath));
+            }
+            else
+            {
+                item.Href = audioPath;
+            }
 
-                if (!double.IsNaN(duration) && duration > 0)
+            var audioService = DependencyService.Get<IAudioService>();
+            audioService.Play(item.Href, 0);
+            btnPlay.ImageSource = "icon_pause1";
+
+            if (!_isTimerRunning)
+            {
+                _isTimerRunning = true;
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    ProgressSlider.Maximum = duration;
-                    TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
-                }
+                    var duration = audioService.GetDurationSeconds();
+                    var position = audioService.GetCurrentPositionSeconds();
 
-                if (!double.IsNaN(position) && position >= 0 && position <= duration)
-                {
-                    ProgressSlider.Value = position;
-                    //PlaybackCapsule.SaveSliderPosition(position);
-                    CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
-                }
+                    if (!double.IsNaN(duration) && duration > 0)
+                    {
+                        ProgressSlider.Maximum = duration;
+                        TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
+                    }
 
-                if (position >= duration - 1 && duration > 0)
-                {
-                    _currentIndex++;
-                    _ = PlayNextAsync();
-                    return false; // توقف تایمر
-                }
+                    if (!double.IsNaN(position) && position >= 0 && position <= duration)
+                    {
+                        ProgressSlider.Value = position;
+                        CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
+                    }
 
-                return true; // ادامه تایمر
-            });
+                    if (position >= duration - 1 && duration > 0)
+                    {
+                        _currentIndex++;
+                        _ = PlayNextAsync();
+                        _isTimerRunning = false;
+                        return false;
+                    }
 
-            item = new Detail();
+                    return true;
+                });
+            }
         }
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (Math.Abs(e.NewValue - DependencyService.Get<IAudioService>().GetCurrentPositionSeconds()) > 1)
+            var audioService = DependencyService.Get<IAudioService>();
+            if (Math.Abs(e.NewValue - audioService.GetCurrentPositionSeconds()) > 1)
             {
                 long newPositionMs = (long)(e.NewValue * 1000);
-                DependencyService.Get<IAudioService>().SeekTo(newPositionMs);
+                audioService.SeekTo(newPositionMs);
             }
         }
 
@@ -174,15 +175,17 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlayClicked(object sender, EventArgs e)
         {
-            if (DependencyService.Get<IAudioService>().IsPlaying())
+            var audioService = DependencyService.Get<IAudioService>();
+            if (audioService.IsPlaying())
             {
+                audioService.Pause();
                 btnPlay.ImageSource = "icon_play1";
-                DependencyService.Get<IAudioService>().Pause();
-                return;
             }
-
-            btnPlay.ImageSource = "icon_pause1";
-            DependencyService.Get<IAudioService>().Resume();
+            else
+            {
+                audioService.Resume();
+                btnPlay.ImageSource = "icon_pause1";
+            }
         }
 
         private async void OnNextClicked(object sender, EventArgs e)
@@ -190,14 +193,13 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex < _playableItems.Count - 1)
             {
                 _currentIndex++;
-                await PlayNextAsync();
             }
             else
-
             {
                 _currentIndex = 0;
-                await PlayNextAsync();
             }
+
+            await PlayNextAsync();
         }
     }
 }
