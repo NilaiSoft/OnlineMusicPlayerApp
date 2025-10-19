@@ -178,7 +178,6 @@ namespace OnlineMusicPlayerApp.Views
                     CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
                 }
 
-
                 if (position >= duration - 1 && duration > 0)
                 {
                     _currentIndex++;
