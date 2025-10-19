@@ -17,21 +17,6 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             LoadLastPlaybackInfo();
-
-            //MiniPlayerFrame.IsVisible = (//PlaybackCapsule.LoadCurrentAudioParentIds() != 0);
-
-            //Device.BeginInvokeOnMainThread(async () =>
-            //{
-            //    _playableItems = new List<Detail>();
-            //    var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
-
-            //    _playableItems = categories
-            //        .SelectMany(c => c.Details)
-            //        .Where(d => d.Children != null)
-            //        .SelectMany(d => d.Children)
-            //        .Where(child => child.ParentId == //PlaybackCapsule.LoadCurrentAudioParentIds())
-            //        .ToList();
-            //});
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -57,10 +42,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
-            //CoverImage.Source = //PlaybackCapsule.LoadCurrentImageTag();
-            //_currentIndex = //PlaybackCapsule.LoadLastIndexs();
 
-            //_playableItems= _playableItems.Any()? _playableItems:
             var audioService = DependencyService.Get<IAudioService>();
             btnMiniPlay.Source = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
             btnPlay.ImageSource = audioService.IsPlaying() ? "icon_pause1" : "icon_play1";
@@ -86,15 +68,6 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
-
-            _playableItems = _playableItems.Any() ? _playableItems : categories
-                .SelectMany(c => c.Details)
-                .Where(d => d.Children != null)
-                .SelectMany(d => d.Children)
-                .Where(child => child.ParentId == 1)//PlaybackCapsule.LoadCurrentAudioParentIds())
-                .ToList();
-
             var miniPlayer = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage
             {
@@ -116,9 +89,6 @@ namespace OnlineMusicPlayerApp.Views
 
             PlaybackCapsule.SaveCurrentTagImage(item.TagImageSrc);
             PlaybackCapsule.SaveTitle(item.Title);
-            //PlaybackCapsule.SaveCurrentUrl(item.Href);
-            //PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId);
-            //PlaybackCapsule.SaveLastIndex(_currentIndex);
 
             // 🎯 نمایش شماره ترک به‌صورت 1/2
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
@@ -139,13 +109,6 @@ namespace OnlineMusicPlayerApp.Views
             lblTitle.Text = item.Title;
 
             double resumePosition = 0;
-            //double.TryParse(//PlaybackCapsule.LoadSeconds(), out resumePosition);
-
-            //if (!audioService.IsPlaying())
-            //{
-            //    btnPlay.ImageSource = "icon_pause1";
-            //    audioService.Play(item.Href, resumePosition);
-            //}
 
             btnPlay.ImageSource = "icon_pause1";
 
