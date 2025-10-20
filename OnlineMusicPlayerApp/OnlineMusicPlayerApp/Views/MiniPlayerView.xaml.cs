@@ -1,4 +1,5 @@
 ﻿using OnlineMusicPlayerApp.Models;
+using OnlineMusicPlayerApp.Services;
 using OnlineMusicPlayerApp.Services.PlayListServices;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,15 @@ namespace OnlineMusicPlayerApp.Views
             }
             else
             {
-                audioService.Resume();
+                var isActive = audioService.Resume();
+                //if (isActive == null)
+                //{
+                //    double currentPosition = audioService.GetCurrentPositionSeconds();
+                //    PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
+                //    LoadLastPlaybackInfo();
+                //    Task.Run(async () => await PlayNextAsync());
+                //}
+
                 btnMiniPlay.Source = "icon_pause1";
                 btnPlay.ImageSource = "icon_pause1";
             }
@@ -95,9 +104,22 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
 
-            lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
-            lblTitle.Text = item.Title;
-            lblMiniTitle.Text = item.Title;
+            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
+            if (!File.Exists(audioPath))
+            {
+                item.Href = await DependencyService.Get<IGoogleDriveServices>()
+                    .DownloadGoogleDriveFileAsync(item.Href, Path.GetFileName(audioPath));
+            }
+            else
+            {
+                item.Href = audioPath;
+            }
+
+            if (string.IsNullOrEmpty(item.Href))
+            {
+                DependencyService.Get<IToastService>()?.Show($"Href Is Empty");
+                return;
+            }
 
             var imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
             if (!File.Exists(imagePath))
@@ -112,17 +134,9 @@ namespace OnlineMusicPlayerApp.Views
 
             CoverImage.Source = item.TagImageSrc;
             imgMiniCover.Source = item.TagImageSrc;
-
-            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
-            if (!File.Exists(audioPath))
-            {
-                item.Href = await DependencyService.Get<IGoogleDriveServices>()
-                    .DownloadGoogleDriveFileAsync(item.Href, Path.GetFileName(audioPath));
-            }
-            else
-            {
-                item.Href = audioPath;
-            }
+            lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
+            lblTitle.Text = item.Title;
+            lblMiniTitle.Text = item.Title;
 
             var audioService = DependencyService.Get<IAudioService>();
             double resumePosition = 0;
