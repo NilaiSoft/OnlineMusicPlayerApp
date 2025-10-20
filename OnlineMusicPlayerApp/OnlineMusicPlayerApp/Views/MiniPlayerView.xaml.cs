@@ -64,7 +64,7 @@ namespace OnlineMusicPlayerApp.Views
             }
             else
             {
-                var isActive = audioService.Resume();
+                audioService.Resume();
                 //if (isActive == null)
                 //{
                 //    double currentPosition = audioService.GetCurrentPositionSeconds();
