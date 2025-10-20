@@ -41,8 +41,8 @@ namespace OnlineMusicPlayerApp.Views
 
         private void LoadLastPlaybackInfo()
         {
-            lblMiniTitle.Text = PlaybackCapsule.CurrentTitle;
-            imgMiniCover.Source = PlaybackCapsule.CurrentImageTag;
+            lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
+            imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
 
             var audioService = DependencyService.Get<IAudioService>();
             bool isPlaying = audioService.IsPlaying();
@@ -71,6 +71,10 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
+            var audioService = DependencyService.Get<IAudioService>();
+            double currentPosition = audioService.GetCurrentPositionSeconds();
+            PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
+
             var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage { Content = maximizedView };
             await Navigation.PushAsync(page);
@@ -87,6 +91,8 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.CurrentIndex = _currentIndex;
             PlaybackCapsule.CurrentTitle = item.Title;
             PlaybackCapsule.CurrentImageTag = item.TagImageSrc;
+            PlaybackCapsule.SaveCurrentUrl(item.Href);
+            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
 
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
             lblTitle.Text = item.Title;
@@ -118,7 +124,9 @@ namespace OnlineMusicPlayerApp.Views
             }
 
             var audioService = DependencyService.Get<IAudioService>();
-            audioService.Play(item.Href, 0);
+            double resumePosition = 0;
+            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition); // ✅ موقعیت ذخیره‌شده
+            audioService.Play(item.Href, resumePosition);
             btnPlay.ImageSource = "icon_pause1";
 
             if (!_isTimerRunning)
@@ -138,12 +146,14 @@ namespace OnlineMusicPlayerApp.Views
                     if (!double.IsNaN(position) && position >= 0 && position <= duration)
                     {
                         ProgressSlider.Value = position;
+                        PlaybackCapsule.SaveSliderPosition(position);
                         CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
                     }
 
                     if (position >= duration - 1 && duration > 0)
                     {
                         _currentIndex++;
+                        PlaybackCapsule.SaveSliderPosition(0); // پاک‌سازی موقعیت برای آهنگ بعدی
                         _ = PlayNextAsync();
                         _isTimerRunning = false;
                         return false;
@@ -169,6 +179,7 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex > 0)
             {
                 _currentIndex--;
+                PlaybackCapsule.SaveSliderPosition(0);
                 await PlayNextAsync();
             }
         }
@@ -199,6 +210,7 @@ namespace OnlineMusicPlayerApp.Views
                 _currentIndex = 0;
             }
 
+            PlaybackCapsule.SaveSliderPosition(0);
             await PlayNextAsync();
         }
     }
