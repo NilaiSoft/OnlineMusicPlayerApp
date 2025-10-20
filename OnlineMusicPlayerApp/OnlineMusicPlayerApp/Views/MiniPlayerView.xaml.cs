@@ -77,6 +77,7 @@ namespace OnlineMusicPlayerApp.Views
 
             var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage { Content = maximizedView };
+            NavigationPage.SetHasNavigationBar(page, false);
             await Navigation.PushAsync(page);
         }
 

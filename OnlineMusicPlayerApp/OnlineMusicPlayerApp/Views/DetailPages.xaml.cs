@@ -115,6 +115,7 @@ namespace OnlineMusicPlayerApp.Views
 
                     var miniPlayer = new MiniPlayerView(true, index, playableItems);
                     var page = new ContentPage { Content = miniPlayer };
+                    NavigationPage.SetHasNavigationBar(page, false);
                     await Navigation.PushAsync(page);
                 }
             }
