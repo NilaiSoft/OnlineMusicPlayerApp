@@ -1,78 +1,81 @@
 ﻿using OnlineMusicPlayerApp.Models;
+using Xamarin.Essentials;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Services.PlayListServices
 {
     public static class PlaybackCapsule
     {
-        public static List<Detail> CurrentPlaylist { get; set; } = new List<Detail>();
-        public static int CurrentIndex { get; set; } = -1;
-
-        public static string CurrentTitle { get; set; } = "در حال پخش...";
-        public static string CurrentImageTag { get; set; } = "default_cover.png";
-
-        public static void SaveTitle(string title)
+        // 🔹 لیست آهنگ‌ها با ذخیره‌سازی دائمی
+        public static List<Detail> CurrentPlaylist
         {
-            CurrentTitle = title;
+            get
+            {
+                string json = Preferences.Get("CurrentPlaylist", "");
+                return string.IsNullOrEmpty(json) ? new List<Detail>() : JsonConvert.DeserializeObject<List<Detail>>(json);
+            }
+            set
+            {
+                string json = JsonConvert.SerializeObject(value);
+                Preferences.Set("CurrentPlaylist", json);
+            }
         }
 
-        public static void SaveCurrentTagImage(string imagePath)
+        // 🔹 ایندکس آهنگ فعلی
+        public static int CurrentIndex
         {
-            CurrentImageTag = imagePath;
+            get => Preferences.Get("CurrentIndex", -1);
+            set => Preferences.Set("CurrentIndex", value);
         }
 
-        public static string LoadCurrentTitleMusic()
+        // 🔹 عنوان آهنگ فعلی
+        public static string CurrentTitle
         {
-            return CurrentTitle;
+            get => Preferences.Get("CurrentTitle", "در حال پخش...");
+            set => Preferences.Set("CurrentTitle", value);
         }
 
-        public static string LoadCurrentImageTag()
+        // 🔹 تصویر کاور فعلی
+        public static string CurrentImageTag
         {
-            return CurrentImageTag;
+            get => Preferences.Get("CurrentImageTag", "default_cover.png");
+            set => Preferences.Set("CurrentImageTag", value);
         }
 
-        public static string CurrentUrl { get; set; } = string.Empty;
-
-        // متد ذخیره‌سازی مسیر فایل صوتی فعلی
-        public static void SaveCurrentUrl(string url)
+        // 🔹 مسیر فایل صوتی فعلی
+        public static string CurrentUrl
         {
-            CurrentUrl = url;
+            get => Preferences.Get("CurrentUrl", "");
+            set => Preferences.Set("CurrentUrl", value);
         }
 
-        // متد بازیابی مسیر فایل صوتی فعلی
-        public static string LoadHref()
+        // 🔹 شناسه والد فایل صوتی
+        public static string CurrentAudioParentId
         {
-            return CurrentUrl;
-        }
-        // سایر پراپرتی‌ها...
-        public static string CurrentAudioParentId { get; set; } = string.Empty;
-
-        // ذخیره‌سازی شناسه‌ی والد
-        public static void SaveCurrentAudioParentId(string parentId)
-        {
-            CurrentAudioParentId = parentId;
+            get => Preferences.Get("CurrentAudioParentId", "");
+            set => Preferences.Set("CurrentAudioParentId", value);
         }
 
-        // بازیابی شناسه‌ی والد
-        public static string LoadParentId()
+        // 🔹 موقعیت فعلی پخش (ثانیه)
+        public static double CurrentSliderPosition
         {
-            return CurrentAudioParentId;
+            get => Preferences.Get("CurrentSliderPosition", 0.0);
+            set => Preferences.Set("CurrentSliderPosition", value);
         }
 
-        // سایر پراپرتی‌ها...
-        public static double CurrentSliderPosition { get; set; } = 0;
+        // 🎯 متدهای ذخیره‌سازی
+        public static void SaveTitle(string title) => CurrentTitle = title;
+        public static void SaveCurrentTagImage(string imagePath) => CurrentImageTag = imagePath;
+        public static void SaveCurrentUrl(string url) => CurrentUrl = url;
+        public static void SaveCurrentAudioParentId(string parentId) => CurrentAudioParentId = parentId;
+        public static void SaveSliderPosition(double seconds) => CurrentSliderPosition = seconds;
 
-        // ذخیره‌سازی موقعیت اسلایدر
-        public static void SaveSliderPosition(double seconds)
-        {
-            CurrentSliderPosition = seconds;
-        }
-
-        // بازیابی موقعیت اسلایدر
-        public static string LoadSeconds()
-        {
-            return CurrentSliderPosition.ToString();
-        }
+        // 🎯 متدهای بازیابی
+        public static string LoadCurrentTitleMusic() => CurrentTitle;
+        public static string LoadCurrentImageTag() => CurrentImageTag;
+        public static string LoadHref() => CurrentUrl;
+        public static string LoadParentId() => CurrentAudioParentId;
+        public static string LoadSeconds() => CurrentSliderPosition.ToString();
     }
 }
