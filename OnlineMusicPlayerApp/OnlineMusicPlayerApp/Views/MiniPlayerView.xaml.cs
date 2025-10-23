@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TagLib;
 using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Views
@@ -108,7 +109,7 @@ namespace OnlineMusicPlayerApp.Views
             string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
             // 🎵 دانلود آهنگ با پیشرفت
-            if (!File.Exists(audioPath))
+            if (!System.IO.File.Exists(audioPath))
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -148,19 +149,7 @@ namespace OnlineMusicPlayerApp.Views
                 return;
             }
 
-            // 🎨 دانلود تصویر تگ یا جایگزین
-            string imageFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}";
-            string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), imageFileName);
-
-            if (!File.Exists(imagePath))
-            {
-                item.TagImageSrc = await DependencyService.Get<IGoogleDriveServices>()
-                    .DownloadGoogleDriveFileAsync(item.TagImageSrc, imageFileName);
-            }
-            else
-            {
-                item.TagImageSrc = imagePath;
-            }
+            CoverImage.Source = GetAlbumArt(item.Href, "");
 
             // 🎧 نمایش تصویر و عنوان
             Device.BeginInvokeOnMainThread(() =>
@@ -216,6 +205,38 @@ namespace OnlineMusicPlayerApp.Views
                     return !(position >= duration - 1 && duration > 0);
                 });
             }
+        }
+
+        private ImageSource GetAlbumArt(string mp3Path, string tag)
+        {
+            try
+            {
+                var file = TagLib.File.Create(mp3Path);
+                var picture = file.Tag.Pictures.FirstOrDefault(x => x.Data != null);
+
+                if (picture == null)
+                {
+                    file.Tag.Pictures = new IPicture[]
+                    {
+                            new Picture(tag) // مسیر تصویر
+                    };
+
+                    file.Save();
+                    return GetAlbumArt(mp3Path, "");
+                }
+
+                if (picture != null)
+                {
+                    var imageBytes = picture.Data.Data;
+                    return ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("خطا در خواندن تصویر تگ: " + ex.Message);
+            }
+
+            return null;
         }
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
