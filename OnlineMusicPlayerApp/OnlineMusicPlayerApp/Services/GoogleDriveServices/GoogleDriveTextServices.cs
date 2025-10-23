@@ -63,6 +63,10 @@ public class GoogleDriveServices : IGoogleDriveServices
     public async Task<string> GetMusicPlayList()
     {
         string fileId = "1NRhEt-01wf5MSqYnjvoxkPB5tFXqfkiw";
+
+#if DEBUG
+        fileId = "1Fg7i1jbE498ihc1ZjB-n-Xf-HT4Of6fp";
+#endif
         string url = $"https://drive.google.com/uc?export=download&id={fileId}";
 
         //if (!await NetworkExtensions.IsConnectedAsync())
