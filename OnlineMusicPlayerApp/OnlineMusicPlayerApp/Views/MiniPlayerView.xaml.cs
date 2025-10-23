@@ -50,7 +50,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             bool isPlaying = audioService.IsPlaying();
             btnMiniPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
-            btnPlay.ImageSource = isPlaying ? "icon_pause1" : "icon_play1";
+            btnPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
         }
 
         private void OnMiniPlayClicked(object sender, EventArgs e)
@@ -62,7 +62,7 @@ namespace OnlineMusicPlayerApp.Views
             {
                 audioService.Pause();
                 btnMiniPlay.Source = "icon_play1";
-                btnPlay.ImageSource = "icon_play1";
+                btnPlay.Source = "icon_play1";
             }
             else
             {
@@ -76,7 +76,7 @@ namespace OnlineMusicPlayerApp.Views
                 //}
 
                 btnMiniPlay.Source = "icon_pause1";
-                btnPlay.ImageSource = "icon_pause1";
+                btnPlay.Source = "icon_pause1";
             }
         }
 
@@ -159,7 +159,7 @@ namespace OnlineMusicPlayerApp.Views
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
                 lblMiniTitle.Text = item.Title;
-                btnPlay.ImageSource = "icon_pause1";
+                btnPlay.Source = "icon_pause1";
                 btnMiniPlay.Source = "icon_pause1";
             });
 
@@ -265,12 +265,12 @@ namespace OnlineMusicPlayerApp.Views
             if (audioService.IsPlaying())
             {
                 audioService.Pause();
-                btnPlay.ImageSource = "icon_play1";
+                btnPlay.Source = "icon_play1";
             }
             else
             {
                 audioService.Resume();
-                btnPlay.ImageSource = "icon_pause1";
+                btnPlay.Source = "icon_pause1";
             }
         }
 
