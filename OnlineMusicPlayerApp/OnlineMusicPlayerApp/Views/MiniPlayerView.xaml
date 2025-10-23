@@ -1,83 +1,94 @@
-﻿<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading"
              x:Class="OnlineMusicPlayerApp.Views.MiniPlayerView"
-             HeightRequest="60"
-             HorizontalOptions="FillAndExpand"
              BackgroundColor="Transparent"
              NavigationPage.HasNavigationBar="False">
 
     <Grid RowSpacing="0">
         <!-- حالت کامل -->
-        <StackLayout Padding="30" Spacing="1">
-            <Frame x:Name="MaximizedPanel"
+        <AbsoluteLayout>
+
+            <ffimageloading:CachedImage x:Name="BlurBackground"
+                            Aspect="AspectFill"
+                            WidthRequest="600" 
+                            HeightRequest="600"
+                            DownsampleToViewSize="true"
+                            Opacity="0.3"
+                            AbsoluteLayout.LayoutBounds="0,0,1.9,1.5"
+                            AbsoluteLayout.LayoutFlags="All" />
+            <StackLayout Padding="30" Spacing="1">
+                <Frame x:Name="MaximizedPanel"
                    Padding="10"
                    CornerRadius="12"
-                   BackgroundColor="#FFFFFF"
+                   BackgroundColor="Transparent"
                    HasShadow="True"
                    IsVisible="false"
                    VerticalOptions="FillAndExpand"
                    HorizontalOptions="FillAndExpand">
 
-                <StackLayout Spacing="30">
-                    <!-- عنوان آهنگ -->
-                    <ScrollView Orientation="Horizontal"
+                    <StackLayout Spacing="30">
+                        <!-- عنوان آهنگ -->
+                        <ScrollView Orientation="Horizontal"
                                 HorizontalOptions="Center"
                                 HeightRequest="30">
-                        <Label x:Name="lblTitle"
+                            <Label x:Name="lblTitle"
                                FontSize="18"
                                TextColor="#3E3E3E"
                                HorizontalTextAlignment="Start"
                                VerticalTextAlignment="Center" />
-                    </ScrollView>
+                        </ScrollView>
 
-                    <!-- تصویر دایره‌ای آهنگ -->
-                    <Frame Padding="0"
+                        <!-- تصویر دایره‌ای آهنگ -->
+                        <Frame Padding="0"
                            CornerRadius="150"
                            HeightRequest="300"
                            WidthRequest="300"
                            IsClippedToBounds="True"
                            HorizontalOptions="Center"
                            BackgroundColor="Transparent">
-                        <Image x:Name="CoverImage"
+                            <Image x:Name="CoverImage"
                                Aspect="AspectFill"
                                HeightRequest="300"
                                WidthRequest="300" />
-                    </Frame>
+                        </Frame>
 
-                    <!-- نوار پیشرفت دانلود -->
-                    <StackLayout x:Name="DownloadPanel"
+                        <!-- نوار پیشرفت دانلود -->
+                        <StackLayout x:Name="DownloadPanel"
                                  IsVisible="False"
                                  Spacing="6"
                                  HorizontalOptions="Center"
                                  Margin="0,10,0,0">
-                        <ProgressBar x:Name="DownloadProgressBar"
+                            <ProgressBar x:Name="DownloadProgressBar"
                                      WidthRequest="200"
                                      Progress="0"
                                      HeightRequest="6"
                                      BackgroundColor="#EEE"
                                      ProgressColor="#888" />
-                        <Label x:Name="DownloadMessageLabel"
+                            <Label x:Name="DownloadMessageLabel"
                                FontSize="12"
                                TextColor="#666"
                                HorizontalOptions="Center"
                                Text="در حال دریافت..." />
-                    </StackLayout>
+                        </StackLayout>
 
-                    <!-- نوار زمان و اسلایدر -->
-                    <Grid Margin="0,10,0,10"
+                        <!-- نوار زمان و اسلایدر -->
+                        <Grid Margin="0,10,0,10"
                           RowSpacing="4"
                           ColumnSpacing="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Label x:Name="CurrentTimeLabel"
+                            <Label x:Name="CurrentTimeLabel"
                                Grid.Row="0"
                                Grid.Column="0"
                                Text="0:00"
@@ -85,7 +96,7 @@
                                TextColor="#555"
                                HorizontalOptions="Start" />
 
-                        <Label x:Name="TotalTimeLabel"
+                            <Label x:Name="TotalTimeLabel"
                                Grid.Row="0"
                                Grid.Column="2"
                                Text="3:45"
@@ -93,7 +104,7 @@
                                TextColor="#555"
                                HorizontalOptions="End" />
 
-                        <Slider x:Name="ProgressSlider"
+                            <Slider x:Name="ProgressSlider"
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="3"
@@ -105,43 +116,44 @@
                                 MinimumTrackColor="#555"
                                 MaximumTrackColor="#CCC"
                                 HorizontalOptions="FillAndExpand" />
-                    </Grid>
+                        </Grid>
 
-                    <!-- شماره ترک -->
-                    <Label x:Name="lblTrackNumber"
+                        <!-- شماره ترک -->
+                        <Label x:Name="lblTrackNumber"
                            FontSize="14"
                            TextColor="#666"
                            HorizontalOptions="Center"
                            Margin="0,0,0,10" />
 
-                    <!-- دکمه‌های کنترل پخش -->
-                    <StackLayout Orientation="Horizontal"
+                        <!-- دکمه‌های کنترل پخش -->
+                        <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="Center"
                                  Spacing="30">
-                        <ImageButton x:Name="btnPrevious"
+                            <ImageButton x:Name="btnPrevious"
                                      Source="icon_back"
                                      BackgroundColor="Transparent"
                                      WidthRequest="36"
                                      HeightRequest="36"
                                      Clicked="OnPreviousClicked" />
 
-                        <ImageButton x:Name="btnPlay"
+                            <ImageButton x:Name="btnPlay"
                                      Source="icon_play1"
                                      BackgroundColor="Transparent"
                                      WidthRequest="36"
                                      HeightRequest="36"
                                      Clicked="OnPlayClicked" />
 
-                        <ImageButton x:Name="btnNext"
+                            <ImageButton x:Name="btnNext"
                                      Source="icon_next"
                                      BackgroundColor="Transparent"
                                      WidthRequest="36"
                                      HeightRequest="36"
                                      Clicked="OnNextClicked" />
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </Frame>
-        </StackLayout>
+                </Frame>
+            </StackLayout>
+        </AbsoluteLayout>
 
         <!-- MiniPlayer پایین صفحه -->
         <Frame x:Name="MiniPlayerFrame"

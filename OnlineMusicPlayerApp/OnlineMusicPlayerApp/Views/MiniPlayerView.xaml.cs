@@ -1,4 +1,5 @@
-﻿using OnlineMusicPlayerApp.Models;
+﻿using FFImageLoading.Work;
+using OnlineMusicPlayerApp.Models;
 using OnlineMusicPlayerApp.Services;
 using OnlineMusicPlayerApp.Services.PlayListServices;
 using System;
@@ -8,6 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using TagLib;
 using Xamarin.Forms;
+using FFImageLoading.Transformations;
+using FFImageLoading.Work;
+
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -46,6 +50,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
+            BlurBackground.Source = PlaybackCapsule.LoadCurrentImageTag();
 
             var audioService = DependencyService.Get<IAudioService>();
             bool isPlaying = audioService.IsPlaying();
@@ -155,6 +160,15 @@ namespace OnlineMusicPlayerApp.Views
             {
                 CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? GetAlbumArt(item.Href, "") : item.TagImageSrc;
                 imgMiniCover.Source = CoverImage.Source;
+                BlurBackground.Source = CoverImage.Source;
+
+                BlurBackground.Transformations = new List<ITransformation>
+                {
+                    new BlurredTransformation(10),
+                    //new GrayscaleTransformation(),
+                    //new TintTransformation("#FF4081")
+                };
+
 
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
@@ -207,7 +221,7 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
-        private ImageSource GetAlbumArt(string mp3Path, string tag)
+        private Xamarin.Forms.ImageSource GetAlbumArt(string mp3Path, string tag)
         {
             try
             {
@@ -228,7 +242,7 @@ namespace OnlineMusicPlayerApp.Views
                 if (picture != null)
                 {
                     var imageBytes = picture.Data.Data;
-                    return ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                    return Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 }
             }
             catch (Exception ex)

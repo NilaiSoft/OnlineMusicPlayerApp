@@ -59,6 +59,12 @@
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer">
       <Version>2.16.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Forms">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />
   </ItemGroup>
   <ItemGroup>

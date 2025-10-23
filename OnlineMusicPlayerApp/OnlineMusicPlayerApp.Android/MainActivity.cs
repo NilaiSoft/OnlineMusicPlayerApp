@@ -18,6 +18,26 @@ namespace OnlineMusicPlayerApp.Droid
             Forms.SetFlags("MediaElement_Experimental");
             base.OnCreate(savedInstanceState);
 
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
+
+            //Window.SetFlags(Android.Views.WindowManagerFlags.LayoutNoLimits,
+            //    Android.Views.WindowManagerFlags.LayoutNoLimits);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(
+                    SystemUiFlags.LayoutStable |
+                    SystemUiFlags.LayoutFullscreen |
+                    SystemUiFlags.LayoutHideNavigation);
+
+                Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+
+                // افکت شیشه‌ای روی نوار پایین
+                Window.SetNavigationBarColor(Android.Graphics.Color.Argb(100, 0, 0, 0));
+            }
+
+
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
