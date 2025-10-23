@@ -33,6 +33,8 @@ namespace OnlineMusicPlayerApp.Views
         {
             if (e.Item is Detail item)
             {
+                item.Children = item.Children.Where(x => x.IsVisible).ToList();
+
                 if (item.Children != null && item.Children.Any())
                 {
                     await Navigation.PushAsync(new DetailPages(item.Children));
