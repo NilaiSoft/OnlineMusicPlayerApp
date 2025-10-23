@@ -142,14 +142,22 @@
                          Spacing="8"
                          Padding="6,0">
 
-                <Image x:Name="imgMiniCover"
-                       Source="default_cover.png"
-                       WidthRequest="40"
+                <Frame Padding="0"
+                       CornerRadius="4"
+                       HasShadow="False"
                        HeightRequest="40"
-                       Aspect="AspectFill"
+                       WidthRequest="40"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"
-                       Margin="0,0,4,0" />
+                       Margin="0,0,4,0"
+                       IsClippedToBounds="True">
+                    <Image x:Name="imgMiniCover"
+                           Source="default_cover.png"
+                           Aspect="AspectFill"
+                           HeightRequest="40"
+                           WidthRequest="40" />
+                </Frame>
+
 
                 <Label x:Name="lblMiniTitle"
                        Text="در حال پخش..."
