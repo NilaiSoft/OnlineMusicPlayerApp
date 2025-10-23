@@ -149,14 +149,14 @@ namespace OnlineMusicPlayerApp.Views
                 return;
             }
 
-            CoverImage.Source = GetAlbumArt(item.Href, "");
-            imgMiniCover.Source = CoverImage.Source;
+            //CoverImage.Source = GetAlbumArt(item.Href, "");
+            //imgMiniCover.Source = CoverImage.Source;
 
             // 🎧 نمایش تصویر و عنوان
             Device.BeginInvokeOnMainThread(() =>
             {
-                CoverImage.Source = item.TagImageSrc ?? "no_cover_placeholder.png";
-                imgMiniCover.Source = item.TagImageSrc ?? "no_cover_placeholder.png";
+                CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? GetAlbumArt(item.Href, "") : item.TagImageSrc;
+                imgMiniCover.Source = CoverImage.Source;
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
                 lblMiniTitle.Text = item.Title;

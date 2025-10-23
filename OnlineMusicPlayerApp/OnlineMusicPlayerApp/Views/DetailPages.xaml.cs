@@ -14,7 +14,6 @@ namespace OnlineMusicPlayerApp.Views
     public partial class DetailPages : ContentPage
     {
         private List<Detail> playableItems;
-        private int currentIndex = -1;
         private bool isTimerRunning = false;
 
         public DetailPages(List<Detail> details)
