@@ -23,6 +23,7 @@ namespace OnlineMusicPlayerApp.Views
             _playableItems = PlaybackCapsule.CurrentPlaylist;
             _currentIndex = PlaybackCapsule.CurrentIndex;
             LoadLastPlaybackInfo();
+            imgMiniCover.Source = GetAlbumArt(PlaybackCapsule.LoadHref(), "");
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -101,8 +102,6 @@ namespace OnlineMusicPlayerApp.Views
 
             PlaybackCapsule.CurrentIndex = _currentIndex;
             PlaybackCapsule.CurrentTitle = item.Title;
-            PlaybackCapsule.CurrentImageTag = item.TagImageSrc;
-            PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
 
             string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
@@ -130,6 +129,7 @@ namespace OnlineMusicPlayerApp.Views
                 item.Href = await DependencyService.Get<IGoogleDriveServices>()
                     .DownloadGoogleDriveFileWithProgressAsync(item.Href, audioFileName, progressHandler);
 
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     DownloadPanel.IsVisible = false;
@@ -138,6 +138,7 @@ namespace OnlineMusicPlayerApp.Views
             else
             {
                 item.Href = audioPath;
+                PlaybackCapsule.SaveCurrentUrl(item.Href);
             }
 
             if (string.IsNullOrEmpty(item.Href))
@@ -154,6 +155,7 @@ namespace OnlineMusicPlayerApp.Views
             {
                 CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? GetAlbumArt(item.Href, "") : item.TagImageSrc;
                 imgMiniCover.Source = CoverImage.Source;
+
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
                 lblMiniTitle.Text = item.Title;
