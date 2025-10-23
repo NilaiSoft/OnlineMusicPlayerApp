@@ -150,6 +150,7 @@ namespace OnlineMusicPlayerApp.Views
             }
 
             CoverImage.Source = GetAlbumArt(item.Href, "");
+            imgMiniCover.Source = CoverImage.Source;
 
             // 🎧 نمایش تصویر و عنوان
             Device.BeginInvokeOnMainThread(() =>
