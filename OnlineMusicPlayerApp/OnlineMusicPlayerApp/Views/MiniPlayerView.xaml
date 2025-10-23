@@ -11,7 +11,7 @@
         <!-- حالت کامل -->
         <StackLayout Padding="30" Spacing="1">
             <Frame x:Name="MaximizedPanel"
-                   Padding="20"
+                   Padding="10"
                    CornerRadius="12"
                    BackgroundColor="#FFFFFF"
                    HasShadow="True"
@@ -19,7 +19,7 @@
                    VerticalOptions="FillAndExpand"
                    HorizontalOptions="FillAndExpand">
 
-                <StackLayout Spacing="10">
+                <StackLayout Spacing="40">
                     <Label x:Name="lblTitle"
                            FontSize="18"
                            TextColor="#3E3E3E"
@@ -29,13 +29,14 @@
                     <Image x:Name="CoverImage"
                            Aspect="AspectFill"
                            HorizontalOptions="Center"
-                           HeightRequest="200"
-                           WidthRequest="200"
+                           HeightRequest="300"
+                           WidthRequest="300"
                            Margin="0,0,0,10">
                         <Image.Clip>
-                            <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
+                            <EllipseGeometry Center="150,150" RadiusX="150" RadiusY="150" />
                         </Image.Clip>
                     </Image>
+
 
                     <!-- 🔄 نوار پیشرفت دانلود -->
                     <StackLayout x:Name="DownloadPanel"
