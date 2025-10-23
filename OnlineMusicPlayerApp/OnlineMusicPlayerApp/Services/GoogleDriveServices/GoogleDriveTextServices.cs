@@ -65,10 +65,10 @@ public class GoogleDriveServices : IGoogleDriveServices
         string fileId = "1NRhEt-01wf5MSqYnjvoxkPB5tFXqfkiw";
         string url = $"https://drive.google.com/uc?export=download&id={fileId}";
 
-        if (!await NetworkExtensions.IsConnectedAsync())
-        {
-            return string.Empty;
-        }
+        //if (!await NetworkExtensions.IsConnectedAsync())
+        //{
+        //    return string.Empty;
+        //}
 
         using (var client = new HttpClient())
         {
@@ -92,5 +92,39 @@ public class GoogleDriveServices : IGoogleDriveServices
             string json = await client.GetStringAsync(fileUrl);
             return JsonConvert.DeserializeObject<T>(json);
         }
+    }
+
+    public async Task<string> DownloadGoogleDriveFileWithProgressAsync(string url, string fileName, IProgress<double> progress)
+    {
+        string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string filePath = Path.Combine(folderPath, fileName);
+
+        using var client = new HttpClient();
+        using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        response.EnsureSuccessStatusCode();
+
+        var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+        var canReportProgress = totalBytes != -1 && progress != null;
+
+        using var stream = await response.Content.ReadAsStreamAsync();
+        using var fileStream = File.Create(filePath);
+
+        var buffer = new byte[8192];
+        long totalRead = 0;
+        int read;
+
+        while ((read = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        {
+            await fileStream.WriteAsync(buffer, 0, read);
+            totalRead += read;
+
+            if (canReportProgress)
+            {
+                double percent = (double)totalRead / totalBytes;
+                progress.Report(percent);
+            }
+        }
+
+        return filePath;
     }
 }

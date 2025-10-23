@@ -32,8 +32,6 @@ namespace OnlineMusicPlayerApp.Views
 
             await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
             {
-                var tets = await DependencyService.Get<IGoogleDriveServices>().GetMusicPlayList();
-
                 var stack = new StackLayout
                 {
                     Padding = new Thickness(20),

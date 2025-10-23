@@ -37,6 +37,25 @@
                         </Image.Clip>
                     </Image>
 
+                    <!-- 🔄 نوار پیشرفت دانلود -->
+                    <StackLayout x:Name="DownloadPanel"
+                                 IsVisible="False"
+                                 Spacing="6"
+                                 HorizontalOptions="Center"
+                                 Margin="0,10,0,0">
+                        <ProgressBar x:Name="DownloadProgressBar"
+                                     WidthRequest="200"
+                                     Progress="0"
+                                     HeightRequest="6"
+                                     BackgroundColor="#EEE"
+                                     ProgressColor="#888" />
+                        <Label x:Name="DownloadMessageLabel"
+                               FontSize="12"
+                               TextColor="#666"
+                               HorizontalOptions="Center"
+                               Text="در حال دریافت..." />
+                    </StackLayout>
+
                     <Grid ColumnSpacing="10" Margin="0,10,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

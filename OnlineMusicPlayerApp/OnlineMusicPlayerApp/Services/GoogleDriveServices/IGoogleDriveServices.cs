@@ -7,6 +7,8 @@ public interface IGoogleDriveServices
 {
     Task<string> GetTextFromFileAsync();
     Task<string> DownloadGoogleDriveFileAsync(string url, string fileName);
+    Task<string> DownloadGoogleDriveFileWithProgressAsync(string url, string fileName, IProgress<double> progress);
+
     Task<T> LoadJsonFromDriveAsync<T>(string fileUrl);
     Task<string> GetMusicPlayList();
 }

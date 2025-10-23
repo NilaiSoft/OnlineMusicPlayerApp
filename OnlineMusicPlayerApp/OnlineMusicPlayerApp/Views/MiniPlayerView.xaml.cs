@@ -104,11 +104,35 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveCurrentUrl(item.Href);
             PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
 
-            var audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}");
+            string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+            string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+
+            // 🎵 دانلود آهنگ با پیشرفت
             if (!File.Exists(audioPath))
             {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    DownloadPanel.IsVisible = true;
+                    DownloadProgressBar.Progress = 0;
+                    DownloadMessageLabel.Text = $"در حال دریافت «{item.Title}»...";
+                });
+
+                var progressHandler = new Progress<double>(p =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DownloadProgressBar.Progress = p;
+                        DownloadMessageLabel.Text = $"دانلود {Math.Round(p * 100)}٪ - شاید خاطره‌ای در راه باشد...";
+                    });
+                });
+
                 item.Href = await DependencyService.Get<IGoogleDriveServices>()
-                    .DownloadGoogleDriveFileAsync(item.Href, Path.GetFileName(audioPath));
+                    .DownloadGoogleDriveFileWithProgressAsync(item.Href, audioFileName, progressHandler);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    DownloadPanel.IsVisible = false;
+                });
             }
             else
             {
@@ -117,33 +141,46 @@ namespace OnlineMusicPlayerApp.Views
 
             if (string.IsNullOrEmpty(item.Href))
             {
-                DependencyService.Get<IToastService>()?.Show($"Href Is Empty");
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    DependencyService.Get<IToastService>()?.Show("دانلود آهنگ ناموفق بود.");
+                });
                 return;
             }
 
-            var imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}");
+            // 🎨 دانلود تصویر تگ یا جایگزین
+            string imageFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.TagImageSrc)}";
+            string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), imageFileName);
+
             if (!File.Exists(imagePath))
             {
                 item.TagImageSrc = await DependencyService.Get<IGoogleDriveServices>()
-                    .DownloadGoogleDriveFileAsync(item.TagImageSrc, Path.GetFileName(imagePath));
+                    .DownloadGoogleDriveFileAsync(item.TagImageSrc, imageFileName);
             }
             else
             {
                 item.TagImageSrc = imagePath;
             }
 
-            CoverImage.Source = item.TagImageSrc;
-            imgMiniCover.Source = item.TagImageSrc;
-            lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
-            lblTitle.Text = item.Title;
-            lblMiniTitle.Text = item.Title;
+            // 🎧 نمایش تصویر و عنوان
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                CoverImage.Source = item.TagImageSrc ?? "no_cover_placeholder.png";
+                imgMiniCover.Source = item.TagImageSrc ?? "no_cover_placeholder.png";
+                lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
+                lblTitle.Text = item.Title;
+                lblMiniTitle.Text = item.Title;
+                btnPlay.ImageSource = "icon_pause1";
+                btnMiniPlay.Source = "icon_pause1";
+            });
 
+            // 🎶 پخش آهنگ
             var audioService = DependencyService.Get<IAudioService>();
             double resumePosition = 0;
-            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition); // ✅ موقعیت ذخیره‌شده
+            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
             audioService.Play(item.Href, resumePosition);
-            btnPlay.ImageSource = "icon_pause1";
 
+            // ⏱️ نوار زمان و پخش خودکار آهنگ بعدی
             if (!_isTimerRunning)
             {
                 _isTimerRunning = true;
@@ -152,29 +189,31 @@ namespace OnlineMusicPlayerApp.Views
                     var duration = audioService.GetDurationSeconds();
                     var position = audioService.GetCurrentPositionSeconds();
 
-                    if (!double.IsNaN(duration) && duration > 0)
+                    Device.BeginInvokeOnMainThread(() =>
                     {
-                        ProgressSlider.Maximum = duration;
-                        TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
-                    }
+                        if (!double.IsNaN(duration) && duration > 0)
+                        {
+                            ProgressSlider.Maximum = duration;
+                            TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
+                        }
 
-                    if (!double.IsNaN(position) && position >= 0 && position <= duration)
-                    {
-                        ProgressSlider.Value = position;
-                        PlaybackCapsule.SaveSliderPosition(position);
-                        CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
-                    }
+                        if (!double.IsNaN(position) && position >= 0 && position <= duration)
+                        {
+                            ProgressSlider.Value = position;
+                            PlaybackCapsule.SaveSliderPosition(position);
+                            CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
+                        }
 
-                    if (position >= duration - 1 && duration > 0)
-                    {
-                        _currentIndex++;
-                        PlaybackCapsule.SaveSliderPosition(0); // پاک‌سازی موقعیت برای آهنگ بعدی
-                        _ = PlayNextAsync();
-                        _isTimerRunning = false;
-                        return false;
-                    }
+                        if (position >= duration - 1 && duration > 0)
+                        {
+                            _currentIndex++;
+                            PlaybackCapsule.SaveSliderPosition(0);
+                            _ = PlayNextAsync();
+                            _isTimerRunning = false;
+                        }
+                    });
 
-                    return true;
+                    return !(position >= duration - 1 && duration > 0);
                 });
             }
         }
