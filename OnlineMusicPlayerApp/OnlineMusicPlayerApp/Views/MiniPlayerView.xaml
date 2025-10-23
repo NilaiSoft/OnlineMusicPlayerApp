@@ -123,23 +123,24 @@
                         <Button x:Name="btnPrevious"
                                 ImageSource="icon_back"
                                 BackgroundColor="Transparent"
-                                WidthRequest="50"
-                                HeightRequest="50"
+                                WidthRequest="36"
+                                HeightRequest="36"
                                 Clicked="OnPreviousClicked" />
 
                         <Button x:Name="btnPlay"
                                 ImageSource="icon_play1"
                                 BackgroundColor="Transparent"
-                                WidthRequest="50"
-                                HeightRequest="50"
+                                WidthRequest="36"
+                                HeightRequest="36"
                                 Clicked="OnPlayClicked" />
 
                         <Button x:Name="btnNext"
                                 ImageSource="icon_next"
                                 BackgroundColor="Transparent"
-                                WidthRequest="50"
-                                HeightRequest="50"
+                                WidthRequest="36"
+                                HeightRequest="36"
                                 Clicked="OnNextClicked" />
+
                     </StackLayout>
                 </StackLayout>
             </Frame>
