@@ -219,6 +219,7 @@
                              BackgroundColor="Transparent"
                              WidthRequest="30"
                              HeightRequest="30"
+                             CommandParameter="minNext"
                              Clicked="OnNextClicked" />
             </StackLayout>
         </Frame>

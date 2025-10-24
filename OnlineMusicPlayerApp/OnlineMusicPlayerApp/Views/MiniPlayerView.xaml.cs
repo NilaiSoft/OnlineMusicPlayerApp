@@ -113,6 +113,13 @@ namespace OnlineMusicPlayerApp.Views
                 return;
 
             var item = _playableItems[_currentIndex];
+
+            _playableItems.ForEach(d => d.IsPlay = false);
+            var current = _playableItems[_currentIndex];
+            var c = _playableItems.FirstOrDefault(x => x.Id == current.Id);
+            c.IsPlay = true;
+
+
             //var item = PlaybackCapsule.CurrentPlaylist.FirstOrDefault(x => x.IsPlay);
             if (item == null) return;
 
@@ -307,6 +314,17 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnNextClicked(object sender, EventArgs e)
         {
+            var button = sender as ImageButton;
+            var parameter = button?.CommandParameter;
+
+            if (parameter != null)
+            {
+                if(parameter== "minNext")
+                {
+                    BlurBackground.IsVisible = false;
+                }
+            }
+
             if (_currentIndex < _playableItems.Count - 1)
             {
                 _currentIndex++;
