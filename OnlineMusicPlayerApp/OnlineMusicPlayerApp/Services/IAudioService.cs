@@ -10,4 +10,5 @@
     double GetCurrentPositionSeconds();
     void SeekTo(long positionMs);
     void Close();
+    bool IsInitialized();
 }

@@ -72,4 +72,8 @@ public class AudioService : IAudioService
         Android.App.Application.Context.StartService(intent);
     }
 
+    public bool IsInitialized()
+    {
+        return MusicService.player != null;
+    }
 }
