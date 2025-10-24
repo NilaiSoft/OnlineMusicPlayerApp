@@ -3,6 +3,8 @@ using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using System;
+using Rg.Plugins.Popup.Enums;
+using Rg.Plugins.Popup.Animations;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -14,6 +16,16 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             MessageLabel.Text = message;
+            _taskCompletionSource = new TaskCompletionSource<bool>();
+
+            Animation = new ScaleAnimation
+            {
+                PositionIn = MoveAnimationOptions.Center,
+                ScaleIn = 1.2,
+                DurationIn = 300,
+                EasingIn = Easing.CubicIn
+            };
+
             _taskCompletionSource = new TaskCompletionSource<bool>();
         }
 
