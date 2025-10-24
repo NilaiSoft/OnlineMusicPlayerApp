@@ -122,7 +122,7 @@ namespace OnlineMusicPlayerApp.Views
 
                 if (!confirm)
                 {
-                    _currentIndex++;
+                    //_currentIndex++;
                     OnNextClicked(null, null);
                     return;
                 }
