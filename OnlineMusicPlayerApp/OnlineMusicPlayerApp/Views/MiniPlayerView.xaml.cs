@@ -197,7 +197,6 @@ namespace OnlineMusicPlayerApp.Views
                         if (!double.IsNaN(duration) && duration > 0)
                         {
                             ProgressSlider.Maximum = duration;
-                            TotalTimeLabel.Text = TimeSpan.FromSeconds(duration).ToString(@"m\:ss");
                         }
 
                         if (!double.IsNaN(position) && position >= 0 && position <= duration)
@@ -205,6 +204,9 @@ namespace OnlineMusicPlayerApp.Views
                             ProgressSlider.Value = position;
                             PlaybackCapsule.SaveSliderPosition(position);
                             CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
+
+                            // نمایش زمان باقی‌مانده
+                            TotalTimeLabel.Text = TimeSpan.FromSeconds(duration - position).ToString(@"m\:ss");
                         }
 
                         if (position >= duration - 1 && duration > 0)
