@@ -59,8 +59,8 @@ namespace OnlineMusicPlayerApp.Views
                     case (int)MenuItemType.frmSettings:
                         MenuPages.Add(id, new NavigationPage(new frmSettings()));
                         break;
-                    case (int)MenuItemType.PleyList:
-                        MenuPages.Add(id, new NavigationPage(new PlayList()));
+                    case (int)MenuItemType.DetailPages:
+                        MenuPages.Add(id, new NavigationPage(new DetailPages()));
                         break;
                     case (int)MenuItemType.CloseMediaPlayer:
                         DependencyService.Get<IAudioService>().Close();

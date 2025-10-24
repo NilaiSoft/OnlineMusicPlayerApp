@@ -9,6 +9,7 @@ using OnlineMusicPlayerApp.Services.PlayListServices;
 using Xamarin.Essentials;
 using System.Threading.Tasks;
 using static Android.Telecom.Call;
+using OnlineMusicPlayerApp.Extensions;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -24,18 +25,20 @@ namespace OnlineMusicPlayerApp.Views
             var details = new List<Detail>();
             Device.BeginInvokeOnMainThread(async () =>
             {
-                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
-
-                details = categories.Select(x => new Detail
+                await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
                 {
-                    Title = x.Master,
-                    Children = x.Details
-                }).ToList();
+                    var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
 
-                playableItems = Flatten(details);
-                DetailsListView.ItemsSource = details;
+                    details = categories.Select(x => new Detail
+                    {
+                        Title = x.Master,
+                        Children = x.Details
+                    }).ToList();
+
+                    playableItems = Flatten(details);
+                    DetailsListView.ItemsSource = details;
+                });
             });
-
         }
         public DetailPages(List<Detail> details)
         {
