@@ -290,17 +290,17 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnPreviousClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            var parameter = button?.CommandParameter;
+            //var button = sender as ImageButton;
+            //var parameter = button?.CommandParameter;
 
-            if (parameter != null)
-            {
-                if (parameter == "minPreview")
-                {
-                    BlurBackground.IsVisible = false;
-                    MaximizedPanel.IsVisible = false;
-                }
-            }
+            //if (parameter != null)
+            //{
+            //    if (parameter == "minPreview")
+            //    {
+            //        BlurBackground.IsVisible = false;
+            //        MaximizedPanel.IsVisible = false;
+            //    }
+            //}
 
             if (_currentIndex > 0)
             {
@@ -327,17 +327,17 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnNextClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            var parameter = button?.CommandParameter;
+            //var button = sender as ImageButton;
+            //var parameter = button?.CommandParameter;
 
-            if (parameter != null)
-            {
-                if(parameter== "minNext")
-                {
-                    BlurBackground.IsVisible = false;
-                    MaximizedPanel.IsVisible = false;
-                }
-            }
+            //if (parameter != null)
+            //{
+            //    if(parameter== "minNext")
+            //    {
+            //        BlurBackground.IsVisible = false;
+            //        MaximizedPanel.IsVisible = false;
+            //    }
+            //}
 
             if (_currentIndex < _playableItems.Count - 1)
             {
