@@ -25,7 +25,8 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             _playableItems = PlaybackCapsule.CurrentPlaylist;
-            _currentIndex = PlaybackCapsule.CurrentIndex;
+            var c = _playableItems.FirstOrDefault(x => x.IsPlay);
+            _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
             LoadLastPlaybackInfo();
             imgMiniCover.Source = GetAlbumArt(PlaybackCapsule.LoadHref(), "");
         }
@@ -36,8 +37,13 @@ namespace OnlineMusicPlayerApp.Views
             MaximizedPanel.IsVisible = true;
             MiniPlayerFrame.IsVisible = false;
 
+            details.ForEach(d => d.IsPlay = false);
+
+            var current = details[currentIndex];
+            var c = details.FirstOrDefault(x => x.Id == current.Id);
+            c.IsPlay = true;
+
             _playableItems = details;
-            _currentIndex = currentIndex;
 
             PlaybackCapsule.CurrentPlaylist = details;
             PlaybackCapsule.CurrentIndex = currentIndex;
@@ -58,11 +64,11 @@ namespace OnlineMusicPlayerApp.Views
             btnPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
         }
 
-        private void OnMiniPlayClicked(object sender, EventArgs e)
+        private async void OnMiniPlayClicked(object sender, EventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
             bool isPlaying = audioService.IsPlaying();
-
+            BlurBackground.IsVisible = false;
             if (isPlaying)
             {
                 audioService.Pause();
@@ -71,7 +77,8 @@ namespace OnlineMusicPlayerApp.Views
             }
             else
             {
-                audioService.Resume();
+                //audioService.Resume();
+                await PlayNextAsync();
                 //if (isActive == null)
                 //{
                 //    double currentPosition = audioService.GetCurrentPositionSeconds();
@@ -91,6 +98,9 @@ namespace OnlineMusicPlayerApp.Views
             double currentPosition = audioService.GetCurrentPositionSeconds();
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
 
+            var c = _playableItems.FirstOrDefault(x => x.IsPlay);
+            _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
+
             var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage { Content = maximizedView };
             NavigationPage.SetHasNavigationBar(page, false);
@@ -99,10 +109,11 @@ namespace OnlineMusicPlayerApp.Views
 
         private async Task PlayNextAsync()
         {
-            if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
-                return;
+            //if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
+            //    return;
 
             var item = _playableItems[_currentIndex];
+            //var item = PlaybackCapsule.CurrentPlaylist.FirstOrDefault(x => x.IsPlay);
             if (item == null) return;
 
             PlaybackCapsule.CurrentIndex = _currentIndex;
