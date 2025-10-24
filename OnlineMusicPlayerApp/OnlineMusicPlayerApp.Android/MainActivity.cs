@@ -37,7 +37,7 @@ namespace OnlineMusicPlayerApp.Droid
             }
 
 
-
+            Rg.Plugins.Popup.Popup.Init(this); // 🔥 این خط ضروریه
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="OnlineMusicPlayerApp.Views.ConfirmPopup"
+                 BackgroundColor="#80000000">
+
+    <Frame Padding="20" BackgroundColor="White" CornerRadius="12"
+           HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Spacing="20">
+            <Label x:Name="MessageLabel"
+                   Text="آیا مطمئن هستید؟"
+                   FontSize="Medium"
+                   HorizontalOptions="Center" />
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+                <Button Text="بله" Clicked="OnYesClicked" />
+                <Button Text="خیر" Clicked="OnNoClicked" />
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</popup:PopupPage>

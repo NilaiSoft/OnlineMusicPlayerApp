@@ -112,9 +112,21 @@ namespace OnlineMusicPlayerApp.Views
             string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
             string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
-            // 🎵 دانلود آهنگ با پیشرفت
+            // 🎵 دانلود آهنگ با تأیید کاربر
             if (!System.IO.File.Exists(audioPath))
             {
+                string message = $"به نظر می‌رسد آهنگ «{item.Title}» هنوز آماده پخش نیست.\nمایلی آن را برایت فراهم کنیم؟";
+                var popup = new ConfirmPopup(message);
+                await Rg.Plugins.Popup.Services.PopupNavigation.Instance.PushAsync(popup);
+                bool confirm = await popup.ShowAsync();
+
+                if (!confirm)
+                {
+                    _currentIndex++;
+                    OnNextClicked(null, null);
+                    return;
+                }
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     DownloadPanel.IsVisible = true;
@@ -133,7 +145,6 @@ namespace OnlineMusicPlayerApp.Views
 
                 item.Href = await DependencyService.Get<IGoogleDriveServices>()
                     .DownloadGoogleDriveFileWithProgressAsync(item.Href, audioFileName, progressHandler);
-
 
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -163,12 +174,9 @@ namespace OnlineMusicPlayerApp.Views
                 BlurBackground.Source = CoverImage.Source;
 
                 BlurBackground.Transformations = new List<ITransformation>
-                {
-                    new BlurredTransformation(10),
-                    //new GrayscaleTransformation(),
-                    //new TintTransformation("#FF4081")
-                };
-
+        {
+            new BlurredTransformation(10),
+        };
 
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
@@ -204,8 +212,6 @@ namespace OnlineMusicPlayerApp.Views
                             ProgressSlider.Value = position;
                             PlaybackCapsule.SaveSliderPosition(position);
                             CurrentTimeLabel.Text = TimeSpan.FromSeconds(position).ToString(@"m\:ss");
-
-                            // نمایش زمان باقی‌مانده
                             TotalTimeLabel.Text = TimeSpan.FromSeconds(duration - position).ToString(@"m\:ss");
                         }
 
