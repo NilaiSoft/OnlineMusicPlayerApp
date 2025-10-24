@@ -44,7 +44,7 @@ namespace OnlineMusicPlayerApp.Views
             c.IsPlay = true;
 
             _playableItems = details;
-
+            _currentIndex = currentIndex;
             PlaybackCapsule.CurrentPlaylist = details;
             PlaybackCapsule.CurrentIndex = currentIndex;
 
@@ -97,7 +97,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             double currentPosition = audioService.GetCurrentPositionSeconds();
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
-
+            BlurBackground.IsVisible = true;
             var c = _playableItems.FirstOrDefault(x => x.IsPlay);
             _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
 
@@ -109,8 +109,8 @@ namespace OnlineMusicPlayerApp.Views
 
         private async Task PlayNextAsync()
         {
-            //if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
-            //    return;
+            if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
+                return;
 
             var item = _playableItems[_currentIndex];
             //var item = PlaybackCapsule.CurrentPlaylist.FirstOrDefault(x => x.IsPlay);
