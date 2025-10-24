@@ -69,6 +69,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             bool isPlaying = audioService.IsPlaying();
             BlurBackground.IsVisible = false;
+            MaximizedPanel.IsVisible = false;
             if (isPlaying)
             {
                 audioService.Pause();
@@ -289,6 +290,18 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnPreviousClicked(object sender, EventArgs e)
         {
+            var button = sender as ImageButton;
+            var parameter = button?.CommandParameter;
+
+            if (parameter != null)
+            {
+                if (parameter == "minPreview")
+                {
+                    BlurBackground.IsVisible = false;
+                    MaximizedPanel.IsVisible = false;
+                }
+            }
+
             if (_currentIndex > 0)
             {
                 _currentIndex--;
@@ -322,6 +335,7 @@ namespace OnlineMusicPlayerApp.Views
                 if(parameter== "minNext")
                 {
                     BlurBackground.IsVisible = false;
+                    MaximizedPanel.IsVisible = false;
                 }
             }
 

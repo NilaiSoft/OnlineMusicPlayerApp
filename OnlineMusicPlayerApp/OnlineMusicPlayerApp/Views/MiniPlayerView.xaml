@@ -205,6 +205,7 @@
                              BackgroundColor="Transparent"
                              WidthRequest="30"
                              HeightRequest="30"
+                             CommandParameter="minPreview"
                              Clicked="OnPreviousClicked" />
 
                 <ImageButton x:Name="btnMiniPlay"
