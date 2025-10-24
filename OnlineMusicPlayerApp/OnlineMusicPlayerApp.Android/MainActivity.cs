@@ -23,18 +23,18 @@ namespace OnlineMusicPlayerApp.Droid
             //Window.SetFlags(Android.Views.WindowManagerFlags.LayoutNoLimits,
             //    Android.Views.WindowManagerFlags.LayoutNoLimits);
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-            {
-                Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(
-                    SystemUiFlags.LayoutStable |
-                    SystemUiFlags.LayoutFullscreen |
-                    SystemUiFlags.LayoutHideNavigation);
+            //if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            //{
+            //    Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(
+            //        SystemUiFlags.LayoutStable |
+            //        SystemUiFlags.LayoutFullscreen |
+            //        SystemUiFlags.LayoutHideNavigation);
 
-                Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+            //    Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
 
-                // افکت شیشه‌ای روی نوار پایین
-                Window.SetNavigationBarColor(Android.Graphics.Color.Argb(100, 0, 0, 0));
-            }
+            //    // افکت شیشه‌ای روی نوار پایین
+            //    Window.SetNavigationBarColor(Android.Graphics.Color.Argb(100, 0, 0, 0));
+            //}
 
 
 

@@ -7,6 +7,8 @@ using Xamarin.Forms.Xaml;
 using OnlineMusicPlayerApp.Models;
 using OnlineMusicPlayerApp.Services.PlayListServices;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
+using static Android.Telecom.Call;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -16,6 +18,25 @@ namespace OnlineMusicPlayerApp.Views
         private List<Detail> playableItems;
         private bool isTimerRunning = false;
 
+        public DetailPages()
+        {
+            InitializeComponent();
+            var details = new List<Detail>();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+
+                details = categories.Select(x => new Detail
+                {
+                    Title = x.Master,
+                    Children = x.Details
+                }).ToList();
+
+                playableItems = Flatten(details);
+                DetailsListView.ItemsSource = details;
+            });
+
+        }
         public DetailPages(List<Detail> details)
         {
             InitializeComponent();

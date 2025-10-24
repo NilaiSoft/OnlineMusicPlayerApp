@@ -22,7 +22,7 @@ namespace OnlineMusicPlayerApp.Views
 
         private void OnPlaylistClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PlayList());
+            Navigation.PushAsync(new DetailPages());
         }
     }
 }
