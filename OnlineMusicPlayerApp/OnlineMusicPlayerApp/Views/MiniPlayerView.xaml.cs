@@ -113,6 +113,16 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
 
+            _playableItems = _playableItems
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+                .ToList();
+
             var item = _playableItems[_currentIndex];
 
             _playableItems.ForEach(d => d.IsPlay = false);
