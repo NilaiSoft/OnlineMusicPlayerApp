@@ -37,6 +37,17 @@ namespace OnlineMusicPlayerApp.Views
             MaximizedPanel.IsVisible = true;
             MiniPlayerFrame.IsVisible = false;
 
+            details = details
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+                .ToList();
+
+
             details.ForEach(d => d.IsPlay = false);
 
             var current = details[currentIndex];
@@ -99,6 +110,17 @@ namespace OnlineMusicPlayerApp.Views
             double currentPosition = audioService.GetCurrentPositionSeconds();
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
             BlurBackground.IsVisible = true;
+
+            _playableItems = _playableItems
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+                .ToList();
+
             var c = _playableItems.FirstOrDefault(x => x.IsPlay);
             _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
 
