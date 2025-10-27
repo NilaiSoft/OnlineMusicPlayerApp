@@ -151,6 +151,7 @@ namespace OnlineMusicPlayerApp.Views
 
                 if (!confirm)
                 {
+                    _currentIndex--;
                     return;
                 }
 
