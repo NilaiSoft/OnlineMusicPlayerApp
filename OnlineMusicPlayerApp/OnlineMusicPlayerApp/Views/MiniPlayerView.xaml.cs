@@ -23,9 +23,14 @@ namespace OnlineMusicPlayerApp.Views
 
         public MiniPlayerView()
         {
-            InitializeComponent();
             _playableItems = PlaybackCapsule.CurrentPlaylist;
 
+            if (!_playableItems.Any())
+            {
+                return;
+            }
+
+            InitializeComponent();
 
             _playableItems = _playableItems
             .OrderByDescending(item =>
@@ -182,6 +187,8 @@ namespace OnlineMusicPlayerApp.Views
                 if (!confirm)
                 {
                     _currentIndex--;
+                    btnMiniPlay.Source = "icon_play1";
+                    btnPlay.Source = "icon_play1";
                     return;
                 }
 
