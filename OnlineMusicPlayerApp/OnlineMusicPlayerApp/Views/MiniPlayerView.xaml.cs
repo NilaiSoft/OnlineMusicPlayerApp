@@ -265,11 +265,17 @@ namespace OnlineMusicPlayerApp.Views
             // ⏱️ نوار زمان و پخش خودکار آهنگ بعدی
             if (!_isTimerRunning)
             {
-                _isTimerRunning = true;
+                // ⏱️ نوار زمان و پخش خودکار آهنگ بعدی
+                _isTimerRunning = false; // اطمینان از ریست قبل از شروع
+
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
+                    var audioService = DependencyService.Get<IAudioService>();
                     var duration = audioService.GetDurationSeconds();
                     var position = audioService.GetCurrentPositionSeconds();
+
+                    if (!_isTimerRunning)
+                        return false;
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -288,15 +294,17 @@ namespace OnlineMusicPlayerApp.Views
 
                         if (position >= duration - 1 && duration > 0)
                         {
+                            _isTimerRunning = false;
                             _currentIndex++;
                             PlaybackCapsule.SaveSliderPosition(0);
                             _ = PlayNextAsync();
-                            _isTimerRunning = false;
                         }
                     });
 
-                    return !(position >= duration - 1 && duration > 0);
+                    return true;
                 });
+
+                _isTimerRunning = true;
             }
         }
 
