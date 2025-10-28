@@ -186,9 +186,10 @@ namespace OnlineMusicPlayerApp.Views
 
                 if (!confirm)
                 {
-                    _currentIndex--;
+                    _currentIndex = 0;
                     btnMiniPlay.Source = "icon_play1";
                     btnPlay.Source = "icon_play1";
+                    await PlayNextAsync();
                     return;
                 }
 
