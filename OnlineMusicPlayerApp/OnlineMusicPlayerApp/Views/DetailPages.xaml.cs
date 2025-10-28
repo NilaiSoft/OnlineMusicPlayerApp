@@ -22,24 +22,41 @@ namespace OnlineMusicPlayerApp.Views
         public DetailPages()
         {
             InitializeComponent();
+            playableItems = new List<Detail>();
+            DetailsListView_Refreshing(null, null);
+        }
+
+        private async void LoadData()
+        {
+            DetailsListView.ItemsSource = null;
+
             var details = new List<Detail>();
-            Device.BeginInvokeOnMainThread(async () =>
+
+            await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
             {
-                await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
+                var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+
+                details = categories.Select(x => new Detail
                 {
-                    var categories = await DependencyService.Get<IPlayListServices>().GetCategoriesFromJson();
+                    Title = x.Master,
+                    Children = x.Details
+                }).ToList();
 
-                    details = categories.Select(x => new Detail
-                    {
-                        Title = x.Master,
-                        Children = x.Details
-                    }).ToList();
-
-                    playableItems = Flatten(details);
-                    DetailsListView.ItemsSource = details;
-                });
+                playableItems = Flatten(details);
+                DetailsListView.ItemsSource = details;
             });
         }
+
+        private void DetailsListView_Refreshing(object sender, EventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                LoadData(); // بارگذاری مجدد داده‌ها
+            });
+
+            DetailsListView.IsRefreshing = false; // توقف spinner
+        }
+
         public DetailPages(List<Detail> details)
         {
             InitializeComponent();

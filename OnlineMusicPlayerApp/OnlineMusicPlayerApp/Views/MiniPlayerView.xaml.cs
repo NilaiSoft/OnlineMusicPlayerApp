@@ -25,6 +25,18 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             _playableItems = PlaybackCapsule.CurrentPlaylist;
+
+
+            _playableItems = _playableItems
+            .OrderByDescending(item =>
+            {
+                string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                return System.IO.File.Exists(audioPath);
+            })
+            .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+            .ToList();
+
             var c = _playableItems.FirstOrDefault(x => x.IsPlay);
             _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
             LoadLastPlaybackInfo();
@@ -156,10 +168,6 @@ namespace OnlineMusicPlayerApp.Views
             //var item = PlaybackCapsule.CurrentPlaylist.FirstOrDefault(x => x.IsPlay);
             if (item == null) return;
 
-            PlaybackCapsule.CurrentIndex = _currentIndex;
-            PlaybackCapsule.CurrentTitle = item.Title;
-            PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
-
             string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
             string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
@@ -176,6 +184,11 @@ namespace OnlineMusicPlayerApp.Views
                     _currentIndex--;
                     return;
                 }
+
+                PlaybackCapsule.CurrentIndex = _currentIndex;
+                PlaybackCapsule.CurrentTitle = item.Title;
+                PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
+
 
                 Device.BeginInvokeOnMainThread(() =>
                 {

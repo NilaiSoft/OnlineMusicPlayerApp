@@ -8,30 +8,35 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout x:Name="stack" Padding="30,35,30,0" Spacing="1">
+            <StackLayout Padding="30,35,30,0" Spacing="1">
                 <!-- لیست آیتم‌ها -->
-                <ListView x:Name="DetailsListView"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None"
-                      BackgroundColor="Transparent"
-                      ItemTapped="DetailsListView_ItemTapped">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame BackgroundColor="#eeeeee"
-                                   CornerRadius="8"
-                                   Padding="12"
-                                   Margin="5">
-                                    <Label Text="{Binding Title}"
-                                       TextColor="Black"
-                                       FontSize="16"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="Center" />
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <StackLayout x:Name="stack" Spacing="1">
+                    <ListView x:Name="DetailsListView"
+              HasUnevenRows="True"
+              IsPullToRefreshEnabled="True"
+              IsRefreshing="False"
+              Refreshing="DetailsListView_Refreshing"
+              SeparatorVisibility="None"
+              BackgroundColor="Transparent"
+              ItemTapped="DetailsListView_ItemTapped">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame BackgroundColor="#eeeeee"
+                           CornerRadius="8"
+                           Padding="12"
+                           Margin="5">
+                                        <Label Text="{Binding Title}"
+                               TextColor="Black"
+                               FontSize="16"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
 
             </StackLayout>
             <views:MiniPlayerView Grid.Row="1"
