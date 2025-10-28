@@ -126,7 +126,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             double currentPosition = audioService.GetCurrentPositionSeconds();
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
-            BlurBackground.IsVisible = true;
+            //BlurBackground.IsVisible = false;
 
             _playableItems = _playableItems
                 .OrderByDescending(item =>
