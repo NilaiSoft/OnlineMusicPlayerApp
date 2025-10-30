@@ -88,6 +88,19 @@ namespace OnlineMusicPlayerApp.Views
             btnPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
         }
 
+        public void ResetPage()
+        {
+            var c = _playableItems[_currentIndex];
+            lblMiniTitle.Text = c.Title;
+            imgMiniCover.Source = GetAlbumArt(c.Href, c.TagImageSrc);
+            BlurBackground.Source = imgMiniCover.Source;
+
+            var audioService = DependencyService.Get<IAudioService>();
+            bool isPlaying = audioService.IsPlaying();
+            btnMiniPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
+            btnPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
+        }
+
         private async void OnMiniPlayClicked(object sender, EventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
