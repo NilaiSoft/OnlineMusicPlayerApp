@@ -15,7 +15,10 @@ namespace OnlineMusicPlayerApp.Views
 
             MessagingCenter.Subscribe<object>(this, "PlaylistUpdated", (sender) =>
             {
-                UpdateMiniPlayerVisibility();
+                var newMiniPlayer = new MiniPlayerView();
+                MainGrid.Children.Remove(MiniPlayerViewControl);
+                MainGrid.Children.Add(newMiniPlayer);
+                Grid.SetRow(newMiniPlayer, 4); // حفظ موقعیت در Grid
             });
         }
 

@@ -7,7 +7,7 @@
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <Grid VerticalOptions="FillAndExpand" BackgroundColor="AliceBlue">
+        <Grid x:Name="MainGrid" VerticalOptions="FillAndExpand" BackgroundColor="AliceBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
