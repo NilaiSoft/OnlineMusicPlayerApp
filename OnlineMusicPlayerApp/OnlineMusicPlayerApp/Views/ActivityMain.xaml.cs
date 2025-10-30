@@ -1,8 +1,7 @@
-﻿using Xamarin.Forms;
-using OnlineMusicPlayerApp.Views;
-using OnlineMusicPlayerApp.Services;
-using OnlineMusicPlayerApp.Extensions;
+﻿using OnlineMusicPlayerApp.Services.PlayListServices;
 using System;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -11,6 +10,18 @@ namespace OnlineMusicPlayerApp.Views
         public ActivityMain()
         {
             InitializeComponent();
+
+            UpdateMiniPlayerVisibility();
+
+            MessagingCenter.Subscribe<object>(this, "PlaylistUpdated", (sender) =>
+            {
+                UpdateMiniPlayerVisibility();
+            });
+        }
+
+        private void UpdateMiniPlayerVisibility()
+        {
+            MiniPlayerViewControl.IsVisible = PlaybackCapsule.CurrentPlaylist != null && PlaybackCapsule.CurrentPlaylist.Any();
         }
 
         private void btnMenu_Clicked(object sender, EventArgs e)
