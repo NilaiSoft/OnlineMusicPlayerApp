@@ -61,6 +61,16 @@ namespace OnlineMusicPlayerApp.Views
         {
             InitializeComponent();
             playableItems = Flatten(details);
+
+            details = details
+.OrderByDescending(item =>
+{
+string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+return System.IO.File.Exists(audioPath);
+})
+.ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+.ToList();
             DetailsListView.ItemsSource = details;
         }
 
@@ -86,6 +96,17 @@ namespace OnlineMusicPlayerApp.Views
                         return;
 
                     int index = playableItems.FindIndex(x => x.Id == item.Id);
+
+                    playableItems = playableItems
+.OrderByDescending(item =>
+{
+string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+return System.IO.File.Exists(audioPath);
+})
+.ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+.ToList();
+
                     PlaybackCapsule.CurrentPlaylist = playableItems;
                     PlaybackCapsule.CurrentIndex = index;
 
@@ -109,6 +130,17 @@ namespace OnlineMusicPlayerApp.Views
                 else
                     flat.Add(item);
             }
+
+            flat = flat
+    .OrderByDescending(item =>
+    {
+        string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+        string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+        return System.IO.File.Exists(audioPath);
+    })
+    .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+    .ToList();
+
             return flat;
         }
 

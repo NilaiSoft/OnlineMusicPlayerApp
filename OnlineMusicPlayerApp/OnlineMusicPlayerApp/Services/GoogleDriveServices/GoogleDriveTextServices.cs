@@ -64,14 +64,14 @@ public class GoogleDriveServices : IGoogleDriveServices
     {
 
         string fileId = "1NRhEt-01wf5MSqYnjvoxkPB5tFXqfkiw";
-#if DEBUG
-        fileId = "1Fg7i1jbE498ihc1ZjB-n-Xf-HT4Of6fp";
-#else
+//#if DEBUG
+        //fileId = "1Fg7i1jbE498ihc1ZjB-n-Xf-HT4Of6fp";
+//#else
         if (!await NetworkExtensions.IsConnectedAsync())
         {
             return string.Empty;
         }
-#endif
+//#endif
 
         string url = $"https://drive.google.com/uc?export=download&id={fileId}";
 
