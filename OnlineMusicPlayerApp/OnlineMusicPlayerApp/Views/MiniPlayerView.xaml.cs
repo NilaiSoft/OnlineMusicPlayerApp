@@ -422,5 +422,44 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveSliderPosition(0);
             await PlayNextAsync();
         }
+
+        public void RefreshMiniPlayerFrame()
+        {
+            _playableItems = PlaybackCapsule.CurrentPlaylist;
+            _currentIndex = PlaybackCapsule.CurrentIndex;
+
+            _playableItems = _playableItems
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+                .ToList();
+
+            if (_playableItems == null || !_playableItems.Any() || _currentIndex < 0 || _currentIndex >= _playableItems.Count)
+                return;
+
+            var item = _playableItems[_currentIndex];
+
+            lblMiniTitle.Text = item.Title;
+            lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
+
+            var imageSource = string.IsNullOrEmpty(item.TagImageSrc)
+                ? GetAlbumArt(item.Href, "")
+                : item.TagImageSrc;
+
+            imgMiniCover.Source = imageSource;
+
+            var audioService = DependencyService.Get<IAudioService>();
+            bool isPlaying = audioService?.IsPlaying() ?? false;
+
+            btnMiniPlay.Source = isPlaying ? "icon_pause1" : "icon_play1";
+            btnMiniPrev.Source = "icon_back";
+            btnMiniNext.Source = "icon_next";
+
+            MiniPlayerFrame.IsVisible = true;
+        }
     }
 }

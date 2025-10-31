@@ -28,6 +28,13 @@ namespace OnlineMusicPlayerApp.Views
             MiniPlayerViewControl.IsVisible = PlaybackCapsule.CurrentPlaylist != null && PlaybackCapsule.CurrentPlaylist.Any();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            MiniPlayerViewControl.RefreshMiniPlayerFrame();
+        }
+
         private void btnMenu_Clicked(object sender, EventArgs e)
         {
             App app = Application.Current as App; // Get the current App instance
