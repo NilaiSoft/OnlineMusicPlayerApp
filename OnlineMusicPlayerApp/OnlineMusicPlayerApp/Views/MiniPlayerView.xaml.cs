@@ -72,7 +72,7 @@ namespace OnlineMusicPlayerApp.Views
             _currentIndex = currentIndex;
             PlaybackCapsule.CurrentPlaylist = details;
             PlaybackCapsule.CurrentIndex = currentIndex;
-            MessagingCenter.Send<object>(this, "PlaylistUpdated");
+            //MessagingCenter.Send<object>(this, "PlaylistUpdated");
 
             LoadLastPlaybackInfo();
             Task.Run(async () => await PlayNextAsync());
