@@ -20,12 +20,13 @@ namespace OnlineMusicPlayerApp.Views
         private List<Detail> _playableItems;
         private int _currentIndex = -1;
         private bool _isTimerRunning = false;
-
+        private IAudioService _audioService;
         public MiniPlayerView()
         {
             _playableItems = PlaybackCapsule.CurrentPlaylist;
 
             InitializeComponent();
+            _audioService = DependencyService.Get<IAudioService>();
 
             _playableItems = _playableItems
             .OrderByDescending(item =>
@@ -46,6 +47,7 @@ namespace OnlineMusicPlayerApp.Views
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
         {
             InitializeComponent();
+            _audioService = DependencyService.Get<IAudioService>();
             MaximizedPanel.IsVisible = true;
             MiniPlayerFrame.IsVisible = false;
 
@@ -306,6 +308,7 @@ namespace OnlineMusicPlayerApp.Views
                         {
                             _isTimerRunning = false;
                             _currentIndex++;
+                            _audioService.SeekTo(0);
                             PlaybackCapsule.SaveSliderPosition(0);
                             _ = PlayNextAsync();
                         }
@@ -388,6 +391,7 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex > 0)
             {
                 _currentIndex--;
+                _audioService.SeekTo(0);
                 PlaybackCapsule.SaveSliderPosition(0);
                 await PlayNextAsync();
             }
@@ -431,6 +435,7 @@ namespace OnlineMusicPlayerApp.Views
                 _currentIndex = 0;
             }
 
+            _audioService.SeekTo(0);
             PlaybackCapsule.SaveSliderPosition(0);
             await PlayNextAsync();
         }
