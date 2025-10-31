@@ -158,7 +158,7 @@ namespace OnlineMusicPlayerApp.Views
             await Navigation.PushAsync(page);
         }
 
-        private async Task PlayNextAsync()
+        private async Task PlayNextAsync(string e = "")
         {
             if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
@@ -197,10 +197,13 @@ namespace OnlineMusicPlayerApp.Views
 
                 if (!confirm)
                 {
-                    _currentIndex = 0;
-                    btnMiniPlay.Source = "icon_play1";
-                    btnPlay.Source = "icon_play1";
-                    await PlayNextAsync();
+                    if (e == "+")
+                        _currentIndex--;
+                    if (e == "-")
+                        _currentIndex++;
+                    //btnMiniPlay.Source = "icon_play1";
+                    //btnPlay.Source = "icon_play1";
+                    //await PlayNextAsync();
                     return;
                 }
                 _audioService.SeekTo(0);
@@ -221,7 +224,7 @@ namespace OnlineMusicPlayerApp.Views
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         DownloadProgressBar.Progress = p;
-                        DownloadMessageLabel.Text = $"دانلود {Math.Round(p * 100)}٪ - شاید خاطره‌ای در راه باشد...";
+                        DownloadMessageLabel.Text = $"دانلود {Math.Round(p * 100)}٪ - بارگذاری {item.Title}";
                     });
                 });
 
@@ -391,7 +394,7 @@ namespace OnlineMusicPlayerApp.Views
             {
                 _currentIndex--;
                 PlaybackCapsule.SaveSliderPosition(0);
-                await PlayNextAsync();
+                await PlayNextAsync("-");
             }
         }
 
@@ -434,7 +437,7 @@ namespace OnlineMusicPlayerApp.Views
             }
 
             PlaybackCapsule.SaveSliderPosition(0);
-            await PlayNextAsync();
+            await PlayNextAsync("+");
         }
 
         public void RefreshMiniPlayerFrame()
