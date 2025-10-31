@@ -203,7 +203,7 @@ namespace OnlineMusicPlayerApp.Views
                     await PlayNextAsync();
                     return;
                 }
-
+                _audioService.SeekTo(0);
                 PlaybackCapsule.CurrentIndex = _currentIndex;
                 PlaybackCapsule.CurrentTitle = item.Title;
                 PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
@@ -308,7 +308,6 @@ namespace OnlineMusicPlayerApp.Views
                         {
                             _isTimerRunning = false;
                             _currentIndex++;
-                            _audioService.SeekTo(0);
                             PlaybackCapsule.SaveSliderPosition(0);
                             _ = PlayNextAsync();
                         }
@@ -391,7 +390,6 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex > 0)
             {
                 _currentIndex--;
-                _audioService.SeekTo(0);
                 PlaybackCapsule.SaveSliderPosition(0);
                 await PlayNextAsync();
             }
@@ -435,7 +433,6 @@ namespace OnlineMusicPlayerApp.Views
                 _currentIndex = 0;
             }
 
-            _audioService.SeekTo(0);
             PlaybackCapsule.SaveSliderPosition(0);
             await PlayNextAsync();
         }
