@@ -40,7 +40,7 @@ namespace OnlineMusicPlayerApp.Views
             var c = _playableItems.FirstOrDefault(x => x.IsPlay);
             _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
             LoadLastPlaybackInfo();
-            imgMiniCover.Source = GetAlbumArt(PlaybackCapsule.LoadHref(), "");
+            imgMiniCover.Source = GetAlbumArt(PlaybackCapsule.LoadHref(), c?.TagImageSrc);
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -249,14 +249,15 @@ namespace OnlineMusicPlayerApp.Views
             // 🎧 نمایش تصویر و عنوان
             Device.BeginInvokeOnMainThread(() =>
             {
-                CoverImage.Source = string.IsNullOrEmpty(item.TagImageSrc) ? GetAlbumArt(item.Href, "") : item.TagImageSrc;
-                imgMiniCover.Source = CoverImage.Source;
-                BlurBackground.Source = CoverImage.Source;
+                var imgCover = GetAlbumArt(item.Href, item.TagImageSrc);
+                CoverImage.Source = imgCover;
+                imgMiniCover.Source = imgCover;
+                BlurBackground.Source = imgCover;
 
                 BlurBackground.Transformations = new List<ITransformation>
-        {
-            new BlurredTransformation(10),
-        };
+                {
+                    new BlurredTransformation(10),
+                };
 
                 lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
                 lblTitle.Text = item.Title;
@@ -317,23 +318,34 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
-        private Xamarin.Forms.ImageSource GetAlbumArt(string mp3Path, string tag)
+        private Xamarin.Forms.ImageSource GetAlbumArt(string mp3Path, string myTag)
         {
             try
             {
+                //// اگر myTag مقدار داشت، همون تصویر رو برگردون
+                //if (!string.IsNullOrEmpty(myTag))
+                //{
+                //    return Xamarin.Forms.ImageSource.FromFile(myTag);
+                //}
+                // اگر myTag مقدار داشت و آدرس اینترنتی بود، تصویر از وب لود بشه
+                if (!string.IsNullOrEmpty(myTag))
+                {
+                    if (myTag.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return Xamarin.Forms.ImageSource.FromUri(new Uri(myTag));
+                    }
+                    else
+                    {
+                        return Xamarin.Forms.ImageSource.FromFile(myTag);
+                    }
+                }
+
+                // اگر myTag خالی بود، تصویر تگ داخل فایل MP3 رو بخون
+                if (!System.IO.File.Exists(mp3Path))
+                    return null;
+
                 var file = TagLib.File.Create(mp3Path);
                 var picture = file.Tag.Pictures.FirstOrDefault(x => x.Data != null);
-
-                if (picture == null)
-                {
-                    file.Tag.Pictures = new IPicture[]
-                    {
-                            new Picture(tag) // مسیر تصویر
-                    };
-
-                    file.Save();
-                    return GetAlbumArt(mp3Path, "");
-                }
 
                 if (picture != null)
                 {
