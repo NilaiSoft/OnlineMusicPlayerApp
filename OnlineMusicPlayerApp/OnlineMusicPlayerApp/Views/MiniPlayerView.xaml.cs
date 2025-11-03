@@ -206,7 +206,7 @@ namespace OnlineMusicPlayerApp.Views
                     //await PlayNextAsync();
                     return;
                 }
-                _audioService.SeekTo(0);
+                //_audioService.SeekTo(0);
                 PlaybackCapsule.CurrentIndex = _currentIndex;
                 PlaybackCapsule.CurrentTitle = item.Title;
                 PlaybackCapsule.SaveCurrentAudioParentId(item.ParentId.ToString());
