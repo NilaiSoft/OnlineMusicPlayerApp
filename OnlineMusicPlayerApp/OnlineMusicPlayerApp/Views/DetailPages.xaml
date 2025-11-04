@@ -4,44 +4,69 @@
              xmlns:views="clr-namespace:OnlineMusicPlayerApp.Views"
              x:Class="OnlineMusicPlayerApp.Views.DetailPages"
              BackgroundColor="#F5F0EB"
-             NavigationPage.HasNavigationBar="False">
+             NavigationPage.HasNavigationBar="False"
+             Padding="0,30,0,0">
+    <!-- جلوگیری از ورود به status bar -->
 
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout Padding="30,35,30,0" Spacing="1">
-                <!-- لیست آیتم‌ها -->
-                <StackLayout x:Name="stack" Spacing="1">
-                    <ListView x:Name="DetailsListView"
-              HasUnevenRows="True"
-              IsPullToRefreshEnabled="True"
-              IsRefreshing="False"
-              Refreshing="DetailsListView_Refreshing"
-              SeparatorVisibility="None"
-              BackgroundColor="Transparent"
-              ItemTapped="DetailsListView_ItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Frame BackgroundColor="#eeeeee"
-                           CornerRadius="8"
-                           Padding="12"
-                           Margin="5">
-                                        <Label Text="{Binding Title}"
-                               TextColor="Black"
-                               FontSize="16"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center" />
-                                    </Frame>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- محتوای صفحه -->
+                <RowDefinition Height="Auto" />
+                <!-- پلیر -->
+            </Grid.RowDefinitions>
 
-            </StackLayout>
+            <!-- لیست قابل اسکرول -->
+            <ListView Grid.Row="0"
+                      x:Name="DetailsListView"
+                      HasUnevenRows="True"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="False"
+                      Refreshing="DetailsListView_Refreshing"
+                      SeparatorVisibility="None"
+                      BackgroundColor="Transparent"
+                      ItemTapped="DetailsListView_ItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Margin="10,5"
+                   Padding="15"
+                   CornerRadius="12"
+                   BackgroundColor="#FFFFFF"
+                   HasShadow="True">
+                                <StackLayout Orientation="Horizontal" Spacing="15">
+                                    <Frame Padding="0"
+                       CornerRadius="4"
+                       HasShadow="False"
+                       HeightRequest="40"
+                       WidthRequest="40"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       Margin="0,0,4,0"
+                       IsClippedToBounds="True">
+                                        <Image Source="{Binding TagImageSrc}"
+                           Aspect="AspectFill"
+                           HeightRequest="40"
+                           WidthRequest="40" />
+                                    </Frame>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Text="{Binding Title}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#333" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- پلیر ثابت در انتهای صفحه -->
             <views:MiniPlayerView Grid.Row="1"
-                              HorizontalOptions="FillAndExpand"
-                              HeightRequest="200" />
-        </StackLayout>
+                                  HorizontalOptions="FillAndExpand"
+                                  HeightRequest="80" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
