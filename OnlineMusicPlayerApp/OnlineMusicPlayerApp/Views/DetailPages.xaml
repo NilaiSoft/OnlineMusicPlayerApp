@@ -45,7 +45,7 @@
                        HorizontalOptions="Start"
                        Margin="0,0,4,0"
                        IsClippedToBounds="True">
-                                        <Image Source="{Binding TagImageSrc}"
+                                        <Image Source="{Binding ListImageSrc}"
                            Aspect="AspectFill"
                            HeightRequest="40"
                            WidthRequest="40" />

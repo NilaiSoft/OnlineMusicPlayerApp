@@ -39,7 +39,8 @@ namespace OnlineMusicPlayerApp.Views
                 details = categories.Select(x => new Detail
                 {
                     Title = x.Master,
-                    Children = x.Details
+                    Children = x.Details,
+                    ListImageSrc=x.AlbumImageSrc
                 }).ToList();
 
                 playableItems = Flatten(details);

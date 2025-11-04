@@ -9,6 +9,7 @@ namespace OnlineMusicPlayerApp.Models
     {
         public string Master { get; set; }
         public List<Detail> Details { get; set; }
+        public string AlbumImageSrc { get; set; }
     }
 
     public class Detail
@@ -18,6 +19,7 @@ namespace OnlineMusicPlayerApp.Models
         public string Href { get; set; }
         public bool IsVisible { get; set; }
         public string TagImageSrc { get; set; }
+        public string ListImageSrc { get; set; }
         public int ParentId { get; set; }
         public double CurrentSecond { get; set; }
         public bool IsPlay { get; set; }
