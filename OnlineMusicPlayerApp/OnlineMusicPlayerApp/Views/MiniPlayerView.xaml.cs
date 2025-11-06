@@ -132,30 +132,71 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
+        //private async void OnMiniPlayerTapped(object sender, EventArgs e)
+        //{
+        //    var audioService = DependencyService.Get<IAudioService>();
+        //    double currentPosition = audioService.GetCurrentPositionSeconds();
+        //    PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
+        //    //BlurBackground.IsVisible = false;
+
+        //    _playableItems = _playableItems
+        //        .OrderByDescending(item =>
+        //        {
+        //            string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+        //            string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+        //            return System.IO.File.Exists(audioPath);
+        //        })
+        //        .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+        //        .ToList();
+
+        //    var c = _playableItems.FirstOrDefault(x => x.IsPlay);
+        //    _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
+
+        //    var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
+        //    var page = new ContentPage { Content = maximizedView };
+        //    NavigationPage.SetHasNavigationBar(page, false);
+        //    await Navigation.PushAsync(page);
+        //}
+
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            var audioService = DependencyService.Get<IAudioService>();
-            double currentPosition = audioService.GetCurrentPositionSeconds();
-            PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
-            //BlurBackground.IsVisible = false;
+            try
+            {
+                // گرفتن سرویس صوتی و موقعیت فعلی پخش
+                var audioService = DependencyService.Get<IAudioService>();
+                double currentPosition = audioService.GetCurrentPositionSeconds();
+                PlaybackCapsule.SaveSliderPosition(currentPosition); // ذخیره موقعیت فعلی
 
-            _playableItems = _playableItems
-                .OrderByDescending(item =>
-                {
-                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
-                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
-                    return System.IO.File.Exists(audioPath);
-                })
-                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
-                .ToList();
+                // مرتب‌سازی آیتم‌ها: اول فایل‌های موجود، سپس بر اساس Id
+                _playableItems = _playableItems
+                    .OrderByDescending(item =>
+                    {
+                        string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                        string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                        return System.IO.File.Exists(audioPath);
+                    })
+                    .ThenBy(item => item.Id)
+                    .ToList();
 
-            var c = _playableItems.FirstOrDefault(x => x.IsPlay);
-            _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
+                // پیدا کردن آیتم در حال پخش و ایندکس آن
+                var currentItem = _playableItems.FirstOrDefault(x => x.IsPlay);
+                _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
 
-            var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
-            var page = new ContentPage { Content = maximizedView };
-            NavigationPage.SetHasNavigationBar(page, false);
-            await Navigation.PushAsync(page);
+                // ساخت نمای بزرگ‌شده‌ی پلیر
+                var maximizedView = new MiniPlayerView(true, currentIndex: _currentIndex, _playableItems);
+                var contentPage = new ContentPage { Content = maximizedView };
+
+                // حذف نوار ناوبری
+                NavigationPage.SetHasNavigationBar(contentPage, false);
+
+                // باز کردن صفحه به صورت مودال تمام‌صفحه
+                await Navigation.PushModalAsync(new NavigationPage(contentPage));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("خطا در باز کردن پلیر: " + ex.Message);
+                await Application.Current.MainPage.DisplayAlert("خطا", "امکان باز کردن پلیر وجود ندارد.", "باشه");
+            }
         }
 
         private async Task PlayNextAsync(string e = "")

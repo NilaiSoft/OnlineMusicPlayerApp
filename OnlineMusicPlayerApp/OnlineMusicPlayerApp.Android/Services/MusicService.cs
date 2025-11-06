@@ -3,7 +3,10 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Com.Google.Android.Exoplayer2;
+using System;
 
+
+[Obsolete]
 [Service]
 public class MusicService : Service
 {
