@@ -338,7 +338,7 @@ namespace OnlineMusicPlayerApp.Views
             if (!btnStart.IsEnabled)
             {
                 //await Navigation.PopAsync(); // یا Shell.Current.GoToAsync("..")
-                DependencyService.Get<IToastService>().Show("آنلاین موزیک هنوز در حال اجراست،لطفاً تا پایان فرآیند منتظر بمانید");
+                DependencyService.Get<IToastService>().Show("NetAudio هنوز در حال اجراست،لطفاً تا پایان فرآیند منتظر بمانید");
                 return true;
             }
 

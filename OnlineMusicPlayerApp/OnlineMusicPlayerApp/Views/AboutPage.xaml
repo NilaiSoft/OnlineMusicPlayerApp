@@ -69,7 +69,7 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="نام فارسی : " FontAttributes="Bold"/>
-                                <Span Text="آنلاین موزیک" ForegroundColor="{StaticResource LightTextColor}"/>
+                                <Span Text="NetAudio" ForegroundColor="{StaticResource LightTextColor}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

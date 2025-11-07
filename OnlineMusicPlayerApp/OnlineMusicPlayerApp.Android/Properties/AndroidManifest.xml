@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0.0.0" package="com.ehsan.online.music.player" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0.0.0" package="com.netaudio.play" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
 	<!--<application android:label="قرعه کشی" android:theme="@style/MainTheme" android:icon="@drawable/Lt"></application>-->
-	<application android:label="آنلاین موزیک" android:theme="@style/MainTheme" android:icon="@drawable/headph"></application>
+	<application android:label="NetAudio" android:theme="@style/MainTheme" android:icon="@drawable/netaudioicon"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

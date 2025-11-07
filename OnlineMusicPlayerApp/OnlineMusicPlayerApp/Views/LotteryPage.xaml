@@ -56,7 +56,7 @@
             </StackLayout>
         </Frame>
 
-        <!-- 🎰 دکمه شروع آنلاین موزیک -->
+        <!-- 🎰 دکمه شروع NetAudio -->
         <Frame CornerRadius="75"
                HeightRequest="150"
                WidthRequest="150"

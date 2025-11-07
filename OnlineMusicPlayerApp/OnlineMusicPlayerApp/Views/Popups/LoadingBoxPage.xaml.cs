@@ -43,7 +43,7 @@ namespace OnlineMusicPlayerApp.Views
                     },
                     new Label
                     {
-                        Text = "در حال آماده‌سازی اطلاعات...",
+                        Text = "در حال آماده‌سازی...",
                         FontSize = 14,
                         TextColor = Color.Black,
                         HorizontalTextAlignment = TextAlignment.Center
