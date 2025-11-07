@@ -352,10 +352,14 @@ namespace OnlineMusicPlayerApp.Views
 
                         if (position >= duration - 1 && duration > 0)
                         {
-                            _isTimerRunning = false;
+                            //_isTimerRunning = false;
+                            //_currentIndex++;
+                            //_ = PlayNextAsync();
+
+                            _isTimerRunning = true;
                             _currentIndex++;
-                            //PlaybackCapsule.SaveSliderPosition(0);
-                            _ = PlayNextAsync();
+                            _audioService.SeekTo(0);
+                            _ = PlayNextAsync("+");
                         }
                     });
 
