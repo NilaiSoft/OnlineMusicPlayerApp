@@ -31,7 +31,7 @@ namespace OnlineMusicPlayerApp.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
+            UpdateMiniPlayerVisibility();
             MiniPlayerViewControl.RefreshMiniPlayerFrame();
         }
 
