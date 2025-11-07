@@ -46,5 +46,10 @@ namespace OnlineMusicPlayerApp.Views
         {
             Navigation.PushAsync(new DetailPages());
         }
+
+        private void btnRefresh_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

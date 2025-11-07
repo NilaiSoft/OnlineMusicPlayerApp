@@ -62,11 +62,11 @@ namespace OnlineMusicPlayerApp.Views
                 .ToList();
 
 
-            details.ForEach(d => d.IsPlay = false);
+            //details.ForEach(d => d.IsPlay = false);
 
-            var current = details[currentIndex];
-            var c = details.FirstOrDefault(x => x.Id == current.Id);
-            c.IsPlay = true;
+            //var current = details[currentIndex];
+            //var c = details.FirstOrDefault(x => x.Id == current.Id);
+            //c.IsPlay = true;
 
             _playableItems = details;
             _currentIndex = currentIndex;
@@ -221,6 +221,8 @@ namespace OnlineMusicPlayerApp.Views
             var c = _playableItems.FirstOrDefault(x => x.Id == current.Id);
             c.IsPlay = true;
 
+            PlaybackCapsule.CurrentPlaylist = _playableItems;
+
 
             //var item = PlaybackCapsule.CurrentPlaylist.FirstOrDefault(x => x.IsPlay);
             if (item == null) return;
@@ -352,7 +354,7 @@ namespace OnlineMusicPlayerApp.Views
                         {
                             _isTimerRunning = false;
                             _currentIndex++;
-                            PlaybackCapsule.SaveSliderPosition(0);
+                            //PlaybackCapsule.SaveSliderPosition(0);
                             _ = PlayNextAsync();
                         }
                     });
@@ -434,7 +436,7 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex > 0)
             {
                 _currentIndex--;
-                PlaybackCapsule.SaveSliderPosition(0);
+                //PlaybackCapsule.SaveSliderPosition(0);
                 await PlayNextAsync("-");
             }
         }
@@ -477,7 +479,7 @@ namespace OnlineMusicPlayerApp.Views
                 _currentIndex = 0;
             }
 
-            PlaybackCapsule.SaveSliderPosition(0);
+            //PlaybackCapsule.SaveSliderPosition(0);
             await PlayNextAsync("+");
         }
 
@@ -499,7 +501,8 @@ namespace OnlineMusicPlayerApp.Views
             if (_playableItems == null || !_playableItems.Any() || _currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
 
-            var item = _playableItems[_currentIndex];
+            //var item = _playableItems[_currentIndex];
+            var item = _playableItems.FirstOrDefault(x => x.IsPlay);
 
             lblMiniTitle.Text = item.Title;
             lblTrackNumber.Text = $"{_currentIndex + 1}/{_playableItems.Count}";
