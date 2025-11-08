@@ -413,6 +413,14 @@ namespace OnlineMusicPlayerApp.Views
             return null;
         }
 
+        private (string, string) GetAlbumeDetail(string mp3Path)
+        {
+            var file = TagLib.File.Create(mp3Path);
+            var artist = !string.IsNullOrEmpty(file.Tag.FirstPerformer) ? file.Tag.FirstPerformer : "ناشناس";
+            var album = !string.IsNullOrEmpty(file.Tag.Album) ? file.Tag.Album : "بدون آلبوم";
+            return (artist, album);
+        }
+
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
             var audioService = DependencyService.Get<IAudioService>();
