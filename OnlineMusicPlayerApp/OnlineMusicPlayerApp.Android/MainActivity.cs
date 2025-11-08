@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.OS;
 using Android.Views;
 using Xamarin.Forms;
+using Android.Content;
+using Android.Media;
 
 namespace OnlineMusicPlayerApp.Droid
 {
@@ -13,6 +15,26 @@ namespace OnlineMusicPlayerApp.Droid
     [Activity(Label = "NetAudio", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize, WindowSoftInputMode = SoftInput.AdjustResize, Exported = true)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private HeadphoneReceiver _receiver;
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            _receiver = new HeadphoneReceiver();
+            RegisterReceiver(_receiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            if (_receiver != null)
+            {
+                UnregisterReceiver(_receiver);
+                _receiver = null;
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             Forms.SetFlags("MediaElement_Experimental");

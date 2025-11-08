@@ -27,12 +27,21 @@
                              HeightRequest="40" />
             </StackLayout>
 
-            <!-- تصویر -->
-            <Image Grid.Row="1"
-                   Source="images.png"
-                   Aspect="AspectFill"
-                   HeightRequest="300"
-                   HorizontalOptions="FillAndExpand" />
+            <Frame
+                Grid.Row="1"
+                x:Name="CoverFrame"
+                CornerRadius="40"
+                HasShadow="True"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                IsClippedToBounds="True">
+                <Image x:Name="CoverImage"
+                    Source="images.png"
+                    Aspect="AspectFill"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand" />
+            </Frame>
+
 
             <!-- دکمه Playlist -->
             <Button Grid.Row="2"
@@ -47,12 +56,15 @@
                     HorizontalOptions="Center"
                     Clicked="OnPlaylistClicked" />
 
-            <!-- سایر محتوا --><!--
+            <!-- سایر محتوا -->
+            <!--
             <StackLayout Grid.Row="3"
                          Orientation="Vertical"
                          HorizontalOptions="Center"
                          VerticalOptions="Center">
-                --><!-- محتواهای دیگر --><!--
+                -->
+            <!-- محتواهای دیگر -->
+            <!--
             </StackLayout>-->
             <views:MiniPlayerView Grid.Row="4"
                                   x:Name="MiniPlayerViewControl"
