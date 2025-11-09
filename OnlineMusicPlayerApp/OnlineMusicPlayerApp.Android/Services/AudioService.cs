@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Com.Google.Android.Exoplayer2;
+using OnlineMusicPlayerApp.Droid.Services;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AudioService))]
