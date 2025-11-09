@@ -318,7 +318,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             double resumePosition = 0;
             double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
-            audioService.Play(item.Href, resumePosition);
+            audioService.Play(item.Href, item.Title, item.TagImageSrc, resumePosition);
 
             // ⏱️ نوار زمان و پخش خودکار آهنگ بعدی
             if (!_isTimerRunning)
