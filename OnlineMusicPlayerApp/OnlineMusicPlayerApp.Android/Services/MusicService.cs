@@ -117,7 +117,7 @@ namespace OnlineMusicPlayerApp.Droid.Services
     .SetShowActionsInCompactView(0, 1))
                 .AddAction(isPlaying ? Resource.Drawable.IcMediaPause : Resource.Drawable.IcMediaPlay,
                            isPlaying ? "توقف" : "پخش", playPendingIntent)
-                .AddAction(Resource.Drawable.IcMediaNext, "بستن", closePendingIntent);
+                .AddAction(Resource.Drawable.IcMenuCloseClearCancel, "بستن", closePendingIntent);
 
             // نمایش در Foreground
             StartForeground(NOTIFICATION_ID, builder.Build());
