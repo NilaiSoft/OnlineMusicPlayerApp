@@ -39,6 +39,10 @@ namespace OnlineMusicPlayerApp.Droid.Services
                 case "ACTION_CLOSE":
                     StopForeground(true);
                     StopSelf();
+
+                    Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+                    System.Environment.Exit(0);
+
                     return StartCommandResult.NotSticky;
 
                 case "ACTION_PAUSE":
@@ -90,44 +94,60 @@ namespace OnlineMusicPlayerApp.Droid.Services
             }
         }
 
-        private void UpdateNotification(string title, string text, string albumArtPath, bool isPlaying)
+        private void UpdateNotification(string title, string artist, string albumArtPath, bool isPlaying)
         {
-            // تصویر کاور از مسیر فایل
             Bitmap albumArt = null;
+
             if (!string.IsNullOrEmpty(albumArtPath) && File.Exists(albumArtPath))
             {
                 albumArt = BitmapFactory.DecodeFile(albumArtPath);
             }
             else
             {
-                //albumArt = BitmapFactory.DecodeResource(Resources, Resource.Drawable.default_cover);
+                // عکس پیش‌فرض
+                albumArt = BitmapFactory.DecodeResource(Resources, Resource.Drawable.MenuFrame);
             }
 
-            // Intents
+            // ✅ PendingIntents
+            var prevIntent = new Intent(this, typeof(MusicService));
+            prevIntent.SetAction("ACTION_PREV");
+            var prevPendingIntent = PendingIntent.GetService(this, 1, prevIntent, PendingIntentFlags.Immutable);
+
             var playIntent = new Intent(this, typeof(MusicService));
             playIntent.SetAction(isPlaying ? "ACTION_PAUSE" : "ACTION_PLAY");
-            var playPendingIntent = PendingIntent.GetService(this, 1, playIntent, PendingIntentFlags.Immutable);
+            var playPendingIntent = PendingIntent.GetService(this, 2, playIntent, PendingIntentFlags.Immutable);
+
+            var nextIntent = new Intent(this, typeof(MusicService));
+            nextIntent.SetAction("ACTION_NEXT");
+            var nextPendingIntent = PendingIntent.GetService(this, 3, nextIntent, PendingIntentFlags.Immutable);
 
             var closeIntent = new Intent(this, typeof(MusicService));
             closeIntent.SetAction("ACTION_CLOSE");
-            var closePendingIntent = PendingIntent.GetService(this, 2, closeIntent, PendingIntentFlags.Immutable);
+            var closePendingIntent = PendingIntent.GetService(this, 4, closeIntent, PendingIntentFlags.Immutable);
 
-            // نوتیفیکیشن
+            // ✅ نوتیف مدرن با کنترل‌های رسانه
             var builder = new AndroidX.Core.App.NotificationCompat.Builder(this, CHANNEL_ID)
-                .SetContentTitle(title) // 🎵 عنوان آهنگ
-                .SetContentText(text)
-                .SetSmallIcon(Resource.Drawable.IcMediaPlay)
-                .SetLargeIcon(albumArt) // 🖼 عکس کاور
-                .SetVisibility(AndroidX.Core.App.NotificationCompat.VisibilityPublic)
-                .SetShowWhen(false)
-                .SetOngoing(isPlaying)
-                .SetOnlyAlertOnce(true)
+                .SetSmallIcon(Resource.Drawable.IcMediaPause) // آیکن کوچک در status bar
+                .SetLargeIcon(albumArt)
+                .SetContentTitle(title)
+                .SetContentText(artist)
+                .SetColor(Color.DarkRed) // رنگ تم (می‌تونی تغییر بدی)
                 .SetStyle(new AndroidX.Media.App.NotificationCompat.MediaStyle()
-                    .SetShowActionsInCompactView(0, 1))
+                    .SetShowActionsInCompactView(0, 1, 2) // سه دکمه در حالت جمع‌شده
+                    .SetMediaSession(null))
+                .AddAction(Resource.Drawable.IcMediaPrevious, "قبلی", prevPendingIntent)
                 .AddAction(isPlaying ? Resource.Drawable.IcMediaPause : Resource.Drawable.IcMediaPlay,
                            isPlaying ? "توقف" : "پخش", playPendingIntent)
-                .AddAction(Resource.Drawable.IcMenuCloseClearCancel, "❌", closePendingIntent);
+                .AddAction(Resource.Drawable.IcMediaNext, "بعدی", nextPendingIntent)
+                .SetOngoing(isPlaying)
+                .SetShowWhen(false)
+                .SetVisibility(AndroidX.Core.App.NotificationCompat.VisibilityPublic)
+                .SetOnlyAlertOnce(true)
+                .SetAutoCancel(false)
+                .AddAction(Resource.Drawable.IcMenuCloseClearCancel, "بستن", closePendingIntent)
+                .SetSilent(true);
 
+            // نمایش
             StartForeground(NOTIFICATION_ID, builder.Build());
         }
 
