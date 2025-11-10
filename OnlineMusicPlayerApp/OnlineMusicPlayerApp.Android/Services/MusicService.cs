@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using AndroidX.Core.App;
+using AndroidX.Core.Graphics.Drawable;
 using AndroidX.Media.App;
 using Com.Google.Android.Exoplayer2;
 using System;
@@ -125,9 +126,13 @@ namespace OnlineMusicPlayerApp.Droid.Services
             closeIntent.SetAction("ACTION_CLOSE");
             var closePendingIntent = PendingIntent.GetService(this, 4, closeIntent, PendingIntentFlags.Immutable);
 
+            byte[] imageBytes = Properties.Resources.netaudioicon;
+            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+            var icon = IconCompat.CreateWithBitmap(bitmap);
+
             // ✅ نوتیف مدرن با کنترل‌های رسانه
             var builder = new AndroidX.Core.App.NotificationCompat.Builder(this, CHANNEL_ID)
-                .SetSmallIcon(Resource.Drawable.IcMediaPause) // آیکن کوچک در status bar
+                .SetSmallIcon(icon) // آیکن کوچک در status bar
                 .SetLargeIcon(albumArt)
                 .SetContentTitle(title)
                 .SetContentText(artist)
