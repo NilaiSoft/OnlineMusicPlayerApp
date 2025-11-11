@@ -20,6 +20,11 @@ namespace OnlineMusicPlayerApp.Droid.Services
         private const string CHANNEL_ID = "music_channel";
         private const int NOTIFICATION_ID = 1001;
 
+        // 🔹 ذخیره عنوان و کاور فعلی برای جلوگیری از بازگشت به پیش‌فرض
+        private string _currentTitle = "در حال پخش موزیک";
+        private string _currentArtist = "";
+        private string _currentAlbumArtPath = "";
+
         public override void OnCreate()
         {
             base.OnCreate();
@@ -30,10 +35,21 @@ namespace OnlineMusicPlayerApp.Droid.Services
         {
             string action = intent?.Action;
 
-            // 🎵 اطلاعات آهنگ از intent
-            string url = intent.GetStringExtra("url");
-            string title = intent.GetStringExtra("title") ?? "در حال پخش موزیک";
-            string albumArtPath = intent.GetStringExtra("albumArtPath");
+            // 🎵 اطلاعات آهنگ از Intent (در صورت وجود)
+            string title = intent?.GetStringExtra("title");
+            string artist = intent?.GetStringExtra("artist");
+            string albumArtPath = intent?.GetStringExtra("albumArtPath");
+            string url = intent?.GetStringExtra("url");
+
+            // اگر داده جدید اومد، ذخیره کن
+            if (!string.IsNullOrEmpty(title))
+                _currentTitle = title;
+
+            if (!string.IsNullOrEmpty(artist))
+                _currentArtist = artist;
+
+            if (!string.IsNullOrEmpty(albumArtPath))
+                _currentAlbumArtPath = albumArtPath;
 
             switch (action)
             {
@@ -41,23 +57,33 @@ namespace OnlineMusicPlayerApp.Droid.Services
                     StopForeground(true);
                     StopSelf();
 
+                    // خروج کامل از برنامه
                     Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
                     System.Environment.Exit(0);
-
                     return StartCommandResult.NotSticky;
 
                 case "ACTION_PAUSE":
                     player?.Pause();
-                    UpdateNotification("", title, null, false);
+                    UpdateNotification(_currentTitle, _currentArtist, _currentAlbumArtPath, false);
                     return StartCommandResult.Sticky;
 
                 case "ACTION_PLAY":
                     player?.Play();
-                    UpdateNotification("", title, null, true);
+                    UpdateNotification(_currentTitle, _currentArtist, _currentAlbumArtPath, true);
+                    return StartCommandResult.Sticky;
+
+                case "ACTION_NEXT":
+                    // اینجا می‌تونی تابع NextSong بنویسی
+                    UpdateNotification(_currentTitle, _currentArtist, _currentAlbumArtPath, true);
+                    return StartCommandResult.Sticky;
+
+                case "ACTION_PREV":
+                    // اینجا هم تابع قبلی رو بنویس
+                    UpdateNotification(_currentTitle, _currentArtist, _currentAlbumArtPath, true);
                     return StartCommandResult.Sticky;
             }
 
-            // شروع پخش
+            // شروع پخش موزیک جدید (در صورت وجود URL)
             if (!string.IsNullOrEmpty(url))
             {
                 var mediaItem = MediaItem.FromUri(url);
@@ -67,27 +93,27 @@ namespace OnlineMusicPlayerApp.Droid.Services
             }
 
             // موقعیت شروع (اختیاری)
-            string posStr = intent.GetStringExtra("position");
+            string posStr = intent?.GetStringExtra("position");
             if (!string.IsNullOrEmpty(posStr) && double.TryParse(posStr, out var startSeconds))
             {
                 long startMs = (long)(startSeconds * 1000);
                 new Handler().PostDelayed(() => player.SeekTo(startMs), 100);
             }
 
-            // ایجاد کانال و نمایش نوتیف با عنوان و عکس کاور
             CreateNotificationChannel();
-            UpdateNotification(title, "", albumArtPath, true);
+            UpdateNotification(_currentTitle, _currentArtist, _currentAlbumArtPath, true);
 
             return StartCommandResult.Sticky;
         }
 
+        // 🔹 ساخت کانال نوتیف برای Android O+
         private void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
                 var channel = new NotificationChannel(CHANNEL_ID, "Music Playback", NotificationImportance.Low)
                 {
-                    Description = ""//"نغمه‌ای که در پس‌زمینه ادامه دارد"
+                    Description = "پخش موسیقی در پس‌زمینه"
                 };
 
                 var notificationManager = (NotificationManager)GetSystemService(NotificationService);
@@ -95,6 +121,7 @@ namespace OnlineMusicPlayerApp.Droid.Services
             }
         }
 
+        // 🔹 ایجاد نوتیف مدرن با کنترل‌ها
         private void UpdateNotification(string title, string artist, string albumArtPath, bool isPlaying)
         {
             Bitmap albumArt = null;
@@ -105,11 +132,11 @@ namespace OnlineMusicPlayerApp.Droid.Services
             }
             else
             {
-                // عکس پیش‌فرض
-                albumArt = BitmapFactory.DecodeResource(Resources, Resource.Drawable.MenuFrame);
+                // تصویر پیش‌فرض از Resources
+                //albumArt = BitmapFactory.DecodeResource(Resources, Resource.Drawable.netaudioicon);
             }
 
-            // ✅ PendingIntents
+            // 🔹 PendingIntents برای کنترل‌ها
             var prevIntent = new Intent(this, typeof(MusicService));
             prevIntent.SetAction("ACTION_PREV");
             var prevPendingIntent = PendingIntent.GetService(this, 1, prevIntent, PendingIntentFlags.Immutable);
@@ -130,15 +157,15 @@ namespace OnlineMusicPlayerApp.Droid.Services
             Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
             var icon = IconCompat.CreateWithBitmap(bitmap);
 
-            // ✅ نوتیف مدرن با کنترل‌های رسانه
+            // 🔹 ساخت نوتیف
             var builder = new AndroidX.Core.App.NotificationCompat.Builder(this, CHANNEL_ID)
-                .SetSmallIcon(icon) // آیکن کوچک در status bar
+                .SetSmallIcon(icon)
                 .SetLargeIcon(albumArt)
                 .SetContentTitle(title)
                 .SetContentText(artist)
-                .SetColor(Color.DarkRed) // رنگ تم (می‌تونی تغییر بدی)
+                .SetColor(Color.ParseColor("#B71C1C")) // رنگ قرمز تیره
                 .SetStyle(new AndroidX.Media.App.NotificationCompat.MediaStyle()
-                    .SetShowActionsInCompactView(0, 1, 2) // سه دکمه در حالت جمع‌شده
+                    .SetShowActionsInCompactView(0, 1, 2)
                     .SetMediaSession(null))
                 .AddAction(Resource.Drawable.IcMediaPrevious, "قبلی", prevPendingIntent)
                 .AddAction(isPlaying ? Resource.Drawable.IcMediaPause : Resource.Drawable.IcMediaPlay,
@@ -148,11 +175,10 @@ namespace OnlineMusicPlayerApp.Droid.Services
                 .SetShowWhen(false)
                 .SetVisibility(AndroidX.Core.App.NotificationCompat.VisibilityPublic)
                 .SetOnlyAlertOnce(true)
-                .SetAutoCancel(false)
                 .AddAction(Resource.Drawable.IcMenuCloseClearCancel, "بستن", closePendingIntent)
                 .SetSilent(true);
 
-            // نمایش
+            // نمایش نوتیف در Foreground
             StartForeground(NOTIFICATION_ID, builder.Build());
         }
 

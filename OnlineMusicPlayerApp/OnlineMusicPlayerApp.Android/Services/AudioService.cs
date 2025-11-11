@@ -65,12 +65,13 @@ public class AudioService : IAudioService
         Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
     }
 
-    public void Play(string url, string title, string TagImageSrc, double startSeconds)
+    public void Play(string url, string title, string TagImageSrc, double startSeconds,int index)
     {
         var intent = new Intent(Android.App.Application.Context, typeof(MusicService));
         intent.PutExtra("url", url);
         intent.PutExtra("position", startSeconds.ToString()); // ذخیره به‌صورت string
 
+        intent.PutExtra("index", index);
         intent.PutExtra("url", url);
         intent.PutExtra("title", title);        // 🎵 عنوان آهنگ
         intent.PutExtra("albumArtPath", TagImageSrc); // 🖼 مسیر عکس تگ (می‌تونه FilePath باشه)
