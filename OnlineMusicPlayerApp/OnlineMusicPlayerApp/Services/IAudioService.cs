@@ -1,7 +1,7 @@
 ﻿public interface IAudioService
 {
     void Play(string url);
-    void Play(string url, string title, string TagImageSrc, double startSeconds, int index)); // نسخه با موقعیت شروع
+    void Play(string url, string title, string TagImageSrc, double startSeconds, int index); // نسخه با موقعیت شروع
     void Pause();
     void Resume();
     void Stop();
