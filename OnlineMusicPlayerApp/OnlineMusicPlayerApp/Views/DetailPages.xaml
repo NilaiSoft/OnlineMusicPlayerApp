@@ -6,18 +6,15 @@
              BackgroundColor="#F5F0EB"
              NavigationPage.HasNavigationBar="False"
              Padding="0,30,0,0">
-    <!-- جلوگیری از ورود به status bar -->
 
     <ContentPage.Content>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <!-- محتوای صفحه -->
                 <RowDefinition Height="Auto" />
-                <!-- پلیر -->
             </Grid.RowDefinitions>
 
-            <!-- لیست قابل اسکرول -->
+            <!-- 📜 لیست آهنگ‌ها -->
             <ListView Grid.Row="0"
                       x:Name="DetailsListView"
                       HasUnevenRows="True"
@@ -31,31 +28,50 @@
                     <DataTemplate>
                         <ViewCell>
                             <Frame Margin="10,5"
-                   Padding="15"
-                   CornerRadius="12"
-                   BackgroundColor="#FFFFFF"
-                   HasShadow="True">
-                                <StackLayout Orientation="Horizontal" Spacing="15">
-                                    <Frame Padding="0"
-                       CornerRadius="4"
-                       HasShadow="False"
-                       HeightRequest="40"
-                       WidthRequest="40"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"
-                       Margin="0,0,4,0"
-                       IsClippedToBounds="True">
-                                        <Image Source="{Binding ListImageSrc}"
-                           Aspect="AspectFill"
-                           HeightRequest="40"
-                           WidthRequest="40" />
-                                    </Frame>
-                                    <StackLayout VerticalOptions="Center">
-                                        <Label Text="{Binding Title}"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               TextColor="#333" />
+                                   Padding="15"
+                                   CornerRadius="12"
+                                   BackgroundColor="#FFFFFF"
+                                   HasShadow="True">
+                                <StackLayout Orientation="Vertical" Spacing="8">
+
+                                    <!-- عنوان آهنگ و تصویر -->
+                                    <StackLayout Orientation="Horizontal" Spacing="15">
+                                        <Frame Padding="0"
+                                               CornerRadius="4"
+                                               HasShadow="False"
+                                               HeightRequest="40"
+                                               WidthRequest="40"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Start"
+                                               Margin="0,0,4,0"
+                                               IsClippedToBounds="True">
+                                            <Image Source="{Binding ListImageSrc}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="40"
+                                                   WidthRequest="40" />
+                                        </Frame>
+
+                                        <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                            <Label Text="{Binding Title}"
+                                                   FontSize="16"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#333"
+                                                   LineBreakMode="TailTruncation" />
+
+                                            <!-- وضعیت دانلود -->
+                                            <Label Text="{Binding DownloadStatus}"
+                                                   FontSize="12"
+                                                   TextColor="#888"
+                                                   IsVisible="{Binding IsDownloading}" />
+                                        </StackLayout>
                                     </StackLayout>
+
+                                    <!-- 🔄 Progress Bar دانلود -->
+                                    <Grid IsVisible="{Binding IsDownloading}">
+                                        <ProgressBar Progress="{Binding DownloadProgress}" 
+                                                     HeightRequest="4"
+                                                     ProgressColor="#2196F3" />
+                                    </Grid>
                                 </StackLayout>
                             </Frame>
                         </ViewCell>
@@ -63,7 +79,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!-- پلیر ثابت در انتهای صفحه -->
+            <!-- 🎵 Mini Player -->
             <views:MiniPlayerView Grid.Row="1"
                                   HorizontalOptions="FillAndExpand"
                                   HeightRequest="80" />

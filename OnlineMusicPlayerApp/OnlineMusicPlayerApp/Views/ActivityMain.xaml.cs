@@ -17,7 +17,7 @@ namespace OnlineMusicPlayerApp.Views
             {
                 var newMiniPlayer = new MiniPlayerView();
                 MainGrid.Children.Remove(MiniPlayerViewControl);
-                newMiniPlayer.ResetPage();
+                //newMiniPlayer.ResetPage();
                 MainGrid.Children.Add(newMiniPlayer);
                 Grid.SetRow(newMiniPlayer, 4); // حفظ موقعیت در Grid
             });
@@ -32,7 +32,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             base.OnAppearing();
             UpdateMiniPlayerVisibility();
-            MiniPlayerViewControl.RefreshMiniPlayerFrame();
+           // MiniPlayerViewControl.RefreshMiniPlayerFrame();
         }
 
         private void btnMenu_Clicked(object sender, EventArgs e)

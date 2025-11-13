@@ -6,10 +6,10 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using OnlineMusicPlayerApp.Models;
 using OnlineMusicPlayerApp.Services.PlayListServices;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
-using static Android.Telecom.Call;
 using OnlineMusicPlayerApp.Extensions;
+using OnlineMusicPlayerApp.Services;
+using Rg.Plugins.Popup.Services;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -17,7 +17,6 @@ namespace OnlineMusicPlayerApp.Views
     public partial class DetailPages : ContentPage
     {
         private List<Detail> playableItems;
-        private bool isTimerRunning = false;
 
         public DetailPages()
         {
@@ -29,7 +28,6 @@ namespace OnlineMusicPlayerApp.Views
         private async void LoadData()
         {
             DetailsListView.ItemsSource = null;
-
             var details = new List<Detail>();
 
             await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
@@ -40,7 +38,7 @@ namespace OnlineMusicPlayerApp.Views
                 {
                     Title = x.Master,
                     Children = x.Details,
-                    ListImageSrc=x.AlbumImageSrc
+                    ListImageSrc = x.AlbumImageSrc
                 }).ToList();
 
                 playableItems = Flatten(details);
@@ -50,12 +48,8 @@ namespace OnlineMusicPlayerApp.Views
 
         private void DetailsListView_Refreshing(object sender, EventArgs e)
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                LoadData(); // بارگذاری مجدد داده‌ها
-            });
-
-            DetailsListView.IsRefreshing = false; // توقف spinner
+            Device.BeginInvokeOnMainThread(() => LoadData());
+            DetailsListView.IsRefreshing = false;
         }
 
         public DetailPages(List<Detail> details)
@@ -64,58 +58,103 @@ namespace OnlineMusicPlayerApp.Views
             playableItems = Flatten(details);
 
             details = details
-.OrderByDescending(item =>
-{
-    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
-    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
-    return System.IO.File.Exists(audioPath);
-})
-.ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
-.ToList();
-            DetailsListView.ItemsSource = details;
-        }
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id)
+                .ToList();
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
+            DetailsListView.ItemsSource = details;
         }
 
         private async void DetailsListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            ((ListView)sender).SelectedItem = null; // برای پاک کردن انتخاب
+
             if (e.Item is Detail item)
             {
-                item.Children = item.Children.Where(x => x.IsVisible).ToList();
+                item.Children = item.Children?.Where(x => x.IsVisible).ToList();
 
                 if (item.Children != null && item.Children.Any())
                 {
                     await Navigation.PushAsync(new DetailPages(item.Children));
+                    return;
+                }
+
+                string extension = Path.GetExtension(item.Href);
+                if (!new[] { ".mp3", ".mp4" }.Contains(extension))
+                    return;
+
+                // 🔽 دانلود در اینجا انجام می‌شود
+                string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+
+                if (!File.Exists(audioPath))
+                {
+                    string message = $"آیا مایل هستید آهنگ «{item.Title}» را دانلود کنید؟";
+                    var popup = new ConfirmPopup(message);
+                    await PopupNavigation.Instance.PushAsync(popup);
+                    bool confirm = await popup.ShowAsync();
+
+                    if (!confirm)
+                        return;
+
+                    var progressHandler = new Progress<double>(p =>
+                    {
+                        item.DownloadProgress = p;
+                        item.DownloadStatus = $"در حال دانلود {Math.Round(p * 100)}٪";
+                    });
+
+                    // شروع دانلود
+                    item.IsDownloading = true;
+                    item.DownloadStatus = "در حال آماده‌سازی...";
+                    item.DownloadProgress = 0;
+
+                    try
+                    {
+                        item.Href = await DependencyService.Get<IGoogleDriveServices>()
+                            .DownloadGoogleDriveFileWithProgressAsync(item.Href, audioFileName, progressHandler);
+
+                        item.DownloadStatus = "دانلود کامل شد ✅";
+                        item.IsDownloading = false;
+                        item.DownloadProgress = 1;
+                    }
+                    catch (Exception ex)
+                    {
+                        item.DownloadStatus = "خطا در دانلود ❌";
+                        item.IsDownloading = false;
+                    }
                 }
                 else
                 {
-                    string extension = Path.GetExtension(item.Href);
-                    if (!new[] { ".mp3", ".mp4" }.Any(ext => extension.Contains(ext)))
-                        return;
-
-                    int index = playableItems.FindIndex(x => x.Id == item.Id);
-
-                    playableItems = playableItems
-                        .OrderByDescending(item =>
-                        {
-                            string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
-                            string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
-                            return System.IO.File.Exists(audioPath);
-                        })
-                        .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
-                        .ToList();
-
-                    PlaybackCapsule.CurrentPlaylist = playableItems;
-                    PlaybackCapsule.CurrentIndex = index;
-
-                    var miniPlayer = new MiniPlayerView(true, index, playableItems);
-                    var page = new ContentPage { Content = miniPlayer };
-                    NavigationPage.SetHasNavigationBar(page, false);
-                    await Navigation.PushAsync(page);
+                    item.Href = audioPath;
                 }
+
+                var currentItem = playableItems.FirstOrDefault(x => x.Id == item.Id);
+                currentItem.Href = item.Href;
+
+                // تنظیم لیست و اجرای MiniPlayer
+                playableItems = playableItems
+                    .OrderByDescending(x =>
+                    {
+                        string fileName = $"{x.ParentId}_{x.Id}{Path.GetExtension(x.Href)}";
+                        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), fileName);
+                        return File.Exists(path);
+                    })
+                    .ThenBy(x => x.Id)
+                    .ToList();
+
+                int index = playableItems.FindIndex(x => x.Id == item.Id);
+                PlaybackCapsule.CurrentPlaylist = playableItems;
+                PlaybackCapsule.CurrentIndex = index;
+
+                var miniPlayer = new MiniPlayerView(true, index, playableItems);
+                var page = new ContentPage { Content = miniPlayer };
+                NavigationPage.SetHasNavigationBar(page, false);
+                await Navigation.PushAsync(page);
             }
 
             ((ListView)sender).SelectedItem = null;
@@ -133,26 +172,16 @@ namespace OnlineMusicPlayerApp.Views
             }
 
             flat = flat
-    .OrderByDescending(item =>
-    {
-        string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
-        string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
-        return System.IO.File.Exists(audioPath);
-    })
-    .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
-    .ToList();
+                .OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return File.Exists(audioPath);
+                })
+                .ThenBy(item => item.Id)
+                .ToList();
 
             return flat;
-        }
-
-        private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            var audioService = DependencyService.Get<IAudioService>();
-            if (Math.Abs(e.NewValue - audioService.GetCurrentPositionSeconds()) > 1)
-            {
-                long newPositionMs = (long)(e.NewValue * 1000);
-                audioService.SeekTo(newPositionMs);
-            }
         }
     }
 }
