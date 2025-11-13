@@ -73,6 +73,10 @@
     <Compile Update="Views\ConfirmPopup.xaml.cs">
       <DependentUpon>ConfirmPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\EqualizerPage.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>EqualizerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MiniPlayerView.xaml.cs">
       <DependentUpon>MiniPlayerView.xaml</DependentUpon>
     </Compile>
@@ -92,6 +96,10 @@
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\EqualizerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PlayList.xaml">
       <SubType>Designer</SubType>

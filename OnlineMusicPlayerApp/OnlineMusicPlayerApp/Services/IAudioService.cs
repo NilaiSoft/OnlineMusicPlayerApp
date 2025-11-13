@@ -1,4 +1,6 @@
-﻿public interface IAudioService
+﻿using System.Collections.Generic;
+
+public interface IAudioService
 {
     void Play(string url);
     void Play(string url, string title, string TagImageSrc, double startSeconds, int index); // نسخه با موقعیت شروع
@@ -11,4 +13,8 @@
     void SeekTo(long positionMs);
     void Close();
     bool IsInitialized();
+
+    // Equalizer
+    List<string> GetBands();
+    void SetBandLevel(int band, short level);
 }

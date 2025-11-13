@@ -51,5 +51,10 @@ namespace OnlineMusicPlayerApp.Views
         {
 
         }
+
+        private void btnEqulizer_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new EqualizerPage());
+        }
     }
 }

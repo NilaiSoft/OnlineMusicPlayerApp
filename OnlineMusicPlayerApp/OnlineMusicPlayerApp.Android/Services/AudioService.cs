@@ -1,11 +1,14 @@
 ﻿using Android.Content;
+using Android.Media.Audiofx;
 using Com.Google.Android.Exoplayer2;
 using OnlineMusicPlayerApp.Droid.Services;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AudioService))]
 public class AudioService : IAudioService
 {
+    Equalizer equalizer;
     public void Play(string url)
     {
         var intent = new Intent(Android.App.Application.Context, typeof(MusicService));
@@ -65,7 +68,7 @@ public class AudioService : IAudioService
         Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
     }
 
-    public void Play(string url, string title, string TagImageSrc, double startSeconds,int index)
+    public void Play(string url, string title, string TagImageSrc, double startSeconds, int index)
     {
         var intent = new Intent(Android.App.Application.Context, typeof(MusicService));
         intent.PutExtra("url", url);
@@ -82,5 +85,26 @@ public class AudioService : IAudioService
     public bool IsInitialized()
     {
         return MusicService.player != null;
+    }
+
+    public void SetBandLevel(int band, short level)
+    {
+        equalizer.SetBandLevel((short)band, level);
+    }
+
+    public List<string> GetBands()
+    {
+        equalizer = new Equalizer(0, MusicService.player.AudioSessionId);
+        equalizer.SetEnabled(true);
+        var bands = new List<string>();
+        short bandCount = equalizer.NumberOfBands;
+
+        for (short i = 0; i < bandCount; i++)
+        {
+            int freq = equalizer.GetCenterFreq(i) / 1000;
+            bands.Add($"{freq} Hz");
+        }
+
+        return bands;
     }
 }

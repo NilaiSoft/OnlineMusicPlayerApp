@@ -12,6 +12,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <!-- MiniPlayerView -->
@@ -55,6 +56,20 @@
                     Padding="12"
                     HorizontalOptions="Center"
                     Clicked="OnPlaylistClicked" />
+            
+            <!-- دکمه Playlist -->
+            <Button Grid.Row="3"
+                    Text="🎵 Equlizer"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    BackgroundColor="#415A77"
+                    CornerRadius="16"
+                    Margin="30,10"
+                    Padding="12"
+                    x:Name="btnEqulizer"
+                    HorizontalOptions="Center"
+                    Clicked="btnEqulizer_Clicked" />
 
             <!-- سایر محتوا -->
             <!--
