@@ -32,6 +32,7 @@ namespace OnlineMusicPlayerApp
             MainPage = new MainPage();
             _notifyService = DependencyService.Get<INotifyService>();
             Device.SetFlags(new[] { "MediaElement_Experimental" });
+            DependencyService.Register<IAudioPreferences, AudioPreferences>();
         }
 
         protected async override void OnStart()
