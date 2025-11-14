@@ -174,7 +174,7 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
-        private void OnMiniPlayClicked(object sender, EventArgs e)
+        private async void OnMiniPlayClicked(object sender, EventArgs e)
         {
             bool isPlaying = _audioService.IsPlaying();
             if (isPlaying)
@@ -185,7 +185,8 @@ namespace OnlineMusicPlayerApp.Views
             }
             else
             {
-                _audioService.Resume();
+                //_audioService.Resume();
+                await PlayNextAsync();
                 btnMiniPlay.Source = "icon_pause1";
                 btnPlay.Source = "icon_pause1";
             }
