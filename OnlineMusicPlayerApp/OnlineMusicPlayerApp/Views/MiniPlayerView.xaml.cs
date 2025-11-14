@@ -50,6 +50,7 @@ namespace OnlineMusicPlayerApp.Views
             _audioService = DependencyService.Get<IAudioService>();
 
             MaximizedPanel.IsVisible = true;
+            BlurBackground.IsVisible = true;
             MiniPlayerFrame.IsVisible = false;
 
             // فقط فایل‌های دانلودشده

@@ -17,6 +17,7 @@
                             HeightRequest="600"
                             DownsampleToViewSize="true"
                             Opacity="0.3"
+                            IsVisible="false"
                             AbsoluteLayout.LayoutBounds="0,0,1.9,1.5"
                             AbsoluteLayout.LayoutFlags="All" />
             <StackLayout Padding="30" Spacing="1">
