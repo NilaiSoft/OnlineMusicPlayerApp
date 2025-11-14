@@ -127,6 +127,15 @@ namespace OnlineMusicPlayerApp.Views
             double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
             _audioService.Play(item.Href, item.Title, item.TagImageSrc, resumePosition, _currentIndex);
 
+            Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
+            {
+                DependencyService.Get<IEqualizerService>().Init();
+                return false;
+            });
+
+            //int index = int.Parse(((Slider)s).AutomationId.Replace("band_", ""));
+            //short newLevel = (short)e.NewValue;
+            //_audioService.SetBandLevel(index, newLevel);
             // تایمر زمان پخش
             if (!_isTimerRunning)
             {
