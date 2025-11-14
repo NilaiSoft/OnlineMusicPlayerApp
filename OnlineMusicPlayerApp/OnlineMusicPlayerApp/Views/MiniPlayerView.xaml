@@ -49,6 +49,7 @@
                            WidthRequest="300"
                            IsClippedToBounds="True"
                            HorizontalOptions="Center"
+                           HasShadow="True"
                            BackgroundColor="Transparent">
                             <Image x:Name="CoverImage"
                                Aspect="AspectFill"
