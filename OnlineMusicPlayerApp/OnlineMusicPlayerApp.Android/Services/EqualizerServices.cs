@@ -67,4 +67,45 @@ public class EqualizerServices : IEqualizerService
     {
         return eq.GetCenterFreq(band) / 1000;
     }
+
+    Equalizer equalizer;
+    BassBoost bassBoost;
+    Virtualizer virtualizer;
+
+    public void InitAudioEffects()
+    {
+        if (MusicService.player == null)
+            return;
+
+        int session = MusicService.player.AudioSessionId;
+        if (session <= 0)
+            return;
+
+        eq = new Equalizer(0, session);
+        eq.SetEnabled(true);
+
+        short bandCount = eq.NumberOfBands;
+
+        for (short i = 0; i < bandCount; i++)
+        {
+            int freq = eq.GetCenterFreq(i) / 1000;
+
+            if (freq >= 6000)
+                eq.SetBandLevel(i, 1200);
+
+            else if (freq >= 1000 && freq < 6000)
+                eq.SetBandLevel(i, 600);
+
+            else if (freq < 250)
+                eq.SetBandLevel(i, 800);
+        }
+
+        bassBoost = new BassBoost(0, session);
+        bassBoost.SetStrength(800);
+        bassBoost.SetEnabled(true);
+
+        virtualizer = new Virtualizer(1, session);
+        virtualizer.SetStrength(900);
+        virtualizer.SetEnabled(true);
+    }
 }
