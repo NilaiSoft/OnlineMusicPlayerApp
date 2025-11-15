@@ -44,7 +44,7 @@ namespace OnlineMusicPlayerApp.Models
         public bool IsPlay { get; set; }
         public List<Detail> Children { get; set; } = new List<Detail>();
 
-
+        public bool IsDeleteVisible { get; set; } = true;
         // -------------------------
         // پراپرتی‌های جدید برای ProgressBar دانلود
         // -------------------------
