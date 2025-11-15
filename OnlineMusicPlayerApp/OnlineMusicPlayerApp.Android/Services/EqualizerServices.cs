@@ -2,6 +2,9 @@
 using Xamarin.Forms;
 using OnlineMusicPlayerApp.Droid.Services;
 using OnlineMusicPlayerApp.Services;
+using Java.Util.Prefs;
+using System.Collections.Generic;
+using Android.Content;
 
 [assembly: Dependency(typeof(EqualizerServices))]
 public class EqualizerServices : IEqualizerService
@@ -108,4 +111,89 @@ public class EqualizerServices : IEqualizerService
         virtualizer.SetStrength(900);
         virtualizer.SetEnabled(true);
     }
+
+    public void InitAudioEffects2()
+    {
+        //    if (MusicService.player == null)
+        //        return;
+
+        //    int session = MusicService.player.AudioSessionId;
+        //    if (session <= 0)
+        //        return;
+
+        //    // 1️⃣ Equalizer اصلی (برای Sliderها)
+        //    equalizer = new Equalizer(0, session);
+        //    eq.SetEnabled(true);
+
+        //    // 2️⃣ اعمال تنظیمات ذخیره شده یوزر
+        //    var bands = new List<string>();
+        //    short bandCount = equalizer.NumberOfBands;
+
+        //    for (short i = 0; i < bandCount; i++)
+        //    {
+        //        int freq = equalizer.GetCenterFreq(i) / 1000;
+
+        //        // مقدار ذخیره شده را به صورت string می‌گیریم
+        //        ISharedPreferences prefs = Android.App.Application.Context
+        //.GetSharedPreferences("eqprefs", FileCreationMode.Private);
+
+        //        string savedStr = prefs.GetString($"band_{i}", "0");
+        //        short savedValue = short.TryParse(savedStr, out var v) ? v : (short)0;
+
+        //        // تبدیل رشته به عدد
+        //        savedValue = short.TryParse(savedStr, out v) ? v : (short)0;
+
+        //        // اعمال مقدار روی اکولایزر
+        //        equalizer.SetBandLevel(i, savedValue);
+
+        //        // نمایش 
+        //        bands.Add($"{freq} Hz : {savedValue}");
+        //    }
+
+        //    // 3️⃣ Crystalizer — تقویت باس، Treble و Virtualizer
+        //    ApplyCrystalizerPreset();
+    }
+
+    //private void ApplyCrystalizerPreset()
+    //{
+    //    if (equalizer == null) return;
+
+    //    short bands = equalizer.NumberOfBands;
+
+    //    for (short i = 0; i < bands; i++)
+    //    {
+    //        int freq = equalizer.GetCenterFreq(i) / 1000;
+
+    //        // Bass Crystalizer
+    //        if (freq < 250)
+    //        {
+    //            short level = (short)(equalizer.GetBandLevel(i) + 900);
+    //            equalizer.SetBandLevel(i, level);
+    //        }
+
+    //        // Mid Boost
+    //        else if (freq >= 1000 && freq < 4000)
+    //        {
+    //            short level = (short)(equalizer.GetBandLevel(i) + 500);
+    //            equalizer.SetBandLevel(i, level);
+    //        }
+
+    //        // Treble Crystalizer
+    //        else if (freq >= 6000)
+    //        {
+    //            short level = (short)(equalizer.GetBandLevel(i) + 1200);
+    //            equalizer.SetBandLevel(i, level);
+    //        }
+    //    }
+
+    //    // Bass Boost
+    //    bassBoost = new BassBoost(0, MusicService.player.AudioSessionId);
+    //    bassBoost.SetStrength(900);
+    //    bassBoost.SetEnabled(true);
+
+    //    // Virtualizer
+    //    virtualizer = new Virtualizer(1, MusicService.player.AudioSessionId);
+    //    virtualizer.SetStrength(900);
+    //    virtualizer.SetEnabled(true);
+    //}
 }

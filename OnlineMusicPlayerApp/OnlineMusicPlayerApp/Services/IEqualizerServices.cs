@@ -11,5 +11,6 @@ namespace OnlineMusicPlayerApp.Services
         short GetBandCount();
         int GetBandFreq(short band);
         void InitAudioEffects();
+        void InitAudioEffects2();
     }
 }
