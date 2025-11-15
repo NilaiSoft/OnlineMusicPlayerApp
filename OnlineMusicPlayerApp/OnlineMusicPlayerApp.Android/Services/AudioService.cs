@@ -94,8 +94,16 @@ public class AudioService : IAudioService
 
     public List<string> GetBands()
     {
+        // اگر پلیر هنوز ساخته نشده، اینجا می‌سازیم
+        if (MusicService.player == null)
+        {
+            MusicService.player = new SimpleExoPlayer.Builder(Android.App.Application.Context).Build();
+        }
+
+        // حالا می‌تونیم AudioSessionId بگیریم
         equalizer = new Equalizer(0, MusicService.player.AudioSessionId);
         equalizer.SetEnabled(true);
+
         var bands = new List<string>();
         short bandCount = equalizer.NumberOfBands;
 
