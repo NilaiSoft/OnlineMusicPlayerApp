@@ -57,6 +57,12 @@
                                     <TapGestureRecognizer Tapped="OnEqualizerClicked"/>
                                 </Image.GestureRecognizers>
                             </Image>
+
+                            <Image Source="delete_24" WidthRequest="28">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnDeleteClicked"/>
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
 
                         <!-- تصویر دایره‌ای آهنگ -->
