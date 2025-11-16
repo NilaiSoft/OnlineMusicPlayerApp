@@ -47,6 +47,7 @@
             <!-- دکمه Playlist -->
             <Button Grid.Row="2"
                     Text="🎵 Playlist"
+                    IsVisible="false"
                     FontSize="18"
                     FontAttributes="Bold"
                     TextColor="White"
@@ -59,6 +60,7 @@
             
             <!-- دکمه Playlist -->
             <Button Grid.Row="3"
+                    IsVisible="false"
                     Text="🎵 Equlizer"
                     FontSize="18"
                     FontAttributes="Bold"

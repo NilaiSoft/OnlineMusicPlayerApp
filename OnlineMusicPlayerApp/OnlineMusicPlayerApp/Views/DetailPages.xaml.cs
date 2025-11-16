@@ -67,6 +67,15 @@ namespace OnlineMusicPlayerApp.Views
                 .ThenBy(item => item.Id)
                 .ToList();
 
+            //foreach (var item in details)
+            //{
+            //    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+            //    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+
+            //    // اگر فایل وجود داشت → دکمه حذف فعال شود
+            //    item.IsDeleteVisible = File.Exists(audioPath);
+            //}
+
             DetailsListView.ItemsSource = details;
         }
 
@@ -182,6 +191,11 @@ namespace OnlineMusicPlayerApp.Views
                 .ToList();
 
             return flat;
+        }
+
+        private void OnDeleteClicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

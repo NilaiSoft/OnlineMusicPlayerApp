@@ -42,6 +42,23 @@
                                VerticalTextAlignment="Center" />
                         </ScrollView>
 
+                        <!-- ایکون‌های بالا -->
+                        <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             Spacing="28">
+                            <Image Source="music_playlist_30" WidthRequest="28">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnPlaylistClicked"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+
+                            <Image Source="equalizer_50" WidthRequest="28">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnEqualizerClicked"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+
                         <!-- تصویر دایره‌ای آهنگ -->
                         <Frame Padding="0"
                            CornerRadius="150"
