@@ -139,7 +139,7 @@
                                 ValueChanged="ProgressSlider_ValueChanged"
                                 ThumbColor="#888"
                                 MinimumTrackColor="#555"
-                                MaximumTrackColor="#CCC"
+                                MaximumTrackColor="#555"
                                 HorizontalOptions="FillAndExpand" />
                         </Grid>
 
