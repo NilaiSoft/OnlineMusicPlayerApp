@@ -124,12 +124,21 @@ namespace OnlineMusicPlayerApp.Views
             });
 
             double resumePosition = 0;
-            double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+            if (direction == "")
+            {
+                double.TryParse(PlaybackCapsule.LoadSeconds(), out resumePosition);
+            }
+            else
+            {
+                resumePosition = 0;
+            }
             _audioService.Play(item.Href, item.Title, item.TagImageSrc, resumePosition, _currentIndex);
 
             Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
             {
-                DependencyService.Get<IEqualizerService>().Init();
+                //DependencyService.Get<IEqualizerService>().InitAudioEffects();
+                //DependencyService.Get<IEqualizerService>().Init();
+                DependencyService.Get<IEqualizerService>().InitAudioEffects2();
                 return false;
             });
 
@@ -159,13 +168,25 @@ namespace OnlineMusicPlayerApp.Views
                             TotalTimeLabel.Text = TimeSpan.FromSeconds(duration - position).ToString(@"m\:ss");
                         }
 
-                        if (position >= duration - 1 && duration > 0)
+                        if (duration > 0 && position >= duration - 0.5)
                         {
-                            _currentIndex++;
-                            if (_currentIndex >= _playableItems.Count)
-                                _currentIndex = 0;
-                            _audioService.SeekTo(0);
-                            _ = PlayNextAsync("+");
+                            _isTimerRunning = false; // اول تایمر فعلی را قطع کن
+
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                if (_currentIndex < _playableItems.Count - 1)
+                                {
+                                    _currentIndex++;
+                                }
+                                else
+                                {
+                                    _currentIndex = 0; // برگشت به اولین آهنگ
+                                }
+
+                                await PlayNextAsync("+");
+                            });
+
+                            return; // توقف تایمر فعلی
                         }
                     });
 
@@ -255,9 +276,11 @@ namespace OnlineMusicPlayerApp.Views
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            var audioService = DependencyService.Get<IAudioService>(); if (Math.Abs(e.NewValue - audioService.GetCurrentPositionSeconds()) > 1)
+            var audioService = DependencyService.Get<IAudioService>();
+            if (Math.Abs(e.NewValue - audioService.GetCurrentPositionSeconds()) > 1)
             {
-                long newPositionMs = (long)(e.NewValue * 1000); audioService.SeekTo(newPositionMs);
+                long newPositionMs = (long)(e.NewValue * 1000);
+                audioService.SeekTo(newPositionMs);
             }
         }
 
@@ -285,6 +308,16 @@ namespace OnlineMusicPlayerApp.Views
             var page = new ContentPage { Content = maximizedView };
             NavigationPage.SetHasNavigationBar(page, false);
             await Navigation.PushAsync(page);
+        }
+
+        private void OnEqualizerClicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new EqualizerPage());
+        }
+
+        private void OnPlaylistClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new DetailPages());
         }
 
         //private async void OnMiniPlayerTapped(object sender, EventArgs e)
