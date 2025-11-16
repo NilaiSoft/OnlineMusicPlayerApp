@@ -312,37 +312,38 @@ namespace OnlineMusicPlayerApp.Views
             await Navigation.PushAsync(page);
         }
 
-        private void OnEqualizerClicked(object sender, EventArgs e)
+        private async void OnEqualizerClicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new EqualizerPage());
+            await Navigation.PushModalAsync(new EqualizerPage());
         }
 
-        private void OnPlaylistClicked(object sender, EventArgs e)
+        private async void OnPlaylistClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new DetailPages());
+            await Navigation.PushAsync(new DetailPages());
         }
 
         private async void OnDeleteClicked(object sender, EventArgs e)
         {
-            //string message = $"آیا مایل هستید آهنگ «{lblTitle.Text}» را حذف کنید؟";
-            //var popup = new ConfirmPopup(message);
-            //await PopupNavigation.Instance.PushAsync(popup);
-            //bool confirm = await popup.ShowAsync();
-            //if (!confirm)
-            //    return;
+            string message = $"آیا مایل هستید آهنگ «{lblTitle.Text}» را حذف کنید؟";
+            var popup = new ConfirmPopup(message);
+            await PopupNavigation.Instance.PushAsync(popup);
+            bool confirm = await popup.ShowAsync();
+            if (!confirm)
+                return;
 
-            //string audioFileName = PlaybackCapsule.LoadHref();
-            //string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+            string audioFileName = PlaybackCapsule.LoadHref();
+            string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
-            //if (System.IO.File.Exists(audioPath))
-            //{
-            //    System.IO.File.Delete(audioPath);
-            //    //item.IsDeleteVisible = false;  // اگه دکمه داری برای مخفی کردن
-            //}
-            //else
-            //{
+            if (System.IO.File.Exists(audioPath))
+            {
+                System.IO.File.Delete(audioPath);
+                await Navigation.PushAsync(new DetailPages());
+                //item.IsDeleteVisible = false;  // اگه دکمه داری برای مخفی کردن
+            }
+            else
+            {
 
-            //}
+            }
         }
 
         //private async void OnMiniPlayerTapped(object sender, EventArgs e)

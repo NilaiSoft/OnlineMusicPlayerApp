@@ -58,7 +58,7 @@
                                 </Image.GestureRecognizers>
                             </Image>
 
-                            <Image Source="delete_24" WidthRequest="28">
+                            <Image IsVisible="False" Source="delete_24" WidthRequest="28">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnDeleteClicked"/>
                                 </Image.GestureRecognizers>
