@@ -28,50 +28,62 @@
                     <DataTemplate>
                         <ViewCell>
                             <Frame Margin="10,5"
-                                   Padding="15"
-                                   CornerRadius="12"
-                                   BackgroundColor="#FFFFFF"
-                                   HasShadow="True">
+                   Padding="15"
+                   CornerRadius="12"
+                   BackgroundColor="#FFFFFF"
+                   HasShadow="True">
                                 <StackLayout Orientation="Vertical" Spacing="8">
 
                                     <!-- عنوان آهنگ و تصویر -->
                                     <StackLayout Orientation="Horizontal" Spacing="15">
+
+                                        <!-- تصویر آهنگ -->
                                         <Frame Padding="0"
-                                               CornerRadius="4"
-                                               HasShadow="False"
-                                               HeightRequest="40"
-                                               WidthRequest="40"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="Start"
-                                               Margin="0,0,4,0"
-                                               IsClippedToBounds="True">
+                               CornerRadius="4"
+                               HasShadow="False"
+                               HeightRequest="40"
+                               WidthRequest="40"
+                               VerticalOptions="Center"
+                               IsClippedToBounds="True">
                                             <Image Source="{Binding ListImageSrc}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="40"
-                                                   WidthRequest="40" />
+                                   Aspect="AspectFill"
+                                   HeightRequest="40"
+                                   WidthRequest="40" />
                                         </Frame>
 
+                                        <!-- نام آهنگ -->
                                         <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                                             <Label Text="{Binding Title}"
-                                                   FontSize="16"
-                                                   FontAttributes="Bold"
-                                                   TextColor="#333"
-                                                   LineBreakMode="TailTruncation" />
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   LineBreakMode="TailTruncation" />
 
-                                            <!-- وضعیت دانلود -->
                                             <Label Text="{Binding DownloadStatus}"
-                                                   FontSize="12"
-                                                   TextColor="#888"
-                                                   IsVisible="{Binding IsDownloading}" />
+                                   FontSize="12"
+                                   TextColor="#888"
+                                   IsVisible="{Binding IsDownloading}" />
                                         </StackLayout>
+
+                                        <!-- ⭐ آیکون منو برای هر آیتم -->
+                                        <ImageButton 
+                            Source="menu_24.png"
+                            WidthRequest="26"
+                            HeightRequest="26"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Clicked="OnItemMenuClicked"
+                            CommandParameter="{Binding}" />
                                     </StackLayout>
 
-                                    <!-- 🔄 Progress Bar دانلود -->
+                                    <!-- ProgressBar دانلود -->
                                     <Grid IsVisible="{Binding IsDownloading}">
-                                        <ProgressBar Progress="{Binding DownloadProgress}" 
-                                                     HeightRequest="4"
-                                                     ProgressColor="#2196F3" />
+                                        <ProgressBar Progress="{Binding DownloadProgress}"
+                                     HeightRequest="4"
+                                     ProgressColor="#2196F3" />
                                     </Grid>
+
                                 </StackLayout>
                             </Frame>
                         </ViewCell>

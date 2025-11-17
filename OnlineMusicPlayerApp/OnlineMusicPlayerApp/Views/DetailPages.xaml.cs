@@ -193,6 +193,39 @@ namespace OnlineMusicPlayerApp.Views
             return flat;
         }
 
+        private async void OnItemMenuClicked(object sender, EventArgs e)
+        {
+            var btn = sender as ImageButton;
+            if (btn?.CommandParameter is Detail item)
+            {
+                string action = await DisplayActionSheet(
+                    $"گزینه‌های «{item.Title}»",
+                    "انصراف", null,
+                    "حذف فایل دانلود شده",
+                    "اطلاعات آهنگ");
+
+                if (action == "حذف فایل دانلود شده")
+                {
+                    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+
+                    if (File.Exists(audioPath))
+                    {
+                        File.Delete(audioPath);
+                        await DisplayAlert("حذف شد", "فایل پاک شد.", "باشه");
+                    }
+                    else
+                    {
+                        await DisplayAlert("خطا", "فایلی برای حذف وجود ندارد.", "باشه");
+                    }
+                }
+                else if (action == "اطلاعات آهنگ")
+                {
+                    await DisplayAlert("اطلاعات", $"نام: {item.Title}", "باشه");
+                }
+            }
+        }
+
         private void OnDeleteClicked(object sender, EventArgs e)
         {
 
