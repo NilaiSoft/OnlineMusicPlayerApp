@@ -138,8 +138,8 @@ namespace OnlineMusicPlayerApp.Views
 
             Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
             {
-                //DependencyService.Get<IEqualizerService>().InitAudioEffects();
-                //DependencyService.Get<IEqualizerService>().Init();
+                DependencyService.Get<IEqualizerService>().InitAudioEffects();
+                DependencyService.Get<IEqualizerService>().Init();
                 DependencyService.Get<IEqualizerService>().InitAudioEffects2();
                 return false;
             });
