@@ -66,15 +66,18 @@
                                         </StackLayout>
 
                                         <!-- ⭐ آیکون منو برای هر آیتم -->
+                                        <!-- ⭐ آیکون منو برای هر آیتم -->
                                         <ImageButton 
-                            Source="menu_vertical_32.png"
-                            WidthRequest="26"
-                            HeightRequest="26"
-                            BackgroundColor="Transparent"
-                            HorizontalOptions="End"
-                            VerticalOptions="Center"
-                            Clicked="OnItemMenuClicked"
-                            CommandParameter="{Binding}" />
+                                            Source="menu_vertical_32.png"
+                                            WidthRequest="26"
+                                            HeightRequest="26"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Center"
+                                            Clicked="OnItemMenuClicked"
+                                            CommandParameter="{Binding}"
+                                            IsVisible="{Binding IsDeleteVisible}" />
+
                                     </StackLayout>
 
                                     <!-- ProgressBar دانلود -->

@@ -67,14 +67,14 @@ namespace OnlineMusicPlayerApp.Views
                 .ThenBy(item => item.Id)
                 .ToList();
 
-            //foreach (var item in details)
-            //{
-            //    string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
-            //    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+            foreach (var item in details)
+            {
+                string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
-            //    // اگر فایل وجود داشت → دکمه حذف فعال شود
-            //    item.IsDeleteVisible = File.Exists(audioPath);
-            //}
+                // اگر فایل وجود داشت → دکمه حذف فعال شود
+                item.IsDeleteVisible = File.Exists(audioPath);
+            }
 
             DetailsListView.ItemsSource = details;
         }
@@ -198,33 +198,75 @@ namespace OnlineMusicPlayerApp.Views
             var btn = sender as ImageButton;
             if (btn?.CommandParameter is Detail item)
             {
-                string action = await DisplayActionSheet(
-                    $"گزینه‌های «{item.Title}»",
-                    "انصراف", null,
-                    "حذف فایل دانلود شده",
-                    "اطلاعات آهنگ");
+                string action = await DisplayActionSheet($"«{item.Title}»", "انصراف", null, "حذف");
 
-                if (action == "حذف فایل دانلود شده")
+                if (action == "حذف")
                 {
                     string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
-                    if (File.Exists(audioPath))
-                    {
-                        File.Delete(audioPath);
-                        await DisplayAlert("حذف شد", "فایل پاک شد.", "باشه");
-                    }
-                    else
+                    if (!File.Exists(audioPath))
                     {
                         await DisplayAlert("خطا", "فایلی برای حذف وجود ندارد.", "باشه");
+                        return;
                     }
-                }
-                else if (action == "اطلاعات آهنگ")
-                {
-                    await DisplayAlert("اطلاعات", $"نام: {item.Title}", "باشه");
+
+                    // ❗ پیام تأیید حذف
+                    bool confirm = await DisplayAlert("حذف فایل",
+                                                      "آیا مطمئن هستید؟",
+                                                      "بله", "خیر");
+
+                    if (!confirm)
+                        return;
+
+                    File.Delete(audioPath);
+
+                    await DisplayAlert("حذف شد", "فایل با موفقیت حذف شد.", "باشه");
+
+                    // به‌روزرسانی UI
+                    item.IsDeleteVisible = false;
+                    item.DownloadStatus = "";
+                    item.DownloadProgress = 0;
+
+                    // رفرش لیست
+                    DetailsListView.ItemsSource = null;
+                    DetailsListView.ItemsSource = (List<Detail>)DetailsListView.ItemsSource;
                 }
             }
         }
+
+        //private async void OnItemMenuClicked(object sender, EventArgs e)
+        //{
+        //    var btn = sender as ImageButton;
+        //    if (btn?.CommandParameter is Detail item)
+        //    {
+        //        string action = await DisplayActionSheet(
+        //            $"گزینه‌های «{item.Title}»",
+        //            "انصراف", null,
+        //            "حذف فایل دانلود شده",
+        //            "اطلاعات آهنگ");
+
+        //        if (action == "حذف فایل دانلود شده")
+        //        {
+        //            string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+        //            string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+
+        //            if (File.Exists(audioPath))
+        //            {
+        //                File.Delete(audioPath);
+        //                await DisplayAlert("حذف شد", "فایل پاک شد.", "باشه");
+        //            }
+        //            else
+        //            {
+        //                await DisplayAlert("خطا", "فایلی برای حذف وجود ندارد.", "باشه");
+        //            }
+        //        }
+        //        else if (action == "اطلاعات آهنگ")
+        //        {
+        //            await DisplayAlert("اطلاعات", $"نام: {item.Title}", "باشه");
+        //        }
+        //    }
+        //}
 
         private void OnDeleteClicked(object sender, EventArgs e)
         {
