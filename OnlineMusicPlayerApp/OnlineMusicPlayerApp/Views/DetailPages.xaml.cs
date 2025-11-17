@@ -212,7 +212,7 @@ namespace OnlineMusicPlayerApp.Views
                     }
 
                     // ❗ پیام تأیید حذف
-                    bool confirm = await DisplayAlert("حذف فایل",
+                    bool confirm = await DisplayAlert("حذف",
                                                       "آیا مطمئن هستید؟",
                                                       "بله", "خیر");
 
