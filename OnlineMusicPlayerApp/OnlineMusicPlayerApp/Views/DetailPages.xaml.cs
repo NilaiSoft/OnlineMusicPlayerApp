@@ -94,7 +94,11 @@ namespace OnlineMusicPlayerApp.Views
                 }
 
                 string extension = Path.GetExtension(item.Href);
-                if (!new[] { ".mp3", ".mp4" }.Contains(extension))
+
+                bool isLocalAudio = new[] { ".mp3", ".mp4" }.Contains(extension);
+                bool isGoogleDrive = item.Href.StartsWith("https://drive.google.com/", StringComparison.OrdinalIgnoreCase);
+
+                if (!isLocalAudio && !isGoogleDrive)
                     return;
 
                 // 🔽 دانلود در اینجا انجام می‌شود

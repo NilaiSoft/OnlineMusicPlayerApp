@@ -42,6 +42,7 @@ namespace OnlineMusicPlayerApp.Models
         public int ParentId { get; set; }
         public double CurrentSecond { get; set; }
         public bool IsPlay { get; set; }
+        public bool IsNew { get; set; }
         public List<Detail> Children { get; set; } = new List<Detail>();
 
         public bool IsDeleteVisible { get; set; } = true;
