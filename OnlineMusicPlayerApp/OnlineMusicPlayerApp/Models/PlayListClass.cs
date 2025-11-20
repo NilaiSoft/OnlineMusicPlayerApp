@@ -3,53 +3,46 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace OnlineMusicPlayerApp.Models
 {
     public class Category
     {
-        public string Master { get; set; }
-        public List<Detail> Details { get; set; }
+        public string Master { get; set; }     // نام دسته بندی
         public string AlbumImageSrc { get; set; }
+        public List<Detail> Details { get; set; }
     }
-
-    //public class Detail
-    //{
-    //    public string Title { get; set; }
-    //    public int Id { get; set; }
-    //    public string Href { get; set; }
-    //    public bool IsVisible { get; set; }
-    //    public string TagImageSrc { get; set; }
-    //    public string ListImageSrc { get; set; }
-    //    public int ParentId { get; set; }
-    //    public double CurrentSecond { get; set; }
-    //    public bool IsPlay { get; set; }
-    //    public List<Detail> Children { get; set; } = new List<Detail>();
-    //}
 
     public class Detail : INotifyPropertyChanged
     {
         // -------------------------
-        // پراپرتی‌های اصلی مدل
+        // ستون‌های اکسل
         // -------------------------
-        public string Title { get; set; }
         public int Id { get; set; }
+        public int? ParentId { get; set; }  // چون ممکنه خالی باشه → nullable
+        public string Title { get; set; }
         public string Href { get; set; }
         public bool IsVisible { get; set; }
         public string TagImageSrc { get; set; }
         public string ListImageSrc { get; set; }
-        public int ParentId { get; set; }
-        public double CurrentSecond { get; set; }
-        public bool IsPlay { get; set; }
-        public bool IsNew { get; set; }
+
+        // -------------------------
+        // برای Parent / Child (زیرمنوها)
+        // -------------------------
         public List<Detail> Children { get; set; } = new List<Detail>();
 
-        public bool IsDeleteVisible { get; set; } = true;
         // -------------------------
-        // پراپرتی‌های جدید برای ProgressBar دانلود
+        // وضعیت پخش
         // -------------------------
+        public bool IsPlay { get; set; }
+        public double CurrentSecond { get; set; }
 
+        // برای نمایش × حذف
+        public bool IsDeleteVisible { get; set; } = true;
+
+        // -------------------------
+        // وضعیت دانلود
+        // -------------------------
         private bool _isDownloading;
         public bool IsDownloading
         {
@@ -87,9 +80,8 @@ namespace OnlineMusicPlayerApp.Models
             }
         }
 
-
         // -------------------------
-        // پشتیبانی از Notify UI
+        // پشتیبانی UI
         // -------------------------
         public event PropertyChangedEventHandler PropertyChanged;
 

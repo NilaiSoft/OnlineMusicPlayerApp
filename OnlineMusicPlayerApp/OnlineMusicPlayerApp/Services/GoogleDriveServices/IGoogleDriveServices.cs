@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineMusicPlayerApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,4 +12,6 @@ public interface IGoogleDriveServices
 
     Task<T> LoadJsonFromDriveAsync<T>(string fileUrl);
     Task<string> GetMusicPlayList();
+    Task<Category> LoadCategoryFromGoogleSheet(string csvUrl, string masterName, string albumImage);
+    Task<List<Category>> GetCategoriesFromGoogleSheet();
 }

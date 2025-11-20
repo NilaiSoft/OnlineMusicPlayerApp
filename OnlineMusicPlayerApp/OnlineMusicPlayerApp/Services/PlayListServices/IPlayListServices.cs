@@ -8,6 +8,8 @@ namespace OnlineMusicPlayerApp.Services.PlayListServices
 {
     public interface IPlayListServices
     {
-        public Task<List<Category>> GetCategoriesFromJson();
+        Task<List<Category>> GetCategoriesFromJson();
+
+        Task<List<Category>> GetCategoriesFromGoogleSheet();
     }
 }

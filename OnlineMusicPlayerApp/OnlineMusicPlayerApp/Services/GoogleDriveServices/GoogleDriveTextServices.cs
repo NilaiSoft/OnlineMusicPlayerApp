@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using OnlineMusicPlayerApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 [assembly: Dependency(typeof(GoogleDriveServices))]
 public class GoogleDriveServices : IGoogleDriveServices
@@ -64,14 +67,14 @@ public class GoogleDriveServices : IGoogleDriveServices
     {
 
         string fileId = "1NRhEt-01wf5MSqYnjvoxkPB5tFXqfkiw";
-//#if DEBUG
+        //#if DEBUG
         //fileId = "1Fg7i1jbE498ihc1ZjB-n-Xf-HT4Of6fp";
-//#else
+        //#else
         if (!await NetworkExtensions.IsConnectedAsync())
         {
             return string.Empty;
         }
-//#endif
+        //#endif
 
         string url = $"https://drive.google.com/uc?export=download&id={fileId}";
 
@@ -132,5 +135,133 @@ public class GoogleDriveServices : IGoogleDriveServices
         }
 
         return filePath;
+    }
+
+    public async Task<Category> LoadCategoryFromGoogleSheet(string csvUrl, string masterName, string albumImage)
+    {
+        try
+        {
+            csvUrl = "https://docs.google.com/spreadsheets/d/1TxEMoJVEupNGldUc-l8YhejDb8Fdfy62/export?format=csv";
+
+            using (HttpClient client = new HttpClient())
+            {
+                string csv = await client.GetStringAsync(csvUrl);
+
+                var lines = csv.Split('\n');
+
+                // لیست دیتیل‌ها
+                List<Detail> details = new List<Detail>();
+
+                // شروع از 1 چون ردیف اول header است
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    var line = lines[i].Trim();
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    var cols = line.Split(',');
+
+                    if (cols.Length < 7) continue;
+
+                    details.Add(new Detail
+                    {
+                        Id = int.Parse(cols[0]),
+                        ParentId = int.Parse(cols[1]),
+                        Title = cols[2],
+                        Href = cols[3],
+                        TagImageSrc = cols[4],
+                        ListImageSrc = cols[5],
+                        IsVisible = cols[6] == "1" || cols[6].ToLower() == "true"
+                    });
+                }
+
+                // ساخت ساختار درختی
+                foreach (var item in details)
+                {
+                    item.Children = details.FindAll(d => d.ParentId == item.Id);
+                }
+
+                // فقط Root ها
+                var rootDetails = details.FindAll(d => d.ParentId == 0);
+
+                return new Category
+                {
+                    Master = masterName,
+                    AlbumImageSrc = albumImage,
+                    Details = rootDetails
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error loading Google Sheet: " + ex.Message);
+            return null;
+        }
+    }
+
+    public static List<Detail> BuildTree(List<Detail> all)
+    {
+        var lookup = all.ToDictionary(x => x.Id);
+        var roots = new List<Detail>();
+
+        foreach (var d in all)
+        {
+            // اگر ParentId نداشت → ریشه است
+            if (d.ParentId == null || d.ParentId == 0)
+            {
+                roots.Add(d);
+            }
+            else if (lookup.TryGetValue(d.ParentId.Value, out var parent))
+            {
+                parent.Children.Add(d);
+            }
+        }
+
+        return roots;
+    }
+
+
+    public async Task<List<Category>> GetCategoriesFromGoogleSheet()
+    {
+        string url = "https://docs.google.com/spreadsheets/d/1TxEMoJVEupNGldUc-l8YhejDb8Fdfy62/export?format=csv";
+
+        using (HttpClient client = new HttpClient())
+        {
+            string csv = await client.GetStringAsync(url);
+            var lines = csv.Split('\n');
+
+            List<Detail> items = new List<Detail>();
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                var line = lines[i].Trim();
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                var c = line.Split(',');
+
+                items.Add(new Detail
+                {
+                    Id = int.Parse(c[0]),
+                    ParentId = int.TryParse(c[1], out var pid) ? pid : (int?)null,
+                    Title = c[2],
+                    Href = c[3],
+                    TagImageSrc = c[4],
+                    ListImageSrc = c[5],
+                    IsVisible = c[6] == "1" || c[6].ToLower() == "true"
+                });
+            }
+
+            // ساخت درخت صحیح
+            var tree = BuildTree(items);
+
+            return new List<Category>
+        {
+            new Category
+            {
+                Master = "GoogleSheet",
+                Details = tree,
+                AlbumImageSrc = ""
+            }
+        };
+        }
     }
 }
