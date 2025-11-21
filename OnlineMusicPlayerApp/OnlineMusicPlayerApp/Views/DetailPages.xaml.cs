@@ -33,6 +33,12 @@ namespace OnlineMusicPlayerApp.Views
             DetailsListView.ItemsSource = null;
             List<Detail> rootItems = new List<Detail>();
 
+            if (!await NetworkExtensions.IsConnectedAsync())
+            {
+                DependencyService.Get<IToastService>()?.Show("اتصال اینترنت بررسی شود");
+                return;
+            }
+
             await FormExtensions.ShowBuildInfoModalAsync(this.Navigation, async () =>
             {
                 var categories = await DependencyService.Get<IPlayListServices>()
