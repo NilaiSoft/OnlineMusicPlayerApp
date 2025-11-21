@@ -31,7 +31,7 @@ namespace OnlineMusicPlayerApp.Views
             _playableItems = PlaybackCapsule.CurrentPlaylist?
                 .Where(item =>
                 {
-                    string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return System.IO.File.Exists(audioPath);
                 })
@@ -59,7 +59,7 @@ namespace OnlineMusicPlayerApp.Views
             details = details
                 .Where(item =>
                 {
-                    string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return System.IO.File.Exists(audioPath);
                 })
@@ -97,7 +97,7 @@ namespace OnlineMusicPlayerApp.Views
 
             PlaybackCapsule.CurrentPlaylist = _playableItems;
 
-            string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+            string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
             string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
             // فقط آهنگ‌هایی که دانلود شدن
@@ -296,7 +296,7 @@ namespace OnlineMusicPlayerApp.Views
             _playableItems = _playableItems
                 .OrderByDescending(item =>
                 {
-                    string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return System.IO.File.Exists(audioPath);
                 })

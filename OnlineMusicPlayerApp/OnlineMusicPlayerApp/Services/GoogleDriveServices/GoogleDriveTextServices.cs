@@ -242,11 +242,12 @@ public class GoogleDriveServices : IGoogleDriveServices
                 {
                     Id = int.Parse(c[0]),
                     ParentId = int.TryParse(c[1], out var pid) ? pid : (int?)null,
-                    Title = c[2],
-                    Href = c[3],
-                    TagImageSrc = c[4],
-                    ListImageSrc = c[5],
-                    IsVisible = c[6] == "1" || c[6].ToLower() == "true"
+                    RepeatId = int.TryParse(c[2], out var rep) ? rep : (int?)null,
+                    Title = c[3],
+                    Href = c[4],
+                    TagImageSrc = c[5],
+                    ListImageSrc = c[6],
+                    IsVisible = c[7] == "1" || c[7].ToLower() == "true"
                 });
             }
 

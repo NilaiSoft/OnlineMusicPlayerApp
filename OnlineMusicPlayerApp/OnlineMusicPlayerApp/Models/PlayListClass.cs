@@ -25,6 +25,7 @@ namespace OnlineMusicPlayerApp.Models
         public bool IsVisible { get; set; }
         public string TagImageSrc { get; set; }
         public string ListImageSrc { get; set; }
+        public int? RepeatId { get; set; }
 
         // -------------------------
         // برای Parent / Child (زیرمنوها)
@@ -79,6 +80,7 @@ namespace OnlineMusicPlayerApp.Models
                 OnPropertyChanged();
             }
         }
+
 
         // -------------------------
         // پشتیبانی UI

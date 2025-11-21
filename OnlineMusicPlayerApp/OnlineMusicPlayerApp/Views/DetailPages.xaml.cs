@@ -111,7 +111,7 @@ namespace OnlineMusicPlayerApp.Views
                 if (!isLocal && !isGoogleDrive)
                     return;
 
-                string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
                 string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
 
                 if (!File.Exists(audioPath))
