@@ -91,6 +91,13 @@ namespace OnlineMusicPlayerApp.Views
             if (_currentIndex < 0 || _currentIndex >= _playableItems.Count)
                 return;
 
+            _playableItems = _playableItems.OrderByDescending(item =>
+                {
+                    string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
+                }).ThenByDescending(item => item.Id).ToList();
+
             var item = _playableItems[_currentIndex];
             _playableItems.ForEach(d => d.IsPlay = false);
             item.IsPlay = true;
