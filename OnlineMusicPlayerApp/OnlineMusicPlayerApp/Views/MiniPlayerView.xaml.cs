@@ -300,7 +300,7 @@ namespace OnlineMusicPlayerApp.Views
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return System.IO.File.Exists(audioPath);
                 })
-                .ThenBy(item => item.Id) // سپس مرتب‌سازی بر اساس Id
+                .ThenByDescending(item => item.Id) // سپس مرتب‌سازی بر اساس Id
                 .ToList();
 
             var c = _playableItems.FirstOrDefault(x => x.IsPlay);

@@ -76,7 +76,7 @@ namespace OnlineMusicPlayerApp.Views
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return File.Exists(audioPath);
                 })
-                .ThenBy(item => item.Id)
+                .ThenByDescending(item => item.Id)
                 .ToList();
 
             foreach (var item in details)
@@ -146,6 +146,10 @@ namespace OnlineMusicPlayerApp.Views
                         item.DownloadStatus = "دانلود کامل شد";
                         item.IsDownloading = false;
                         item.DownloadProgress = 1;
+
+                        Device.BeginInvokeOnMainThread(() => LoadData());
+                        DetailsListView_ItemTapped(sender, e);
+                        return;
                     }
                     catch
                     {
@@ -169,7 +173,7 @@ namespace OnlineMusicPlayerApp.Views
                         string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), file);
                         return File.Exists(path);
                     })
-                    .ThenBy(x => x.Id)
+                    .ThenByDescending(x => x.Id)
                     .ToList();
 
                 int index = playableItems.FindIndex(x => x.Id == item.Id);
@@ -216,7 +220,7 @@ namespace OnlineMusicPlayerApp.Views
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return File.Exists(audioPath);
                 })
-                .ThenBy(x => x.Id)
+                .ThenByDescending(x => x.Id)
                 .ToList();
         }
 
