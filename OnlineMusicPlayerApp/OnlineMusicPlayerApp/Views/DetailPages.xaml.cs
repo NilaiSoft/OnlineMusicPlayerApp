@@ -251,7 +251,7 @@ namespace OnlineMusicPlayerApp.Views
                     File.Delete(audioPath);
 
                     await DisplayAlert("حذف شد", "فایل با موفقیت حذف شد.", "باشه");
-
+                    playableItems.Remove(item);
                     item.IsDeleteVisible = false;
                     item.DownloadStatus = "";
                     item.DownloadProgress = 0;
