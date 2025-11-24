@@ -299,8 +299,10 @@ namespace OnlineMusicPlayerApp.Views
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
             //BlurBackground.IsVisible = false;
 
-            var c = _playableItems.FirstOrDefault(x => x.IsPlay);
-            _currentIndex = _playableItems.FindIndex(x => x.IsPlay);
+            //var c = _playableItems.FirstOrDefault(x => x.IsPlay);
+            //_currentIndex = _playableItems.FindIndex(x => x.IsPlay);
+            _playableItems = PlaybackCapsule.CurrentPlaylist;
+            _currentIndex = PlaybackCapsule.CurrentIndex;
 
             var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
             var page = new ContentPage { Content = maximizedView };
