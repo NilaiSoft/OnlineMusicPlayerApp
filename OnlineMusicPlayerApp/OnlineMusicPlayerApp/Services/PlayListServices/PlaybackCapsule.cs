@@ -2,6 +2,9 @@
 using Xamarin.Essentials;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System;
 
 namespace OnlineMusicPlayerApp.Services.PlayListServices
 {
@@ -13,8 +16,32 @@ namespace OnlineMusicPlayerApp.Services.PlayListServices
             get
             {
                 string json = Preferences.Get("CurrentPlaylist", "");
-                return string.IsNullOrEmpty(json) ? new List<Detail>() : JsonConvert.DeserializeObject<List<Detail>>(json);
+
+                var model = string.IsNullOrEmpty(json)
+                    ? new List<Detail>()
+                    : JsonConvert.DeserializeObject<List<Detail>>(json);
+
+                // مرتب‌سازی جدید
+                model = model?
+                    .OrderByDescending(item =>
+                    {
+                        // نام فایل بر اساس Id
+                        string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+
+                        string audioPath = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                            audioFileName
+                        );
+
+                        return File.Exists(audioPath);  // true ⇒ بالا
+                    })
+                    .ThenByDescending(item => item.Id)  // Id نزولی
+                    .ToList()
+                    ?? new List<Detail>();
+
+                return model;
             }
+
             set
             {
                 string json = JsonConvert.SerializeObject(value);

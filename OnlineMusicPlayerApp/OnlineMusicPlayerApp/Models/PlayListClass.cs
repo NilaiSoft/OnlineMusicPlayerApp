@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using Xamarin.Essentials;
 
 namespace OnlineMusicPlayerApp.Models
 {
@@ -10,7 +13,39 @@ namespace OnlineMusicPlayerApp.Models
     {
         public string Master { get; set; }     // نام دسته بندی
         public string AlbumImageSrc { get; set; }
-        public List<Detail> Details { get; set; }
+        private List<Detail> _details;
+
+        public List<Detail> Details
+        {
+            get
+            {
+                if (_details == null)
+                    return new List<Detail>();
+
+                var result = _details
+                    .OrderByDescending(item =>
+                    {
+                        string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                        string audioPath = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                            audioFileName);
+
+                        return File.Exists(audioPath); // true → بالا ، false → پایین
+                    })
+                    .ThenByDescending(item => item.Id)
+                    .ToList();
+
+                return result;
+            }
+            set
+            {
+                _details = value ?? new List<Detail>();
+
+                // اگر می‌خواهی ذخیره شود
+                string json = JsonConvert.SerializeObject(_details);
+                Preferences.Set("CurrentPlaylist", json);
+            }
+        }
     }
 
     public class Detail : INotifyPropertyChanged
