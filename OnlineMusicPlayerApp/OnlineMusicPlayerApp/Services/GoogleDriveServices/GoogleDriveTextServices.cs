@@ -219,10 +219,10 @@ public class GoogleDriveServices : IGoogleDriveServices
         return roots;
     }
 
-
     public async Task<List<Category>> GetCategoriesFromGoogleSheet()
     {
-        string url = "https://docs.google.com/spreadsheets/d/1TxEMoJVEupNGldUc-l8YhejDb8Fdfy62/export?format=csv";
+        // string url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTywA04lOdRwH-qOWxLU4FQRU472gsSqccfrWxF-BYMLtFPIj92CsfxIpxpkfQEUSy4K3N9_UNNGCJi/export?format=csv&gid=1525582622";
+        string url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTywA04lOdRwH-qOWxLU4FQRU472gsSqccfrWxF-BYMLtFPIj92CsfxIpxpkfQEUSy4K3N9_UNNGCJi/pub?gid=1525582622&single=true&output=csv";
 
         using (HttpClient client = new HttpClient())
         {
@@ -251,18 +251,18 @@ public class GoogleDriveServices : IGoogleDriveServices
                 });
             }
 
-            // ساخت درخت صحیح
             var tree = BuildTree(items);
 
             return new List<Category>
         {
             new Category
             {
-                Master = "GoogleSheet",
+                Master = "Masters",
                 Details = tree,
                 AlbumImageSrc = ""
             }
         };
         }
     }
+
 }
