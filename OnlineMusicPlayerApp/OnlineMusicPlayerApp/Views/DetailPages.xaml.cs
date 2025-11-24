@@ -178,6 +178,8 @@ namespace OnlineMusicPlayerApp.Views
 
                 int index = playableItems.FindIndex(x => x.Id == item.Id);
                 PlaybackCapsule.CurrentPlaylist = playableItems;
+                playableItems.ForEach(x => x.IsPlay = false);
+                playableItems.First(x => x.Id == item.Id).IsPlay = true;
                 PlaybackCapsule.CurrentIndex = index;
 
                 var mini = new MiniPlayerView(true, index, playableItems);
