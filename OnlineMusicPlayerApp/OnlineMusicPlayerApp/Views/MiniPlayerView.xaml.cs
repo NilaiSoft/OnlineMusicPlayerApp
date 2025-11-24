@@ -62,8 +62,14 @@ namespace OnlineMusicPlayerApp.Views
                     string audioFileName = $"{item.RepeatId! ?? item.Id}{Path.GetExtension(item.Href)}";
                     string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
                     return System.IO.File.Exists(audioPath);
+                }).OrderByDescending(item =>
+                {
+                    //string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
+                    string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
+                    return System.IO.File.Exists(audioPath);
                 })
-                .OrderBy(item => item.Id)
+                .ThenByDescending(item => item.Id)
                 .ToList();
 
             _playableItems = details;
