@@ -84,7 +84,7 @@ namespace OnlineMusicPlayerApp.Views
                 //string audioFileName = $"{item.ParentId}_{item.Id}{Path.GetExtension(item.Href)}";
                 string audioFileName = $"{item.Id}{Path.GetExtension(item.Href)}";
                 string audioPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioFileName);
-                item.IsDeleteVisible = File.Exists(audioPath);
+                item.IsDeleteVisible = File.Exists(audioPath) && !string.IsNullOrEmpty(item.Href);
             }
 
             DetailsListView.ItemsSource = details;

@@ -201,6 +201,8 @@ namespace OnlineMusicPlayerApp.Views
                     return true;
                 });
             }
+            PlaybackCapsule.CurrentPlaylist = _playableItems;
+            PlaybackCapsule.CurrentIndex = _currentIndex;
         }
 
         private async void OnMiniPlayClicked(object sender, EventArgs e)
