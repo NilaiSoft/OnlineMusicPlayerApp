@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using FFImageLoading.Transformations;
 using Rg.Plugins.Popup.Services;
 using static System.Net.Mime.MediaTypeNames;
+using System.Net;
 
 namespace OnlineMusicPlayerApp.Views
 {
@@ -257,31 +258,60 @@ namespace OnlineMusicPlayerApp.Views
             }
         }
 
+        bool UrlExists(string url)
+        {
+            try
+            {
+                var request = WebRequest.Create(url);
+                request.Method = "HEAD";
+                using (var response = request.GetResponse())
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private Xamarin.Forms.ImageSource GetAlbumArt(string mp3Path, string myTag)
         {
             try
             {
-                if (!string.IsNullOrEmpty(myTag))
+                // 1) اگه myTag آدرس اینترنتی بود و معتبر بود
+                if (!string.IsNullOrEmpty(myTag) &&
+                    Uri.TryCreate(myTag, UriKind.Absolute, out Uri tagUri) &&
+                    (tagUri.Scheme == Uri.UriSchemeHttp || tagUri.Scheme == Uri.UriSchemeHttps) &&
+                    UrlExists(myTag))
                 {
-                    if (myTag.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                        return Xamarin.Forms.ImageSource.FromUri(new Uri(myTag));
-                    else
-                        return Xamarin.Forms.ImageSource.FromFile(myTag);
+                    return Xamarin.Forms.ImageSource.FromUri(tagUri);
                 }
 
+                // 2) اگه myTag مسیر فایل محلی بود
+                if (!string.IsNullOrEmpty(myTag) && System.IO.File.Exists(myTag))
+                {
+                    return Xamarin.Forms.ImageSource.FromFile(myTag);
+                }
+
+                // 3) از داخل خود mp3 عکس را بخوان
                 if (!System.IO.File.Exists(mp3Path))
                     return null;
 
                 var file = TagLib.File.Create(mp3Path);
-                var picture = file.Tag.Pictures.FirstOrDefault();
+                var picture = file.Tag.Pictures?.FirstOrDefault();
                 if (picture != null)
                 {
                     var imageBytes = picture.Data.Data;
                     return Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 }
+
+                return null;
             }
-            catch { }
-            return null;
+            catch
+            {
+                return null;
+            }
         }
 
         private void ProgressSlider_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -299,7 +329,7 @@ namespace OnlineMusicPlayerApp.Views
             var audioService = DependencyService.Get<IAudioService>();
             double currentPosition = audioService.GetCurrentPositionSeconds();
             PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
-            //BlurBackground.IsVisible = false;
+                                                                 //BlurBackground.IsVisible = false;
 
             //var c = _playableItems.FirstOrDefault(x => x.IsPlay);
             //_currentIndex = _playableItems.FindIndex(x => x.IsPlay);
