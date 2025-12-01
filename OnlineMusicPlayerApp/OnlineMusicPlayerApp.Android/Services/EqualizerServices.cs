@@ -103,11 +103,11 @@ public class EqualizerServices : IEqualizerService
                 eq.SetBandLevel(i, 800);
         }
 
-        bassBoost = new BassBoost(0, session);
+        bassBoost = bassBoost ?? new BassBoost(0, session);
         bassBoost.SetStrength(800);
         bassBoost.SetEnabled(true);
 
-        virtualizer = new Virtualizer(1, session);
+        virtualizer = virtualizer ?? new Virtualizer(1, session);
         virtualizer.SetStrength(900);
         virtualizer.SetEnabled(true);
     }
