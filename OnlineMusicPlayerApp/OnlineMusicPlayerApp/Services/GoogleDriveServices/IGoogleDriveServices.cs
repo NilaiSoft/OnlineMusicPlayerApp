@@ -14,4 +14,5 @@ public interface IGoogleDriveServices
     Task<string> GetMusicPlayList();
     Task<Category> LoadCategoryFromGoogleSheet(string csvUrl, string masterName, string albumImage);
     Task<List<Category>> GetCategoriesFromGoogleSheet();
+    Task<List<Category>> GetCategoriesFromGoogleSheetLocal(bool isConnect);
 }

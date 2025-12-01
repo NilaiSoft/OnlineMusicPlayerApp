@@ -70,6 +70,29 @@ public class PlayListServices : IPlayListServices
         return allDetails;
     }
 
+    public async Task<List<Category>> GetCategoriesFromGoogleSheetLocal(bool isConnect)
+    {
+        // فقط یک بار از GoogleSheet دریافت کن
+        var result = await DependencyService.Get<IGoogleDriveServices>()
+                                           .GetCategoriesFromGoogleSheetLocal(isConnect);
+
+        if (result == null || result.Count == 0)
+            return new List<Category>();
+
+        // result خودش یک List<Category> است
+        var tree = result.First().Details;
+
+        return new List<Category>
+        {
+            new Category
+            {
+                Master = "GoogleSheet",
+                Details = tree,
+                AlbumImageSrc = ""
+            }
+        };
+    }
+
     public static class PlaybackCapsule
     {
         public static List<Detail> CurrentPlaylist { get; set; } = new List<Detail>();

@@ -11,5 +11,7 @@ namespace OnlineMusicPlayerApp.Services.PlayListServices
         Task<List<Category>> GetCategoriesFromJson();
 
         Task<List<Category>> GetCategoriesFromGoogleSheet();
+
+        Task<List<Category>> GetCategoriesFromGoogleSheetLocal(bool isConnect);
     }
 }

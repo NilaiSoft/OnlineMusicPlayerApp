@@ -265,4 +265,67 @@ public class GoogleDriveServices : IGoogleDriveServices
         }
     }
 
+    public async Task<List<Category>> GetCategoriesFromGoogleSheetLocal(bool isConnect)
+    {
+        string url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTywA04lOdRwH-qOWxLU4FQRU472gsSqccfrWxF-BYMLtFPIj92CsfxIpxpkfQEUSy4K3N9_UNNGCJi/pub?gid=1525582622&single=true&output=csv";
+
+        // مسیر personal
+        string personalPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string csvPath = Path.Combine(personalPath, "categories.csv");
+
+        // اگر فایل وجود ندارد، دانلود کن
+        //if (!File.Exists(csvPath))
+        if (isConnect)
+        {
+            await DownloadCsvAsync(url, csvPath);
+        }
+
+        // خواندن CSV از پوشه Personal
+        string csv = await File.ReadAllTextAsync(csvPath);
+
+        var lines = csv.Split('\n');
+        List<Detail> items = new List<Detail>();
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var line = lines[i].Trim();
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            var c = line.Split(',');
+
+            items.Add(new Detail
+            {
+                Id = int.Parse(c[0]),
+                ParentId = int.TryParse(c[1], out var pid) ? pid : (int?)null,
+                RepeatId = int.TryParse(c[2], out var rep) ? rep : (int?)null,
+                Title = c[3],
+                Href = c[4],
+                TagImageSrc = c[5],
+                ListImageSrc = c[6],
+                IsVisible = c[7] == "1" || c[7].ToLower() == "true"
+            });
+        }
+
+        var tree = BuildTree(items);
+
+        return new List<Category>
+        {
+            new Category
+            {
+                Master = "Masters",
+                Details = tree,
+                AlbumImageSrc = ""
+            }
+        };
+    }
+
+    private async Task DownloadCsvAsync(string url, string localPath)
+    {
+        using HttpClient client = new HttpClient();
+
+        string csv = await client.GetStringAsync(url);
+
+        File.WriteAllText(localPath, csv);
+    }
+
 }
