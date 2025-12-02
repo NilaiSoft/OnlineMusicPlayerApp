@@ -249,6 +249,8 @@ public class GoogleDriveServices : IGoogleDriveServices
                     ListImageSrc = c[6],
                     IsVisible = c[7] == "1" || c[7].ToLower() == "true"
                 });
+
+                items = items.Where(x => x.IsVisible).ToList();
             }
 
             var tree = BuildTree(items);
