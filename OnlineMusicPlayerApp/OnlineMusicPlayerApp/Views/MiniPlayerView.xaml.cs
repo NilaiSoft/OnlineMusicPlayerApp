@@ -44,7 +44,11 @@ namespace OnlineMusicPlayerApp.Views
 
             var current = _playableItems.FirstOrDefault(x => x.IsPlay);
             if (current != null)
-                imgMiniCover.Source = GetAlbumArt(current.Href, current.TagImageSrc);
+            {
+                var img = GetAlbumArt(current.Href, current.TagImageSrc);
+                imgMiniCover.Source = img;
+                CoverImage.Source = img;
+            }
         }
 
         public MiniPlayerView(bool isMaximize, int currentIndex, List<Detail> details)
@@ -86,6 +90,7 @@ namespace OnlineMusicPlayerApp.Views
         {
             lblMiniTitle.Text = PlaybackCapsule.LoadCurrentTitleMusic();
             imgMiniCover.Source = PlaybackCapsule.LoadCurrentImageTag();
+            CoverImage.Source = PlaybackCapsule.LoadCurrentImageTag();
             BlurBackground.Source = PlaybackCapsule.LoadCurrentImageTag();
 
             bool isPlaying = _audioService.IsPlaying();
@@ -326,20 +331,11 @@ namespace OnlineMusicPlayerApp.Views
 
         private async void OnMiniPlayerTapped(object sender, EventArgs e)
         {
-            var audioService = DependencyService.Get<IAudioService>();
-            double currentPosition = audioService.GetCurrentPositionSeconds();
-            PlaybackCapsule.SaveSliderPosition(currentPosition); // ✅ ذخیره موقعیت فعلی
-                                                                 //BlurBackground.IsVisible = false;
-
-            //var c = _playableItems.FirstOrDefault(x => x.IsPlay);
-            //_currentIndex = _playableItems.FindIndex(x => x.IsPlay);
-            _playableItems = PlaybackCapsule.CurrentPlaylist;
-            _currentIndex = PlaybackCapsule.CurrentIndex;
-
-            var maximizedView = new MiniPlayerView(true, _currentIndex, _playableItems);
-            var page = new ContentPage { Content = maximizedView };
-            NavigationPage.SetHasNavigationBar(page, false);
-            await Navigation.PushAsync(page);
+            //InitializeComponent();
+            LoadLastPlaybackInfo();
+            MaximizedPanel.IsVisible = true;
+            BlurBackground.IsVisible = true;
+            MiniPlayerFrame.IsVisible = false;
         }
 
         private async void OnEqualizerClicked(object sender, EventArgs e)

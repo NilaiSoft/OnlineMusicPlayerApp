@@ -7,9 +7,13 @@
              BackgroundColor="Transparent"
              NavigationPage.HasNavigationBar="False">
 
-    <Grid RowSpacing="0">
+    <Grid RowSpacing="0"
+      HorizontalOptions="FillAndExpand"
+      VerticalOptions="FillAndExpand">
         <!-- حالت کامل -->
-        <AbsoluteLayout>
+        <AbsoluteLayout
+    HorizontalOptions="FillAndExpand"
+    VerticalOptions="FillAndExpand">
 
             <ffimageloading:CachedImage x:Name="BlurBackground"
                             Aspect="AspectFill"
@@ -20,7 +24,10 @@
                             IsVisible="false"
                             AbsoluteLayout.LayoutBounds="0,0,1.9,1.5"
                             AbsoluteLayout.LayoutFlags="All" />
-            <StackLayout Padding="30" Spacing="1">
+            <StackLayout Padding="20"
+             Spacing="1"
+             HorizontalOptions="FillAndExpand"
+             VerticalOptions="FillAndExpand">
                 <Frame x:Name="MaximizedPanel"
                    Padding="10"
                    CornerRadius="12"
